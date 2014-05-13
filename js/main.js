@@ -1,6 +1,8 @@
 // MVC pattern
 var model = (function() {
+	'use strict';
 	var my = {};
+
 	my.getLives = function () {
 		var lives = parseInt(localStorage.getItem("lives"));
 		if (lives == undefined) {
@@ -24,11 +26,12 @@ var model = (function() {
 
 // view
 var view = (function() {
+	'use strict';
 	var my = {};
 
 	my.init = function() {
-		myModule.init();
-		myModule.addObjects();
+		eqCanvas.init();
+		eqCanvas.addGivenQuantities();
 		view.showLives();
 		view.registerListeners();
 	};
@@ -44,9 +47,7 @@ var view = (function() {
 		    $("select[name=basisformeln] option:selected").each(function() {
 		    	eqs.push($(this).text());
 		    });
-		    console.log("Hullo");
-
-		    myModule.addEquations(eqs);
+		    eqCanvas.addEquations(eqs);
  		});
 	};
 
@@ -66,7 +67,8 @@ var view = (function() {
 
 // controller
 var controller = (function() {
-	var my = {};
+	'use strict';
+ 	var my = {};
 
 	my.addLife = function(event) {
 		model.addLife();
@@ -83,24 +85,10 @@ var controller = (function() {
 
 // main
 $(document).ready(function(){
+	'use strict';
+
 	view.init();
 
-/*	$("#mvctest").click(controller.mvctest(event));
-	$("#pruefen").click(function(event) {
-		var correct = true;
-		$("#first :selected").each(function() {
-			if ($(this).data("correct") == undefined) {
-				correct = false;
-			}
-		});
-		
-		if (correct) {
-			$("#result").removeClass().addClass("glyphicon glyphicon-ok");
-		} else {
-			$("#result").removeClass().addClass("glyphicon glyphicon-remove");
-			$("#tmp").removeClass().addClass("glyphicon glyphicon-heart-empty");
-		};*/
-	
 	// JS templating
 	var template = $('#template').html();
 	Mustache.parse(template);   // optional, speeds up future uses

@@ -1,4 +1,4 @@
-var myModule = (function() {
+var eqCanvas = (function() {
   'use strict';
   // module pattern
   var my = {},
@@ -12,6 +12,7 @@ var myModule = (function() {
     stage = new createjs.Stage("demoCanvas");
     stage.mouseMoveOutside = true;
 
+    // background
     bg = new createjs.Shape();
     stage.addChild(bg);
     bg.graphics.beginFill("rgb(240, 240, 240)").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
@@ -19,16 +20,35 @@ var myModule = (function() {
   };
 
 
-  function DraggableContainer (shape, label, xpos, ypos) {
-    var container = new createjs.Container();
-    container.addChild(shape, label);
-    container.x = xpos;
-    container.y = ypos;
-    stage.addChild(container);
-    container.on("pressmove", handleMove);
-    container.on("mousedown", handleMouseDown);
+  my.addGivenQuantities = function () {
+    quantities.push(new Quantity("Δt", 850, 50, null));
+    quantities.push(new Quantity("m", 850, 100, null));
+    quantities.push(new Quantity("g", 850, 150, null));
+    quantities.push(new Quantity("h", 850, 200, null));
+    quantities.push(new Quantity("P", 850, 350, null));
+    for (var i = quantities.length - 2; i >= 0; i--) {
+      quantities[i].setColor("rgb(100, 200, 100)");
+    };
+    stage.update();
 
-    return container;
+  };
+
+  my.addEquations = function(textarray) {
+    // avoid adding the same equation twice
+    // remove existing equations
+    stage.removeAllChildren();
+    for (var i = quantities.length - 1; i >= 0; i--) {
+      stage.addChild(quantities[i].container);
+    };
+    stage.addChildAt(bg, 0);
+    equations = [];
+
+    var eqOffset = 150;
+    for (var i = textarray.length - 1; i >= 0; i--) {
+      equations.push(new Equation(textarray[i], eqOffset, 150));
+      eqOffset = (eqOffset + 250) % 800;
+    };
+    stage.update();
   };
 
 
@@ -52,6 +72,13 @@ var myModule = (function() {
     var circle = this.container.children[0];
     circle.graphics.clear();
     circle.graphics.beginFill(color).drawCircle(0, 0, 20);
+  };
+
+
+  Quantity.prototype.joinWith = function(otherQty) {
+    // check for correct units
+    // if has parent, not the same as parent of other joined qties
+    // symmetric joining?
   };
 
   function Equation(text, xpos, ypos) {
@@ -113,38 +140,21 @@ var myModule = (function() {
     stage.update();
   };
 
-  my.addObjects = function () {    
-    quantities.push(new Quantity("Δt", 750, 50, null));
-    quantities.push(new Quantity("m", 750, 100, null));
-    quantities.push(new Quantity("g", 750, 150, null));
-    quantities.push(new Quantity("h", 750, 200, null));
-    quantities.push(new Quantity("P", 750, 350, null));
-    for (var i = quantities.length - 1; i >= 0; i--) {
-      quantities[i].setColor("rgb(100, 200, 100)");
-    };
-    stage.update();
 
+  function DraggableContainer (shape, label, xpos, ypos) {
+    var container = new createjs.Container();
+    container.addChild(shape, label);
+    container.x = xpos;
+    container.y = ypos;
+    stage.addChild(container);
+    container.on("pressmove", handleMove);
+    container.on("mousedown", handleMouseDown);
+
+    return container;
   };
-
-  my.addEquations = function(textarray) {
-    // avoid adding the same equation twice
-    // remove existing equations
-    stage.removeAllChildren();
-    for (var i = quantities.length - 1; i >= 0; i--) {
-      stage.addChild(quantities[i].container);
-    };
-    stage.addChildAt(bg, 0);
-
-    var eqOffset = 150;
-    for (var i = textarray.length - 1; i >= 0; i--) {
-      equations.push(new Equation(textarray[i], eqOffset, 150));
-      eqOffset = (eqOffset + 200) % 600;
-    };
-    stage.update();
-  };
-
 
   function handleMouseDown(evt) {
+    // remember the offset of the cursor from the object's origin when dragging
     evt.currentTarget.offset = {x: evt.currentTarget.x - evt.stageX, y: evt.currentTarget.y - evt.stageY};
   }
 
