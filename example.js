@@ -1,4 +1,4 @@
-{
+var jsonObject = {
     "title": "Kuckucksuhr",
     "text": "Eine Kuckucksuhr hängt an der Wand und tickt schon seit 250 Jahren vor sich hin. Die beiden Eisengewichte (Fichtenzapfen) von je 3,5 kg werden einmal in der Woche hochgezogen und liefern auf ihrer Talfahrt von 85 cm die nötige Energie für das Uhrwerk und den Antrieb des Kuckucks. Was ist die Leistung der Uhr?",
     "given": [
@@ -11,4 +11,4 @@
         "P = E/Δt",
         "E = m*g*h"
     ]
-}
+};

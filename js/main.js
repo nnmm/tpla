@@ -24,4 +24,6 @@ $(document).ready(function(){
 
 	myModule.init();
 	myModule.addObjects();
+
+	console.log(jsonObject);
 });
