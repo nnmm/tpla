@@ -1,8 +1,10 @@
 var myModule = (function() {
+  'use strict';
   // module pattern
   var my = {},
     equations = [],
-    eqOffset = 150,
+    quantities = [],
+    bg,
     stage;
 
   my.init = function() {
@@ -10,7 +12,7 @@ var myModule = (function() {
     stage = new createjs.Stage("demoCanvas");
     stage.mouseMoveOutside = true;
 
-    var bg = new createjs.Shape();
+    bg = new createjs.Shape();
     stage.addChild(bg);
     bg.graphics.beginFill("rgb(240, 240, 240)").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
     stage.update();
@@ -31,6 +33,7 @@ var myModule = (function() {
 
 
   function Quantity(text, xpos, ypos, prnt) {
+    this.text = text;
     var circle = new createjs.Shape();
     circle.graphics.beginFill("rgb(130, 130, 255)").drawCircle(0, 0, 20);
     var label = new createjs.Text(text, "14px Arial", "#FFFFFF");
@@ -53,7 +56,8 @@ var myModule = (function() {
 
   function Equation(text, xpos, ypos) {
     // Variablen
-    var vars = text.replace(/\s+/g, '').split(/=|\*|\/|\+|\-/);
+    this.text = text;
+    var vars = text.replace(/\s+/g, '').split(/=|\*|\⋅|\/|\+|\-/);
     var radius = 100, angle = Math.PI;
     this.variablen = new Array();
     for (var i = 0; i < vars.length; i++) {
@@ -110,28 +114,32 @@ var myModule = (function() {
   };
 
   my.addObjects = function () {    
-    var dt = new Quantity("Δt", 750, 50, null);
-    stage.addChild(dt.container);
-    dt.setColor("rgb(100, 200, 100)");
-    var m = new Quantity("m", 750, 100, null);
-    stage.addChild(m.container);
-    m.setColor("rgb(100, 200, 100)");
-    var g = new Quantity("g", 750, 150, null);
-    stage.addChild(g.container);
-    g.setColor("rgb(100, 200, 100)");
-    var h = new Quantity("h", 750, 200, null);
-    stage.addChild(h.container);
-    h.setColor("rgb(100, 200, 100)");
-    var P = new Quantity("P", 750, 350, null);
-    stage.addChild(P.container);
-    P.setColor("rgb(200, 100, 100)");
+    quantities.push(new Quantity("Δt", 750, 50, null));
+    quantities.push(new Quantity("m", 750, 100, null));
+    quantities.push(new Quantity("g", 750, 150, null));
+    quantities.push(new Quantity("h", 750, 200, null));
+    quantities.push(new Quantity("P", 750, 350, null));
+    for (var i = quantities.length - 1; i >= 0; i--) {
+      quantities[i].setColor("rgb(100, 200, 100)");
+    };
     stage.update();
 
   };
 
-  my.addEquation = function(text) {
-    equations.push(new Equation(text, eqOffset, 150));
-    eqOffset = (eqOffset + 200) % 600;
+  my.addEquations = function(textarray) {
+    // avoid adding the same equation twice
+    // remove existing equations
+    stage.removeAllChildren();
+    for (var i = quantities.length - 1; i >= 0; i--) {
+      stage.addChild(quantities[i].container);
+    };
+    stage.addChildAt(bg, 0);
+
+    var eqOffset = 150;
+    for (var i = textarray.length - 1; i >= 0; i--) {
+      equations.push(new Equation(textarray[i], eqOffset, 150));
+      eqOffset = (eqOffset + 200) % 600;
+    };
     stage.update();
   };
 

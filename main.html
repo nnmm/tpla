@@ -27,9 +27,9 @@
     <div class="page-header">
       <h1>TPLA-Demo</h1>
       <div id="lives" style="float:right">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span class="glyphicon glyphicon-heart-empty"></span>
+        <span class="glyphicon glyphicon-heart-empty"></span>
+        <span class="glyphicon glyphicon-heart-empty"></span>
       </div>
       <p class="lead">Aufgabenblock Kuckucksuhr</p>
     </div>
@@ -42,7 +42,7 @@
       <p>Gesucht: P<sub>Uhr</sub></p>
     </div>
     <div class="row">
-      <div class="col-md-6 stepone hidden">
+      <div class="col-md-6 hidden">
         <p>Trage die gegebenen Größen mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
         <p id="first">
           <select name="select">
@@ -183,7 +183,7 @@
           <button type="button" id="weiter" class="btn btn-default">Weiter</button>
         </p>
       </div>
-      <div class="col-md-6 stepone hidden">
+      <div class="col-md-6 hidden">
         <p>Trage die gesuchte Größe mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
         <p id="first">
           <select name="select">
@@ -325,10 +325,14 @@
       <div class="col-md-12">
         <p>Baue aus den Basisformeln und gegebenen Größen eine Lösungsformel!</p>
         <canvas id="demoCanvas" width="800" height="400"></canvas>
+        <select name="basisformeln" multiple>
+          <option>P = E/Δt</option>
+          <option>E = m⋅g⋅h</option>
+          <option>E = ½⋅m⋅v²</option>
+          <option>v = s/Δt</option>
+        </select>
         <p>
-          <button type="button" id="formel" class="btn btn-default">Formel hinzufügen</button>
-          <button type="button" id="addlife" class="btn btn-default">Add life</button>
-          <button type="button" id="subtractlife" class="btn btn-default">Subtract life</button>
+          <button type="button" id="" class="btn btn-default">Weiter</button>
         </p>
       </div>
     </div>
