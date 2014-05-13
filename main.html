@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TPLA-Demo</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="js/jquery.js"></script>
+    <script src="js/easeljs-0.7.1.min.js"></script>
+    <script src="js/canvas.js"> </script>
+  </head>
+  <body>
+  <div class="container">
+
+    <div class="page-header">
+      <h1>TPLA-Demo</h1>
+      <div style="float:right"><span class="glyphicon glyphicon-heart"></span><span id="tmp" class="glyphicon glyphicon-heart"></span><span class="glyphicon glyphicon-heart-empty"></span></div>
+      <p class="lead">Aufgabenblock Kuckucksuhr</p>
+    </div>
+
+    <h3>Aufgabe 1</h3>
+    <p>Eine Kuckucksuhr hängt an der Wand und tickt schon seit 250 Jahren vor sich hin. Die beiden Eisengewichte (Fichtenzapfen) von je 3,5 kg werden einmal in der Woche hochgezogen und liefern auf ihrer Talfahrt von 85 cm die nötige Energie für das Uhrwerk und den Antrieb des Kuckucks. Was ist die Leistung der Uhr?</p>
+    <div class="hidden">
+      
+      <p>Gegeben: Δt<sub>1</sub> = 250 Jahre, m<sub>Gewichte</sub> = 7 kg, Δt<sub>2</sub> = 1 Woche, h<sub></sub> = 85 cm</p>
+      <p>Gesucht: P<sub>Uhr</sub></p>
+    </div>
+    <div class="row">
+      <div class="col-md-6 stepone hidden">
+        <p>Trage die gegebenen Größen mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
+        <p id="first">
+          <select name="select">
+            <option></option>
+            <option>m</option> 
+            <option>t</option>
+            <option data-correct="true">Δt</option>
+          </select>
+          <select name="select">
+            <option data-correct="true"></option>
+            <option>1</option> 
+            <option>2</option>
+            <option>Gewichte</option>
+          </select>
+          =
+          <select name="select">
+            <option></option>
+            <option data-correct="true">1</option> 
+            <option>250</option>
+            <option>3,5</option>
+            <option>7</option>
+            <option>85</option>
+          </select>
+          <select name="select">
+            <option></option>
+            <option>cm</option>
+            <option data-correct="true">Woche</option>
+            <option>Jahre</option>
+            <option>s</option>
+            <option>kg</option>
+          </select>
+          <span id="result"></span>
+        </p>
+
+        <p id="first">
+          <select name="select">
+            <option></option>
+            <option>m</option> 
+            <option>t</option>
+            <option data-correct="true">Δt</option>
+          </select>
+          <select name="select">
+            <option data-correct="true"></option>
+            <option>1</option> 
+            <option>2</option>
+            <option>Gewichte</option>
+          </select>
+          =
+          <select name="select">
+            <option></option>
+            <option data-correct="true">1</option> 
+            <option>250</option>
+            <option>3,5</option>
+            <option>7</option>
+            <option>85</option>
+          </select>
+          <select name="select">
+            <option></option>
+            <option>cm</option>
+            <option data-correct="true">Woche</option>
+            <option>Jahre</option>
+            <option>s</option>
+            <option>kg</option>
+          </select>
+          <span id="result"></span>
+        </p>
+
+        <p>
+          <select name="select">
+            <option></option>
+            <option>m</option> 
+            <option>t</option>
+            <option data-correct="true">Δt</option>
+          </select>
+          <select name="select">
+            <option data-correct="true"></option>
+            <option>1</option> 
+            <option>2</option>
+            <option>Gewichte</option>
+          </select>
+          =
+          <select name="select">
+            <option></option>
+            <option data-correct="true">1</option> 
+            <option>250</option>
+            <option>3,5</option>
+            <option>7</option>
+            <option>85</option>
+          </select>
+          <select name="select">
+            <option></option>
+            <option>cm</option>
+            <option data-correct="true">Woche</option>
+            <option>Jahre</option>
+            <option>s</option>
+            <option>kg</option>
+          </select>
+          <span id="result"></span>
+        </p>
+
+        <p>
+          <select name="select">
+            <option></option>
+            <option>m</option> 
+            <option>t</option>
+            <option data-correct="true">Δt</option>
+          </select>
+          <select name="select">
+            <option data-correct="true"></option>
+            <option>1</option> 
+            <option>2</option>
+            <option>Gewichte</option>
+          </select>
+          =
+          <select name="select">
+            <option></option>
+            <option data-correct="true">1</option> 
+            <option>250</option>
+            <option>3,5</option>
+            <option>7</option>
+            <option>85</option>
+          </select>
+          <select name="select">
+            <option></option>
+            <option>cm</option>
+            <option data-correct="true">Woche</option>
+            <option>Jahre</option>
+            <option>s</option>
+            <option>kg</option>
+          </select>
+          <span id="result"></span>
+        </p>
+        <p>
+          <button type="button" id="mehrOptionen" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+        </p>
+        <p>
+          <button type="button" id="pruefen" class="btn btn-default">Prüfen</button>
+          <button type="button" id="weiter" class="btn btn-default">Weiter</button>
+        </p>
+      </div>
+      <div class="col-md-6 stepone hidden">
+        <p>Trage die gesuchte Größe mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
+        <p id="first">
+          <select name="select">
+            <option></option>
+            <option>m</option> 
+            <option>t</option>
+            <option data-correct="true">Δt</option>
+          </select>
+          <select name="select">
+            <option data-correct="true"></option>
+            <option>1</option> 
+            <option>2</option>
+            <option>Gewichte</option>
+          </select>
+          =
+          <select name="select">
+            <option></option>
+            <option data-correct="true">1</option> 
+            <option>250</option>
+            <option>3,5</option>
+            <option>7</option>
+            <option>85</option>
+          </select>
+          <select name="select">
+            <option></option>
+            <option>cm</option>
+            <option data-correct="true">Woche</option>
+            <option>Jahre</option>
+            <option>s</option>
+            <option>kg</option>
+          </select>
+          <span id="result"></span>
+        </p>
+
+        <p id="first">
+          <select name="select">
+            <option></option>
+            <option>m</option> 
+            <option>t</option>
+            <option data-correct="true">Δt</option>
+          </select>
+          <select name="select">
+            <option data-correct="true"></option>
+            <option>1</option> 
+            <option>2</option>
+            <option>Gewichte</option>
+          </select>
+          =
+          <select name="select">
+            <option></option>
+            <option data-correct="true">1</option> 
+            <option>250</option>
+            <option>3,5</option>
+            <option>7</option>
+            <option>85</option>
+          </select>
+          <select name="select">
+            <option></option>
+            <option>cm</option>
+            <option data-correct="true">Woche</option>
+            <option>Jahre</option>
+            <option>s</option>
+            <option>kg</option>
+          </select>
+          <span id="result"></span>
+        </p>
+
+        <p>
+          <select name="select">
+            <option></option>
+            <option>m</option> 
+            <option>t</option>
+            <option data-correct="true">Δt</option>
+          </select>
+          <select name="select">
+            <option data-correct="true"></option>
+            <option>1</option> 
+            <option>2</option>
+            <option>Gewichte</option>
+          </select>
+          =
+          <select name="select">
+            <option></option>
+            <option data-correct="true">1</option> 
+            <option>250</option>
+            <option>3,5</option>
+            <option>7</option>
+            <option>85</option>
+          </select>
+          <select name="select">
+            <option></option>
+            <option>cm</option>
+            <option data-correct="true">Woche</option>
+            <option>Jahre</option>
+            <option>s</option>
+            <option>kg</option>
+          </select>
+          <span id="result"></span>
+        </p>
+
+        <p>
+          <select name="select">
+            <option></option>
+            <option>m</option> 
+            <option>t</option>
+            <option data-correct="true">Δt</option>
+          </select>
+          <select name="select">
+            <option data-correct="true"></option>
+            <option>1</option> 
+            <option>2</option>
+            <option>Gewichte</option>
+          </select>
+          =
+          <select name="select">
+            <option></option>
+            <option data-correct="true">1</option> 
+            <option>250</option>
+            <option>3,5</option>
+            <option>7</option>
+            <option>85</option>
+          </select>
+          <select name="select">
+            <option></option>
+            <option>cm</option>
+            <option data-correct="true">Woche</option>
+            <option>Jahre</option>
+            <option>s</option>
+            <option>kg</option>
+          </select>
+          <span id="result"></span>
+        </p>
+        <p>
+          <button type="button" id="pruefen" class="btn btn-default">Prüfen</button>
+          <button type="button" id="weiter" class="btn btn-default">Weiter</button>
+        </p>
+      </div>
+
+      <div class="col-md-12">
+        <p>Baue aus den Basisformeln und gegebenen Größen eine Lösungsformel!</p>
+        <canvas id="demoCanvas" width="800" height="400"></canvas>
+        <p><button type="button" id="formel" class="btn btn-default">Formel hinzufügen</button></p>
+      </div>
+    </div>
+
+    <hr>
+
+    <a href="http://getbootstrap.com/">Bootstrap</a>
+
+
+  </div> <!-- /container -->
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script id="json" type="application/json" src="example.json"></script>
+  </body>
+</html>
