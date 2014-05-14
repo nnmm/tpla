@@ -6,7 +6,7 @@ var jsonObject = {
     "problem": "Was ist die Leistung der Uhr?",
     "image": false,
     "given": [
-        { "letter": "Δt", "index": "1", "value": 604800, "unit": "Sekunden" },
+        { "letter": "Δt", "index": "1", "value": 604800, "unit": "s" },
         { "letter": "m",  "index": "Gewichte", "value": 7, "unit": "kg" },
         { "letter": "h",  "index": "", "value": 0.85, "unit": "m" },
         { "letter": "g",  "index": "", "value": 9.81, "unit": "m/s²" }

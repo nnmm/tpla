@@ -3,6 +3,15 @@ var model = (function() {
 	'use strict';
 	var my = {};
 
+	my.init = function() {
+		my.data = jsonObject;
+		my.data.givenAll = my.data.given;
+		my.data.unknown = {
+			"letter": my.data.solution.letter,
+        	"index": my.data.solution.index,
+		}
+	};
+
 	my.getLives = function () {
 		var lives = parseInt(localStorage.getItem("lives"));
 		if (lives == undefined) {
@@ -30,8 +39,6 @@ var view = (function() {
 	var my = {};
 
 	my.init = function() {
-		eqCanvas.init();
-		eqCanvas.addGivenQuantities();
 		view.showLives();
 		view.registerListeners();
 	};
@@ -87,11 +94,46 @@ var controller = (function() {
 $(document).ready(function(){
 	'use strict';
 
+	model.init();
 	view.init();
 
+	$("#groessen").click(function(event) {
+		var template = $('#tmpl-option-given').html();
+		// Mustache.parse(template);   // optional, speeds up future uses
+		var rendered = Mustache.render(template, model.data);
+		$('#workingarea').html(rendered);
+	});
+
+	$("#formeln").click(function(event) {
+		var template = $('#tmpl-formulae').html();
+		Mustache.parse(template);   // optional, speeds up future uses
+		var rendered = Mustache.render(template, model.data);
+		$('#workingarea').html(rendered);
+		eqCanvas.init();
+		eqCanvas.addGivenQuantities();
+	});
+
+	$("#antwort").click(function(event) {
+		var template = $('#tmpl-solution-phrases').html();
+		Mustache.parse(template);   // optional, speeds up future uses
+		// call twice so the {{solution.value}} gets substituted
+		var rendered = Mustache.render(Mustache.render(template, model.data), model.data);
+		$('#workingarea').html(rendered);
+	});
+
 	// JS templating
-	var template = $('#template').html();
+	var template = $('#tmpl-given').html();
 	Mustache.parse(template);   // optional, speeds up future uses
-	var rendered = Mustache.render(template, jsonObject);
+	var rendered = Mustache.render(template, model.data);
 	$('#target').html(rendered);
 });
+
+String.prototype.repeat = function(count) {
+    if (count < 1) return '';
+    var result = '', pattern = this.valueOf();
+    while (count > 0) {
+        if (count & 1) result += pattern;
+        count >>= 1, pattern += pattern;
+    }
+    return result;
+};
