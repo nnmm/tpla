@@ -44,11 +44,6 @@ var view = (function() {
 	};
 
 	my.registerListeners = function() {
-		$("#weiter").click(function(event) {
-			$(".hidden").removeClass("hidden");
-			$(".stepone").addClass("hidden");
-		});
-
 		$("select[name=basisformeln]").change(function() {
 			var eqs = [];
 		    $("select[name=basisformeln] option:selected").each(function() {
@@ -99,7 +94,7 @@ $(document).ready(function(){
 
 	$("#groessen").click(function(event) {
 		var template = $('#tmpl-option-given').html();
-		// Mustache.parse(template);   // optional, speeds up future uses
+		Mustache.parse(template);   // optional, speeds up future uses
 		var rendered = Mustache.render(template, model.data);
 		$('#workingarea').html(rendered);
 	});
@@ -127,13 +122,3 @@ $(document).ready(function(){
 	var rendered = Mustache.render(template, model.data);
 	$('#target').html(rendered);
 });
-
-String.prototype.repeat = function(count) {
-    if (count < 1) return '';
-    var result = '', pattern = this.valueOf();
-    while (count > 0) {
-        if (count & 1) result += pattern;
-        count >>= 1, pattern += pattern;
-    }
-    return result;
-};
