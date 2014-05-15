@@ -37,18 +37,17 @@ var eqCanvas = (function() {
     // avoid adding the same equation twice
     // remove existing equations
     stage.removeAllChildren();
-    for (var i = quantities.length - 1; i >= 0; i--) {
-      stage.addChild(quantities[i].container);
-    };
-    stage.addChildAt(bg, 0);
     equations = [];
+    quantities = [];
 
     var eqOffset = 150;
+    stage.addChildAt(bg, 0);
     for (var i = textarray.length - 1; i >= 0; i--) {
       equations.push(new Equation(textarray[i], eqOffset, 150));
       eqOffset = (eqOffset + 250) % 800;
     };
     stage.update();
+    my.addGivenQuantities();
   };
 
 

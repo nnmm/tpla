@@ -5,7 +5,11 @@ var model = (function() {
 
 	my.init = function() {
 		my.data = jsonObject;
-		// TODO: Add set of standard variables read from a file and shuffle
+		model.prepareData();
+	};
+
+	my.prepareData = function() {
+		// augment the loaded js object with additional items and shuffle
 		my.data.givenAll = my.data.given;
 		my.data.unknown = [
 			{ "letter": my.data.solution.letter, "index": my.data.solution.index },
@@ -15,8 +19,10 @@ var model = (function() {
 	};
 
 	my.getLives = function () {
+		// retrieve lives from localStorage
 		var lives = parseInt(localStorage.getItem("lives"));
-		if (lives == undefined) {
+		// if there is nothing stored, reset lives to 3
+		if (isNaN(lives)) {
 			lives = 3;
 			localStorage.setItem("lives", 3);
 		};
