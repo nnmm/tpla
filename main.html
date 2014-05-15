@@ -123,7 +123,7 @@
     <script id="tmpl-groessen" type="x-tmpl-mustache">
       <div class="col-md-6 nopadding">
         <p>Trage die gegebenen Größen mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
-        <div class="select-row">
+        <div class="select-row-gegeben">
           <div class=" col-xs-2 nopadding">
           <select class="form-control input-sm" name="letter">
             <option></option>
@@ -164,23 +164,25 @@
       </div>
       <div class="col-md-6 nopadding">
         <p>Trage die gesuchte Größe mit Formelzeichen und optionalem Index unten ein!</p>
-        <div class="col-xs-2 nopadding">
-        <select class="form-control input-sm" name="letter">
-          <option></option>
-          {{#unknown}}
-          <option>{{letter}}</option>
-          {{/unknown}}
-        </select>
+        <div class="select-row-gesucht">
+          <div class="col-xs-2 nopadding">
+            <select class="form-control input-sm" name="letter">
+              <option></option>
+              {{#unknown}}
+              <option>{{letter}}</option>
+              {{/unknown}}
+            </select>
+            </div>
+            <div class="col-xs-2 nopadding">
+            <select class="form-control input-sm" name="index">
+              <option></option>
+              {{#unknown}}
+              <option>{{index}}</option>
+              {{/unknown}}
+            </select>
+          </div>
+          <div class="col-xs-8 nopadding"></div>
         </div>
-        <div class="col-xs-2 nopadding">
-        <select class="form-control input-sm" name="index">
-          <option></option>
-          {{#unknown}}
-          <option>{{index}}</option>
-          {{/unknown}}
-        </select>
-        </div>
-        <div class="col-xs-8 nopadding"></div>
       </div>
     </script>
 

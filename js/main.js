@@ -72,10 +72,10 @@ var view = (function() {
 		Mustache.parse(template);   // optional, speeds up future uses
 		var rendered = Mustache.render(template, model.data);
 		$('#workingarea').html(rendered);
-		var selectRow = $('.select-row').html();
-		selectRow = '<div class="select-row">' + selectRow + '</div>';
+		var selectRow = $('.select-row-gegeben').html();
+		selectRow = '<div class="select-row-gegeben">' + selectRow + '</div>';
 		for (var i = 1; i < 4; i++) {
-			$('.select-row:last').after(selectRow);
+			$('.select-row-gegeben:last').after(selectRow);
 		};
 	};
 
@@ -121,8 +121,20 @@ var view = (function() {
 		$('#workingarea').html(rendered);
 	};
 
-	my.verifySolution = function() {
-		var $result = $(".select-row");
+	my.getDropdownSelection = function() {
+		var selectedGegeben = [],
+			selectedGesucht = {};
+		$(".select-row-gegeben").each(function(index) {
+			var selected = {};
+			$(this).find("select").each(function() {
+				selected[$(this).attr("name")] = $(this).val();
+			});
+			selectedGegeben.push(selected);
+		});
+		$(".select-row-gesucht select").each(function(index) {
+			selectedGesucht[$(this).attr("name")] = $(this).val();
+		});
+		return {"selectedGegeben": selectedGegeben, "selectedGesucht": selectedGesucht};
 	};
 
 	return my;
@@ -175,6 +187,7 @@ $(document).ready(function(){
 
 	$("#pruefen").click(function(event) {
 		controller.subtractLife();
+		console.log(view.getDropdownSelection());
 	});
 	$("#weiter").click(function(event) {
 		controller.addLife();
