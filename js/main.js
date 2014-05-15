@@ -44,13 +44,7 @@ var view = (function() {
 	};
 
 	my.registerListeners = function() {
-		$("select[name=basisformeln]").change(function() {
-			var eqs = [];
-		    $("select[name=basisformeln] option:selected").each(function() {
-		    	eqs.push($(this).text());
-		    });
-		    eqCanvas.addEquations(eqs);
- 		});
+
 	};
 
 	my.showLives = function() {
@@ -81,6 +75,11 @@ var controller = (function() {
 		model.subtractLife();
 		view.showLives();
 	};
+
+	my.verifySolution = function(event) {
+		// TODO
+	};
+
 	return my;
 }());
 
@@ -97,13 +96,32 @@ $(document).ready(function(){
 		Mustache.parse(template);   // optional, speeds up future uses
 		var rendered = Mustache.render(template, model.data);
 		$('#workingarea').html(rendered);
+		var selectRow = $('.select-row').html();
+		selectRow = '<div class="select-row">' + selectRow + '</div>';
+		for (var i = 1; i < 4; i++) {
+			$('.select-row:last').after(selectRow);
+		};
 	});
 
 	$("#formeln").click(function(event) {
+
+		// JS templating
+		var template = $('#tmpl-given').html();
+		Mustache.parse(template);   // optional, speeds up future uses
+		var rendered = Mustache.render(template, model.data);
+		$('#target').html(rendered);
+
 		var template = $('#tmpl-formulae').html();
 		Mustache.parse(template);   // optional, speeds up future uses
 		var rendered = Mustache.render(template, model.data);
 		$('#workingarea').html(rendered);
+		$("select[name=basisformeln]").change(function() {
+			var eqs = [];
+		    $("select[name=basisformeln] option:selected").each(function() {
+		    	eqs.push($(this).text());
+		    });
+		    eqCanvas.addEquations(eqs);
+ 		});
 		eqCanvas.init();
 		eqCanvas.addGivenQuantities();
 	});
@@ -116,9 +134,5 @@ $(document).ready(function(){
 		$('#workingarea').html(rendered);
 	});
 
-	// JS templating
-	var template = $('#tmpl-given').html();
-	Mustache.parse(template);   // optional, speeds up future uses
-	var rendered = Mustache.render(template, model.data);
-	$('#target').html(rendered);
+
 });

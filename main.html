@@ -35,14 +35,10 @@
       <p>Eine Kuckucksuhr hängt an der Wand und tickt schon seit 250 Jahren vor sich hin. Die beiden Eisengewichte (Fichtenzapfen) von je 3,5 kg werden einmal in der Woche hochgezogen und liefern auf ihrer Talfahrt von 85 cm die nötige Energie für das Uhrwerk und den Antrieb des Kuckucks.</p>
     </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <h3>Aufgabe 1</h3>
-        <p>Was ist die Leistung der Uhr?</p>
-        <p id="target">Gegeben: Δt<sub>1</sub> = 250 Jahre, m<sub>Gewichte</sub> = 7 kg, Δt<sub>2</sub> = 1 Woche, h<sub></sub> = 85 cm</p>
-        <p>Gesucht: P<sub>Uhr</sub></p>
-      </div>
-    </div>
+    <h3>Aufgabe 1</h3>
+    <p>Was ist die Leistung der Uhr?</p>
+    <p id="target"></p>
+
 
     <div class="row">
       <div class="col-md-12">
@@ -52,14 +48,16 @@
           <button type="button" id="einheiten" class="btn btn-primary">Einheitenrechnung</button>
           <button type="button" id="antwort" class="btn btn-primary">Antwortsatz</button>
         </div>
+        <!--
         <div>
           <ul class="nav nav-pills">
-            <li><a href="#">Größen</a></li>
+            <li><a id=""href="#">Größen</a></li>
             <li><a href="#">Lösungsformel </a></li>
             <li><a href="#">Einheitenrechnung</a></li>
             <li class="disabled"><a href="#">Antwortsatz</a></li>
           </ul>
         </div>
+        -->
       </div>
       <div id="workingarea" class="col-md-12">
         
@@ -106,30 +104,32 @@
     <script id="tmpl-option-given" type="x-tmpl-mustache">
       <div class="col-md-6 nopadding">
         <p>Trage die gegebenen Größen mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
-        <select name="letter">
-          <option></option>
-          {{#givenAll}}
-          <option>{{letter}}</option>
-          {{/givenAll}}
-        </select>
-        <select name="index">
-          <option></option>
-          {{#givenAll}}
-          <option>{{index}}</option>
-          {{/givenAll}}
-        </select>
-        <select name="value">
-          <option></option>
-          {{#givenAll}}
-          <option>{{value}}</option>
-          {{/givenAll}}
-        </select>
-        <select name="unit">
-          <option></option>
-          {{#givenAll}}
-          <option>{{unit}}</option>
-          {{/givenAll}}
-        </select>
+        <div class="select-row">
+          <select name="letter">
+            <option></option>
+            {{#givenAll}}
+            <option>{{letter}}</option>
+            {{/givenAll}}
+          </select>
+          <select name="index">
+            <option></option>
+            {{#givenAll}}
+            <option>{{index}}</option>
+            {{/givenAll}}
+          </select>
+          <select name="value">
+            <option></option>
+            {{#givenAll}}
+            <option>{{value}}</option>
+            {{/givenAll}}
+          </select>
+          <select name="unit">
+            <option></option>
+            {{#givenAll}}
+            <option>{{unit}}</option>
+            {{/givenAll}}
+          </select>
+        </div>
       </div>
       <div class="col-md-6 nopadding">
         <p>Trage die gesuchte Größe mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
