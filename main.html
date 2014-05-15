@@ -69,6 +69,11 @@
       <div id="workingarea" class="col-md-12">
       </div>
     </div>
+    <div class="pull-right">
+      <button type="button" id="" class="btn btn-primary">Weiter</button>
+    </div>
+    <div class="clearfix"></div>
+    <hr>
 
 
   </div> <!-- /container -->
@@ -94,12 +99,11 @@
         <option>E = ½⋅m⋅v²</option>
         <option>v = s/Δt</option>
       </select>
-      <p>
-        <button type="button" id="" class="btn btn-default">Weiter</button>
-      </p>
+
     </script>
 
-    <script id="tmpl-solution-phrases" type="x-tmpl-mustache">
+    <script id="tmpl-antwortsatz" type="x-tmpl-mustache">
+      <p>Welcher Antwortsatz beantwortet die Aufgabe am besten?</p>
       <div class="btn-group-vertical">
         {{#alternative_solution_phrases}}
         <button type="button" class="btn btn-default">{{.}}</button>
@@ -107,7 +111,7 @@
       </div>
     </script>
 
-    <script id="tmpl-unit-mltch" type="x-tmpl-mustache">
+    <script id="tmpl-einheitenrechnung" type="x-tmpl-mustache">
       <p>Ausgehend von der Lösungsformel mit eingesetzten Einheiten [P] = (kg⋅m/s²⋅m)/s, was ist der richtige Zwischenschritt beim Errechnen der Einheit von P?</p>
       <div class="btn-group-vertical">
         {{#units}}
@@ -116,7 +120,7 @@
       </div>
     </script>
 
-    <script id="tmpl-option-given" type="x-tmpl-mustache">
+    <script id="tmpl-groessen" type="x-tmpl-mustache">
       <div class="col-md-6 nopadding">
         <p>Trage die gegebenen Größen mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
         <div class="select-row">

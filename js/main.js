@@ -62,7 +62,7 @@ var view = (function() {
 	};
 
 	my.showStepOne = function(event) {
-		var template = $('#tmpl-option-given').html();
+		var template = $('#tmpl-groessen').html();
 		Mustache.parse(template);   // optional, speeds up future uses
 		var rendered = Mustache.render(template, model.data);
 		$('#workingarea').html(rendered);
@@ -103,7 +103,7 @@ var view = (function() {
 		rendered = rendered + "<p>Lösungsformel: " + model.data.solution.formula + "</p>";
 		$('#target').html(rendered);
 
-		var template = $('#tmpl-unit-mltch').html();
+		var template = $('#tmpl-einheitenrechnung').html();
 		Mustache.parse(template);   // optional, speeds up future uses
 		// call twice so the {{solution.value}} gets substituted
 		var rendered = Mustache.render(Mustache.render(template, model.data), model.data);
@@ -117,11 +117,12 @@ var view = (function() {
 		rendered = rendered + "<p>Lösungsformel: " + model.data.solution.formula + "</p>";
 		$('#target').html(rendered);
 
-		var template = $('#tmpl-unit-mltch').html();
-		Mustache.parse(template);   // optional, speeds up future uses
-		// call twice so the {{solution.value}} gets substituted
-		var rendered = Mustache.render(Mustache.render(template, model.data), model.data);
+		var rendered = "Platzhalter";
 		$('#workingarea').html(rendered);
+	};
+
+	my.verifySolution = function() {
+		var $result = $(".select-row");
 	};
 
 	return my;
@@ -163,7 +164,7 @@ $(document).ready(function(){
 	$("#einheiten").click(view.showStepThree);
 	$("#loesung").click(view.showStepFour);
 	$("#antwort").click(function(event) {
-		var template = $('#tmpl-solution-phrases').html();
+		var template = $('#tmpl-antwortsatz').html();
 		Mustache.parse(template);   // optional, speeds up future uses
 		// call twice so the {{solution.value}} gets substituted
 		var rendered = Mustache.render(Mustache.render(template, model.data), model.data);
