@@ -49,10 +49,10 @@
         
         <div>
           <ul class="nav nav-pills">
-            <li><a id=""href="#">Größen</a></li>
-            <li><a href="#">Lösungsformel </a></li>
-            <li><a href="#">Einheitenrechnung</a></li>
-            <li class="disabled"><a href="#">Antwortsatz</a></li>
+            <li><button type="button" class="btn btn-link" id=""href="#">Größen</button></li>
+            <li><button type="button" class="btn btn-link" href="#">Lösungsformel </button></li>
+            <li><button type="button" class="btn btn-link" href="#">Einheitenrechnung</button></li>
+            <li class="disabled"><button type="button" class="btn btn-link" href="#">Antwortsatz</button></li>
           </ul>
         </div>
         -->
@@ -66,23 +66,23 @@
           </thead>
           <tbody>
             <tr>
-              <td><a id="groessen" href="#">1. Größen</a></td>
+              <td><button type="button" class="btn btn-link nopadding" id="groessen">1. Größen</button></td>
               <td id="target-1"></td>
             </tr>
             <tr>
-              <td><a id="formeln" href="#">2. Basis- und Lösungsformel</a></td>
+              <td><button type="button" class="btn btn-link nopadding" id="formeln">2. Basis- und Lösungsformel</button></td>
               <td id="target-2"></td>
             </tr>
             <tr>
-              <td><a id="einheitenrechnung" href="#">3. Einheitenrechnung</a></td>
+              <td><button type="button" class="btn btn-link nopadding" id="einheitenrechnung">3. Einheitenrechnung</button></td>
               <td id="target-3"></td>
             </tr>
             <tr>
-              <td><a id="loesung" href="#">4. Lösung</a></td>
+              <td><button type="button" class="btn btn-link nopadding" id="loesung">4. Lösung</button></td>
               <td id="target-4"></td>
             </tr>
             <tr>
-              <td><a id="antwortsatz" href="#">5. Antwortsatz</a></td>
+              <td><button type="button" class="btn btn-link nopadding" id="antwortsatz">5. Antwortsatz</button></td>
               <td id="target-5"></td>
             </tr>
           </tbody>
@@ -119,6 +119,72 @@
     <p>
     </script>
 
+
+    <script id="tmpl-groessen" type="x-tmpl-mustache">
+      <div class="col-md-6 nopadding">
+        <p>Trage die gegebenen Größen mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
+        <div class="select-row">
+          <div class=" col-xs-2 nopadding">
+          <select class="form-control input-sm" name="letter">
+            <option></option>
+            {{#givenAll}}
+            <option>{{letter}}</option>
+            {{/givenAll}}
+          </select>
+          </div>
+          <div class="col-xs-2 nopadding">
+          <select class="form-control input-sm" name="index">
+            <option></option>
+            {{#givenAll}}
+            <option>{{index}}</option>
+            {{/givenAll}}
+          </select>
+          </div>
+          <div class="col-xs-1 nopadding">
+          <p class="text-center">=</p>
+          </div>
+          <div class="col-xs-2 nopadding">
+          <select class="form-control input-sm" name="value">
+            <option></option>
+            {{#givenAll}}
+            <option>{{value}}</option>
+            {{/givenAll}}
+          </select>
+          </div>
+          <div class="col-xs-2 nopadding">
+          <select class="form-control input-sm" name="unit">
+            <option></option>
+            {{#givenAll}}
+            <option>{{unit}}</option>
+            {{/givenAll}}
+          </select>
+          </div>
+          <div class="col-xs-3"></div>
+        </div>
+      </div>
+      <div class="col-md-6 nopadding">
+        <p>Trage die gesuchte Größe mit Formelzeichen und optionalem Index unten ein!</p>
+        <div class="col-xs-2 nopadding">
+        <select class="form-control input-sm" name="letter">
+          <option></option>
+          {{#unknown}}
+          <option>{{letter}}</option>
+          {{/unknown}}
+        </select>
+        </div>
+        <div class="col-xs-2 nopadding">
+        <select class="form-control input-sm" name="index">
+          <option></option>
+          {{#unknown}}
+          <option>{{index}}</option>
+          {{/unknown}}
+        </select>
+        </div>
+        <div class="col-xs-8 nopadding"></div>
+      </div>
+    </script>
+
+
     <script id="tmpl-formulae" type="x-tmpl-mustache">
       <p>Baue aus den Basisformeln und gegebenen Größen eine Lösungsformel!</p>
       <canvas id="demoCanvas" width="900px" height="400"></canvas>
@@ -128,17 +194,8 @@
         <option>E = ½⋅m⋅v²</option>
         <option>v = s/Δt</option>
       </select>
-
     </script>
 
-    <script id="tmpl-antwortsatz" type="x-tmpl-mustache">
-      <p>Welcher Antwortsatz beantwortet die Aufgabe am besten?</p>
-      <div class="btn-group-vertical">
-        {{#alternative_solution_phrases}}
-        <button type="button" class="btn btn-default">{{.}}</button>
-        {{/alternative_solution_phrases}}
-      </div>
-    </script>
 
     <script id="tmpl-einheitenrechnung" type="x-tmpl-mustache">
       <p>Ausgehend von der Lösungsformel mit eingesetzten Einheiten [P] = (kg⋅m/s²⋅m)/s, was ist der richtige Zwischenschritt beim Errechnen der Einheit von P?</p>
@@ -149,52 +206,16 @@
       </div>
     </script>
 
-    <script id="tmpl-groessen" type="x-tmpl-mustache">
-      <div class="col-md-6 nopadding">
-        <p>Trage die gegebenen Größen mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
-        <div class="select-row">
-          <select name="letter">
-            <option></option>
-            {{#givenAll}}
-            <option>{{letter}}</option>
-            {{/givenAll}}
-          </select>
-          <select name="index">
-            <option></option>
-            {{#givenAll}}
-            <option>{{index}}</option>
-            {{/givenAll}}
-          </select>
-          <select name="value">
-            <option></option>
-            {{#givenAll}}
-            <option>{{value}}</option>
-            {{/givenAll}}
-          </select>
-          <select name="unit">
-            <option></option>
-            {{#givenAll}}
-            <option>{{unit}}</option>
-            {{/givenAll}}
-          </select>
-        </div>
-      </div>
-      <div class="col-md-6 nopadding">
-        <p>Trage die gesuchte Größe mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
-        <select name="letter">
-          <option></option>
-          {{#unknown}}
-          <option>{{letter}}</option>
-          {{/unknown}}
-        </select>
-        <select name="index">
-          <option></option>
-          {{#unknown}}
-          <option>{{index}}</option>
-          {{/unknown}}
-        </select>
+
+    <script id="tmpl-antwortsatz" type="x-tmpl-mustache">
+      <p>Welcher Antwortsatz beantwortet die Aufgabe am besten?</p>
+      <div class="btn-group-vertical">
+        {{#alternative_solution_phrases}}
+        <button type="button" class="btn btn-default">{{.}}</button>
+        {{/alternative_solution_phrases}}
       </div>
     </script>
+
 
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
