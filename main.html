@@ -35,17 +35,14 @@
       <p>Eine Kuckucksuhr hängt an der Wand und tickt schon seit 250 Jahren vor sich hin. Die beiden Eisengewichte (Fichtenzapfen) von je 3,5 kg werden einmal in der Woche hochgezogen und liefern auf ihrer Talfahrt von 85 cm die nötige Energie für das Uhrwerk und den Antrieb des Kuckucks.</p>
     </div>
 
-    <h3>Aufgabe 1</h3>
-    <p>Was ist die Leistung der Uhr?</p>
-    <p id="target"></p>
-
 
     <div class="row">
       <div class="col-md-12">
         <div class="btn-group">
           <button type="button" id="groessen" class="btn btn-primary">Größen</button>
-          <button type="button" id="formeln" class="btn btn-primary">Lösungsformel</button>
+          <button type="button" id="formeln" class="btn btn-primary">Basis- und Lösungsformel</button>
           <button type="button" id="einheiten" class="btn btn-primary">Einheitenrechnung</button>
+          <button type="button" id="loesung" class="btn btn-primary">Lösung</button>
           <button type="button" id="antwort" class="btn btn-primary">Antwortsatz</button>
         </div>
         <!--
@@ -59,14 +56,19 @@
         </div>
         -->
       </div>
-      <div id="workingarea" class="col-md-12">
-        
-      </div>
     </div>
 
-    <hr>
 
-    <a href="http://getbootstrap.com/">Bootstrap</a>
+
+    <h3>Aufgabe 1</h3>
+    <p>Was ist die Leistung der Uhr?</p>
+    <div id="target"></div>
+
+    <hr>
+    <div class="row">
+      <div id="workingarea" class="col-md-12">
+      </div>
+    </div>
 
 
   </div> <!-- /container -->
@@ -74,9 +76,13 @@
     <!-- templates -->
 
     <script id="tmpl-given" type="x-tmpl-mustache">
-    Gegeben: {{#given}}
-    {{letter}}<sub>{{index}}</sub> = {{value}} {{unit}},
-    {{/given}}
+    <p>
+      Gegeben: {{#given}}
+      {{letter}}<sub>{{index}}</sub> = {{value}} {{unit}},
+      {{/given}}
+    </p>
+      Gesucht: {{solution.letter}}<sub>{{solution.index}}</sub>
+    <p>
     </script>
 
     <script id="tmpl-formulae" type="x-tmpl-mustache">
@@ -98,6 +104,15 @@
         {{#alternative_solution_phrases}}
         <button type="button" class="btn btn-default">{{.}}</button>
         {{/alternative_solution_phrases}}
+      </div>
+    </script>
+
+    <script id="tmpl-unit-mltch" type="x-tmpl-mustache">
+      <p>Ausgehend von der Lösungsformel mit eingesetzten Einheiten [P] = (kg⋅m/s²⋅m)/s, was ist der richtige Zwischenschritt beim Errechnen der Einheit von P?</p>
+      <div class="btn-group-vertical">
+        {{#units}}
+        <button type="button" class="btn btn-default">{{.}}</button>
+        {{/units}}
       </div>
     </script>
 

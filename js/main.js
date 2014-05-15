@@ -5,11 +5,13 @@ var model = (function() {
 
 	my.init = function() {
 		my.data = jsonObject;
+		// TODO: Add set of standard variables read from a file and shuffle
 		my.data.givenAll = my.data.given;
-		my.data.unknown = {
-			"letter": my.data.solution.letter,
-        	"index": my.data.solution.index,
-		}
+		my.data.unknown = [
+			{ "letter": my.data.solution.letter, "index": my.data.solution.index },
+			{ "letter": "t", "index": "Uhr"},
+			{ "letter": "E", "index": "1"}
+		];
 	};
 
 	my.getLives = function () {
@@ -41,6 +43,7 @@ var view = (function() {
 	my.init = function() {
 		view.showLives();
 		view.registerListeners();
+		view.showStepOne();
 	};
 
 	my.registerListeners = function() {
@@ -57,41 +60,8 @@ var view = (function() {
 			};
 		});
 	};
-	return my;
-}());
 
-
-// controller
-var controller = (function() {
-	'use strict';
- 	var my = {};
-
-	my.addLife = function(event) {
-		model.addLife();
-		view.showLives();
-	};
-
-	my.subtractLife = function(event) {
-		model.subtractLife();
-		view.showLives();
-	};
-
-	my.verifySolution = function(event) {
-		// TODO
-	};
-
-	return my;
-}());
-
-
-// main
-$(document).ready(function(){
-	'use strict';
-
-	model.init();
-	view.init();
-
-	$("#groessen").click(function(event) {
+	my.showStepOne = function(event) {
 		var template = $('#tmpl-option-given').html();
 		Mustache.parse(template);   // optional, speeds up future uses
 		var rendered = Mustache.render(template, model.data);
@@ -101,9 +71,9 @@ $(document).ready(function(){
 		for (var i = 1; i < 4; i++) {
 			$('.select-row:last').after(selectRow);
 		};
-	});
+	};
 
-	$("#formeln").click(function(event) {
+	my.showStepTwo = function(event) {
 
 		// JS templating
 		var template = $('#tmpl-given').html();
@@ -124,8 +94,74 @@ $(document).ready(function(){
  		});
 		eqCanvas.init();
 		eqCanvas.addGivenQuantities();
-	});
+	};
 
+	my.showStepThree = function(event) {
+		var template = $('#tmpl-given').html();
+		Mustache.parse(template);   // optional, speeds up future uses
+		var rendered = Mustache.render(template, model.data);
+		rendered = rendered + "<p>Lösungsformel: " + model.data.solution.formula + "</p>";
+		$('#target').html(rendered);
+
+		var template = $('#tmpl-unit-mltch').html();
+		Mustache.parse(template);   // optional, speeds up future uses
+		// call twice so the {{solution.value}} gets substituted
+		var rendered = Mustache.render(Mustache.render(template, model.data), model.data);
+		$('#workingarea').html(rendered);
+	};
+
+	my.showStepFour = function(event) {
+		var template = $('#tmpl-given').html();
+		Mustache.parse(template);   // optional, speeds up future uses
+		var rendered = Mustache.render(template, model.data);
+		rendered = rendered + "<p>Lösungsformel: " + model.data.solution.formula + "</p>";
+		$('#target').html(rendered);
+
+		var template = $('#tmpl-unit-mltch').html();
+		Mustache.parse(template);   // optional, speeds up future uses
+		// call twice so the {{solution.value}} gets substituted
+		var rendered = Mustache.render(Mustache.render(template, model.data), model.data);
+		$('#workingarea').html(rendered);
+	};
+
+	return my;
+}());
+
+
+// controller
+var controller = (function() {
+	'use strict';
+ 	var my = {};
+
+	my.addLife = function() {
+		model.addLife();
+		view.showLives();
+	};
+
+	my.subtractLife = function() {
+		model.subtractLife();
+		view.showLives();
+	};
+
+	my.verifySolution = function() {
+		// TODO
+	};
+
+	return my;
+}());
+
+
+// main
+$(document).ready(function(){
+	'use strict';
+
+	model.init();
+	view.init();
+
+	$("#groessen").click(view.showStepOne);
+	$("#formeln").click(view.showStepTwo);
+	$("#einheiten").click(view.showStepThree);
+	$("#loesung").click(view.showStepFour);
 	$("#antwort").click(function(event) {
 		var template = $('#tmpl-solution-phrases').html();
 		Mustache.parse(template);   // optional, speeds up future uses
