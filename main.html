@@ -31,13 +31,14 @@
         <span class="glyphicon glyphicon-heart-empty"></span>
       </div>
       <h1>TPLA-Demo <small>Energie und Leistung</small></h1>
-
-      <p>Eine Kuckucksuhr hängt an der Wand und tickt schon seit 250 Jahren vor sich hin. Die beiden Eisengewichte (Fichtenzapfen) von je 3,5 kg werden einmal in der Woche hochgezogen und liefern auf ihrer Talfahrt von 85 cm die nötige Energie für das Uhrwerk und den Antrieb des Kuckucks.</p>
     </div>
-
+      <h3>Aufgabe 1</h3>
+      <p>Eine Kuckucksuhr hängt an der Wand und tickt schon seit 250 Jahren vor sich hin. Die beiden Eisengewichte (Fichtenzapfen) von je 3,5 kg werden einmal in der Woche hochgezogen und liefern auf ihrer Talfahrt von 85 cm die nötige Energie für das Uhrwerk und den Antrieb des Kuckucks.</p>
+      <p>Was ist die Leistung der Uhr?</p>
 
     <div class="row">
       <div class="col-md-12">
+        <!--
         <div class="btn-group">
           <button type="button" id="groessen" class="btn btn-primary">Größen</button>
           <button type="button" id="formeln" class="btn btn-primary">Basis- und Lösungsformel</button>
@@ -45,7 +46,7 @@
           <button type="button" id="loesung" class="btn btn-primary">Lösung</button>
           <button type="button" id="antwort" class="btn btn-primary">Antwortsatz</button>
         </div>
-        <!--
+        
         <div>
           <ul class="nav nav-pills">
             <li><a id=""href="#">Größen</a></li>
@@ -55,22 +56,50 @@
           </ul>
         </div>
         -->
+
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th class="col-sm-4">Schritt</th>
+              <th class="col-sm-8">Ergebnis</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a id="groessen" href="#">1. Größen</a></td>
+              <td id="target-1"></td>
+            </tr>
+            <tr>
+              <td><a id="formeln" href="#">2. Basis- und Lösungsformel</a></td>
+              <td id="target-2"></td>
+            </tr>
+            <tr>
+              <td><a id="einheitenrechnung" href="#">3. Einheitenrechnung</a></td>
+              <td id="target-3"></td>
+            </tr>
+            <tr>
+              <td><a id="loesung" href="#">4. Lösung</a></td>
+              <td id="target-4"></td>
+            </tr>
+            <tr>
+              <td><a id="antwortsatz" href="#">5. Antwortsatz</a></td>
+              <td id="target-5"></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-
-
-    <h3>Aufgabe 1</h3>
-    <p>Was ist die Leistung der Uhr?</p>
     <div id="target"></div>
 
-    <hr>
+   
     <div class="row">
       <div id="workingarea" class="col-md-12">
       </div>
     </div>
     <div class="pull-right">
-      <button type="button" id="" class="btn btn-primary">Weiter</button>
+      <button type="button" id="pruefen" class="btn btn-primary">Prüfen</button>
+      <button type="button" id="weiter" class="btn btn-primary">Weiter</button>
     </div>
     <div class="clearfix"></div>
     <hr>

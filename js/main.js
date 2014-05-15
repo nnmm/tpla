@@ -79,7 +79,7 @@ var view = (function() {
 		var template = $('#tmpl-given').html();
 		Mustache.parse(template);   // optional, speeds up future uses
 		var rendered = Mustache.render(template, model.data);
-		$('#target').html(rendered);
+		$('#target-1').html(rendered);
 
 		var template = $('#tmpl-formulae').html();
 		Mustache.parse(template);   // optional, speeds up future uses
@@ -97,11 +97,8 @@ var view = (function() {
 	};
 
 	my.showStepThree = function(event) {
-		var template = $('#tmpl-given').html();
-		Mustache.parse(template);   // optional, speeds up future uses
-		var rendered = Mustache.render(template, model.data);
-		rendered = rendered + "<p>Lösungsformel: " + model.data.solution.formula + "</p>";
-		$('#target').html(rendered);
+		var rendered = "Lösungsformel: " + model.data.solution.formula;
+		$('#target-2').html(rendered);
 
 		var template = $('#tmpl-einheitenrechnung').html();
 		Mustache.parse(template);   // optional, speeds up future uses
@@ -111,11 +108,8 @@ var view = (function() {
 	};
 
 	my.showStepFour = function(event) {
-		var template = $('#tmpl-given').html();
-		Mustache.parse(template);   // optional, speeds up future uses
-		var rendered = Mustache.render(template, model.data);
-		rendered = rendered + "<p>Lösungsformel: " + model.data.solution.formula + "</p>";
-		$('#target').html(rendered);
+		var rendered = "[P] = (kg⋅m/s²⋅m)/s = N⋅m/s = W";
+		$('#target-3').html(rendered);
 
 		var rendered = "Platzhalter";
 		$('#workingarea').html(rendered);
@@ -161,14 +155,23 @@ $(document).ready(function(){
 
 	$("#groessen").click(view.showStepOne);
 	$("#formeln").click(view.showStepTwo);
-	$("#einheiten").click(view.showStepThree);
+	$("#einheitenrechnung").click(view.showStepThree);
 	$("#loesung").click(view.showStepFour);
-	$("#antwort").click(function(event) {
+	$("#antwortsatz").click(function(event) {
+		$('#target-4').html("P = 0.000096 W");
+
 		var template = $('#tmpl-antwortsatz').html();
 		Mustache.parse(template);   // optional, speeds up future uses
 		// call twice so the {{solution.value}} gets substituted
 		var rendered = Mustache.render(Mustache.render(template, model.data), model.data);
 		$('#workingarea').html(rendered);
+	});
+
+	$("#pruefen").click(function(event) {
+		controller.subtractLife();
+	});
+	$("#weiter").click(function(event) {
+		controller.addLife();
 	});
 
 

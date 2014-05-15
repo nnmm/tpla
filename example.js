@@ -24,9 +24,9 @@ var jsonObject = {
         "formula_image": "solution1.png"
     },
     "units": [
-        "N*m/s",
-        "J*m/s²",
-        "m²/(s*kg)"
+        "N⋅m/s",
+        "J⋅m/s²",
+        "m²/(s⋅kg)"
     ],
     "correct_solution_phrase": "Die Leistung, die zum Betrieb der Uhr benötigt wird, ist {{solution.value}} {{solution.unit}}.",
     "alternative_solution_phrases": [
