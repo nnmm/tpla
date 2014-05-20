@@ -1,11 +1,21 @@
 // MVC pattern
 var model = (function() {
 	'use strict';
-	var my = {};
+	var my = {},
+	step;
 
 	my.init = function() {
 		my.data = jsonObject;
 		model.prepareData();
+		step = 0;
+	};
+
+	my.getStep = function() {
+		return step;
+	};
+
+	my.addStep = function() {
+		step = step + 1;
 	};
 
 	my.prepareData = function() {
@@ -16,6 +26,28 @@ var model = (function() {
 			{ "letter": "t", "index": "Uhr"},
 			{ "letter": "E", "index": "1"}
 		];
+		my.data.tableAll = [
+			{"title": "Größen", "content": "Zeile 1"},
+			{"title": "Basis- und Lösungsformel", "content": "Zeile 2"},
+			{"title": "Einheitenrechnung", "content":  "[P] = (kg⋅m/s²⋅m)/s = N⋅m/s = W"},
+			{"title": "Lösung", "content": "Lösungsformel: " + model.data.solution.formula},
+			{"title": "Antwortsatz", "content": "Zeile 5"},
+		];
+		my.data.table = my.data.tableAll;
+	};
+
+	my.updateTableData = function(index) {
+		model.data.table = [];
+		for (var i = 0; i < model.data.tableAll.length; i++) {
+			var content = model.data.tableAll[i].content;
+			if (index <= i) {
+				content = "";
+			};
+			model.data.table.push({
+				"title": model.data.tableAll[i].title,
+				"content": content
+			});
+		};
 	};
 
 	my.getLives = function () {
@@ -49,11 +81,68 @@ var view = (function() {
 	my.init = function() {
 		view.showLives();
 		view.registerListeners();
-		view.showStepOne();
+		view.updateTable(0);
 	};
 
 	my.registerListeners = function() {
 
+	};
+
+	my.updateTable = function(index) {
+		model.updateTableData(index);
+		var template = $('#tmpl-table').html();
+		Mustache.parse(template);   // optional, speeds up future uses
+		var rendered = Mustache.render(template, model.data);
+		$("#table-container").html(rendered);
+
+		switch(index) {
+			case 0:
+				var template = $('#tmpl-groessen').html();
+				// TODO
+				var selectRow = $('.select-row-gegeben').html();
+				selectRow = '<div class="select-row-gegeben">' + selectRow + '</div>';
+				for (var i = 1; i < 4; i++) {
+					$('.select-row-gegeben:last').after(selectRow);
+				};
+				break;
+			case 1:
+				var template = $('#tmpl-formulae').html();
+				break;
+			case 2:
+				var template = $('#tmpl-einheitenrechnung').html();
+				break;
+			case 3:
+				break;
+
+		};
+		var rendered = Mustache.render(template, model.data);
+		$('#workingarea').html(rendered);
+		switch(index) {
+			case 0:
+				var selectRow = $('.select-row-gegeben').html();
+				selectRow = '<div class="select-row-gegeben">' + selectRow + '</div>';
+				for (var i = 1; i < 4; i++) {
+					$('.select-row-gegeben:last').after(selectRow);
+				};
+				break;
+			case 1:
+				$("select[name=basisformeln]").change(function() {
+					var eqs = [];
+				    $("select[name=basisformeln] option:selected").each(function() {
+				    	eqs.push($(this).text());
+				    });
+				    eqCanvas.addEquations(eqs);
+		 		});
+				eqCanvas.init();
+				eqCanvas.addGivenQuantities();
+				break;
+			case 2:
+				var template = $('#tmpl-einheitenrechnung').html();
+				break;
+			case 3:
+				break;
+
+		};
 	};
 
 	my.showLives = function() {
@@ -67,59 +156,6 @@ var view = (function() {
 		});
 	};
 
-	my.showStepOne = function(event) {
-		var template = $('#tmpl-groessen').html();
-		Mustache.parse(template);   // optional, speeds up future uses
-		var rendered = Mustache.render(template, model.data);
-		$('#workingarea').html(rendered);
-		var selectRow = $('.select-row-gegeben').html();
-		selectRow = '<div class="select-row-gegeben">' + selectRow + '</div>';
-		for (var i = 1; i < 4; i++) {
-			$('.select-row-gegeben:last').after(selectRow);
-		};
-	};
-
-	my.showStepTwo = function(event) {
-
-		// JS templating
-		var template = $('#tmpl-given').html();
-		Mustache.parse(template);   // optional, speeds up future uses
-		var rendered = Mustache.render(template, model.data);
-		$('#target-1').html(rendered);
-
-		var template = $('#tmpl-formulae').html();
-		Mustache.parse(template);   // optional, speeds up future uses
-		var rendered = Mustache.render(template, model.data);
-		$('#workingarea').html(rendered);
-		$("select[name=basisformeln]").change(function() {
-			var eqs = [];
-		    $("select[name=basisformeln] option:selected").each(function() {
-		    	eqs.push($(this).text());
-		    });
-		    eqCanvas.addEquations(eqs);
- 		});
-		eqCanvas.init();
-		eqCanvas.addGivenQuantities();
-	};
-
-	my.showStepThree = function(event) {
-		var rendered = "Lösungsformel: " + model.data.solution.formula;
-		$('#target-2').html(rendered);
-
-		var template = $('#tmpl-einheitenrechnung').html();
-		Mustache.parse(template);   // optional, speeds up future uses
-		// call twice so the {{solution.value}} gets substituted
-		var rendered = Mustache.render(Mustache.render(template, model.data), model.data);
-		$('#workingarea').html(rendered);
-	};
-
-	my.showStepFour = function(event) {
-		var rendered = "[P] = (kg⋅m/s²⋅m)/s = N⋅m/s = W";
-		$('#target-3').html(rendered);
-
-		var rendered = "Platzhalter";
-		$('#workingarea').html(rendered);
-	};
 
 	my.getDropdownSelection = function() {
 		var selectedGegeben = [],
@@ -146,6 +182,12 @@ var controller = (function() {
 	'use strict';
  	var my = {};
 
+ 	my.nextStep = function() {
+ 		model.addStep();
+ 		var index = model.getStep();
+ 		view.updateTable(index);
+ 	}
+
 	my.addLife = function() {
 		model.addLife();
 		view.showLives();
@@ -157,6 +199,7 @@ var controller = (function() {
 	};
 
 	my.verifySolution = function() {
+		var selection = view.getDropdownSelection();
 		// TODO
 	};
 
@@ -170,6 +213,9 @@ $(document).ready(function(){
 
 	model.init();
 	view.init();
+
+
+
 
 	$("#groessen").click(view.showStepOne);
 	$("#formeln").click(view.showStepTwo);
@@ -189,9 +235,8 @@ $(document).ready(function(){
 		controller.subtractLife();
 		console.log(view.getDropdownSelection());
 	});
-	$("#weiter").click(function(event) {
-		controller.addLife();
-	});
+
+	$("#weiter").click(controller.nextStep);
 
 
 });

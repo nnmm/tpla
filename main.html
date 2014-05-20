@@ -37,7 +37,7 @@
       <p>Was ist die Leistung der Uhr?</p>
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12" id="table-container">
         <!--
         <div class="btn-group">
           <button type="button" id="groessen" class="btn btn-primary">Größen</button>
@@ -57,41 +57,9 @@
         </div>
         -->
 
-        <table class="table table-condensed">
-          <thead>
-            <tr>
-              <th class="col-sm-4">Schritt</th>
-              <th class="col-sm-8">Ergebnis</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><button type="button" class="btn btn-link nopadding" id="groessen">1. Größen</button></td>
-              <td id="target-1"></td>
-            </tr>
-            <tr>
-              <td><button type="button" class="btn btn-link nopadding" id="formeln">2. Basis- und Lösungsformel</button></td>
-              <td id="target-2"></td>
-            </tr>
-            <tr>
-              <td><button type="button" class="btn btn-link nopadding" id="einheitenrechnung">3. Einheitenrechnung</button></td>
-              <td id="target-3"></td>
-            </tr>
-            <tr>
-              <td><button type="button" class="btn btn-link nopadding" id="loesung">4. Lösung</button></td>
-              <td id="target-4"></td>
-            </tr>
-            <tr>
-              <td><button type="button" class="btn btn-link nopadding" id="antwortsatz">5. Antwortsatz</button></td>
-              <td id="target-5"></td>
-            </tr>
-          </tbody>
-        </table>
+
       </div>
     </div>
-
-    <div id="target"></div>
-
    
     <div class="row">
       <div id="workingarea" class="col-md-12">
@@ -108,6 +76,25 @@
   </div> <!-- /container -->
 
     <!-- templates -->
+
+    <script id="tmpl-table" type="x-tmpl-mustache">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th class="col-sm-4">Schritt</th>
+            <th class="col-sm-8">Ergebnis</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#table}}
+          <tr>
+            <td><button type="button" class="btn btn-link nopadding"></button>{{title}}</td>
+            <td>{{content}}</td>
+          </tr>
+          {{/table}}
+        </tbody>
+      </table>
+    </script>
 
     <script id="tmpl-given" type="x-tmpl-mustache">
     <p>
