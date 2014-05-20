@@ -26,11 +26,19 @@ var model = (function() {
 			{ "letter": "t", "index": "Uhr"},
 			{ "letter": "E", "index": "1"}
 		];
+
+		var template = $('#tmpl-table-given').html();
+		var groessen = Mustache.render(template, model.data);
+		template = $('#tmpl-table-equations').html();
+		var formeln = Mustache.render(template, model.data);
+		template = $('#tmpl-table-solution').html();
+		var loesung = Mustache.render(template, model.data);
+
 		my.data.tableAll = [
-			{"title": "Größen", "content": "Zeile 1"},
-			{"title": "Basis- und Lösungsformel", "content": "Zeile 2"},
+			{"title": "Größen", "content": groessen},
+			{"title": "Basis- und Lösungsformel", "content": formeln},
 			{"title": "Einheitenrechnung", "content":  "[P] = (kg⋅m/s²⋅m)/s = N⋅m/s = W"},
-			{"title": "Lösung", "content": "Lösungsformel: " + model.data.solution.formula},
+			{"title": "Lösung", "content": "Lösungsformel: " + loesung},
 			{"title": "Antwortsatz", "content": "Zeile 5"},
 		];
 		my.data.table = my.data.tableAll;
@@ -112,8 +120,12 @@ var view = (function() {
 				var template = $('#tmpl-einheitenrechnung').html();
 				break;
 			case 3:
+				// render twice because the solution phrases contain templates
+				var template = Mustache.render($('#tmpl-antwortsatz').html(), model.data);
 				break;
-
+			case 4:
+				var template = "";
+				break;
 		};
 		var rendered = Mustache.render(template, model.data);
 		$('#workingarea').html(rendered);
@@ -137,11 +149,11 @@ var view = (function() {
 				eqCanvas.addGivenQuantities();
 				break;
 			case 2:
-				var template = $('#tmpl-einheitenrechnung').html();
 				break;
 			case 3:
 				break;
-
+			case 4:
+				break;
 		};
 	};
 

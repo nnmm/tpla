@@ -89,14 +89,14 @@
           {{#table}}
           <tr>
             <td><button type="button" class="btn btn-link nopadding"></button>{{title}}</td>
-            <td>{{content}}</td>
+            <td>{{{content}}}</td>
           </tr>
           {{/table}}
         </tbody>
       </table>
     </script>
 
-    <script id="tmpl-given" type="x-tmpl-mustache">
+    <script id="tmpl-table-given" type="x-tmpl-mustache">
     <p>
       Gegeben: {{#given}}
       {{letter}}<sub>{{index}}</sub> = {{value}} {{unit}},
@@ -104,6 +104,17 @@
     </p>
       Gesucht: {{solution.letter}}<sub>{{solution.index}}</sub>
     <p>
+    </script>
+
+    <script id="tmpl-table-equations" type="x-tmpl-mustache">
+      {{#equations}}
+      <p>{{.}}</p>
+      {{/equations}}
+      <p>Lösungsformel: {{solution.formula}}</p>
+    </script>
+
+    <script id="tmpl-table-solution" type="x-tmpl-mustache">
+      {{solution.letter}}<sub>{{solution.index}}</sub> = {{solution.value}} {{solution.unit}}
     </script>
 
 

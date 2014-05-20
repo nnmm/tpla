@@ -13,7 +13,7 @@ var jsonObject = {
     ],
     "equations": [
         "P = E/Δt",
-        "E = m*g*h"
+        "E = m⋅g⋅h"
     ],
     "solution": {
         "letter": "P",
