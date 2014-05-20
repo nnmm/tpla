@@ -1,24 +1,15 @@
 // MVC pattern
 var model = (function() {
 	'use strict';
-	var my = {},
-	curSection;
+	var my = {};
 
 	my.init = function() {
 		my.problemData = jsonObject;
 		model.prepareData();
 		// the user gets an extra life if no mistake is made
 		model.extraLife = true;
-		curSection = 0;
-		my.allowNextStep = false;
-	};
-
-	my.getStep = function() {
-		return curSection;
-	};
-
-	my.addStep = function() {
-		curSection = curSection + 1;
+		my.allownextSection = false;
+		localStorage.setItem("section", 0);
 	};
 
 
@@ -111,6 +102,20 @@ var model = (function() {
 		localStorage.setItem("lives", my.getLives()+1);
 	};
 
+	my.getCurSection = function() {
+		var section = parseInt(localStorage.getItem("section"));
+		// if there is nothing stored, reset section to 0
+		if (isNaN(section)) {
+			section = 3;
+			localStorage.setItem("section", 0);
+		};
+		return section;
+	};
+
+	my.nextSection = function() {
+		localStorage.setItem("section", my.getCurSection()+1);
+	};
+
 	return my;
 }());
 
@@ -123,7 +128,10 @@ var view = (function() {
 	my.init = function() {
 		view.showLives();
 		view.registerListeners();
+		//
 		view.updateTable(0);
+		view.updateCenterStage(0);
+		model.nextSection();
 	};
 
 	my.registerListeners = function() {
@@ -131,17 +139,25 @@ var view = (function() {
 	};
 
 	my.updateTable = function(index) {
+		console.log("updateTable " + index);
+		if (index > model.section.length) {
+			return;
+		};
+
 		// render table
 		model.updateTableData(index);
 		var template = $('#tmpl-table').html();
 		Mustache.parse(template);   // optional, speeds up future uses
 		var rendered = Mustache.render(template, model.data);
 		$("#table-container").html(rendered);
+	};
+
+	my.updateCenterStage = function(index) {
+		console.log("updateCenterStage " + index);
 
 		// render main view
 		var tmplId = '#tmpl-' + model.section[index].identifier;
-		template = $(tmplId).html();
-		console.log(model.section);
+		var template = $(tmplId).html();
 		var rendered = Mustache.render(Mustache.render(template, model.section[index]), model.section[index]);
 		$('#center-stage').html(rendered);
 		switch(index) {
@@ -183,6 +199,14 @@ var view = (function() {
 		});
 	};
 
+	my.toggleWeiter = function() {
+		if ($('#pruefen').html() == "Prüfen") {
+			$('#pruefen').html("Weiter");
+		} else {
+			$('#pruefen').html("Prüfen");
+		};
+	}
+
 
 	my.getDropdownSelection = function() {
 		var selectedGegeben = [],
@@ -209,27 +233,25 @@ var controller = (function() {
 	'use strict';
  	var my = {};
 
- 	my.nextStep = function() {
- 		model.addStep();
- 		var index = model.getStep();
- 		view.updateTable(index);
- 	}
-
  	my.pruefenWeiter = function(event) {
- 		if (!model.allowNextStep) {
+ 		var index = model.getCurSection();
+ 		if (!model.allownextSection) {
  			// prüfen
- 			var correct = controller.step[0]();
+ 			var correct = true;
+ 			view.updateTable(index);
+
  			if (!correct) {
  				model.subtractLife();
  			};
- 			model.allowNextStep = true;
- 		}
- 		else {
- 			// weiter
- 			controller.nextStep();
- 			model.allowNextStep = false;
+ 			model.allownextSection = true;
+ 		} else if (index < 5) {
+ 			view.updateCenterStage(index);
+ 			model.nextSection();
+ 			model.allownextSection = false;
+ 		} else {
+ 			console.log("Continue to next block");
  		};
-		controller.subtractLife();
+		view.toggleWeiter();
 	};
 
 	my.addLife = function() {
@@ -246,16 +268,6 @@ var controller = (function() {
 		var selection = view.getDropdownSelection();
 		// TODO
 	};
-
-	my.step = [
-		function() {
-			var selection = view.getDropdownSelection();
-			return true;
-		},
-		function() {
-			// 1
-		}
-	];
 
 	return my;
 }());
