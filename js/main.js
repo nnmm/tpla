@@ -2,61 +2,91 @@
 var model = (function() {
 	'use strict';
 	var my = {},
-	step;
+	curSection;
 
 	my.init = function() {
-		my.data = jsonObject;
+		my.problemData = jsonObject;
 		model.prepareData();
+		// the user gets an extra life if no mistake is made
 		model.extraLife = true;
-		step = 0;
+		curSection = 0;
+		my.allowNextStep = false;
 	};
 
 	my.getStep = function() {
-		return step;
+		return curSection;
 	};
 
 	my.addStep = function() {
-		step = step + 1;
+		curSection = curSection + 1;
 	};
 
-	my.allowNextStep = false;
 
 	my.prepareData = function() {
-		// augment the loaded js object with additional items and shuffle
-		my.data.givenAll = my.data.given;
-		my.data.unknown = [
-			{ "letter": my.data.solution.letter, "index": my.data.solution.index },
-			{ "letter": "t", "index": "Uhr"},
-			{ "letter": "E", "index": "1"}
-		];
+		my.section = [];
+		my.section.push({
+			// Größen finden
+			"title": "Größen",
+			"identifier": "groessen",
+			"optionsGiven": my.problemData.given,
+			"optionsUnknown": { "letter": my.problemData.solution.letter, "index": my.problemData.solution.index},
+			verify: function() {},
 
-		var template = $('#tmpl-table-given').html();
-		var groessen = Mustache.render(template, model.data);
-		template = $('#tmpl-table-equations').html();
-		var formeln = Mustache.render(template, model.data);
-		template = $('#tmpl-table-solution').html();
-		var loesung = Mustache.render(template, model.data);
+		});
+		my.section.push({
+			// Basis- und Lösungsformel finden
+			"title": "Basis- und Lösungsformel",
+			"identifier": "formeln",
+			verify: function() {},
+		});
+		my.section.push({
+			// Einheiten vereinfachen
+			"title": "Einheitenrechnung",
+			"identifier": "einheiten",
+			"options": my.problemData.units,
+			"solution": "P = m⋅g⋅h/Δt",
+			verify: function() {},
+		});
+		my.section.push({
+			// Das Ergebnis errechnen
+			"title": "Ergebnis",
+			"identifier": "ergebnis",
+			"solution": my.problemData.solution,
+			verify: function() {},
+		});
+		my.section.push({
+			// Den besten Antwortsatz finden
+			"title": "Antwortsatz",
+			"identifier": "antwortsatz",
+			"options": my.problemData.alternative_solution_phrases,
+			"solution": my.problemData.solution,
+			verify: function() {},
+		});
 
-		my.data.tableAll = [
-			{"title": "Größen", "content": groessen},
-			{"title": "Basis- und Lösungsformel", "content": formeln},
-			{"title": "Einheitenrechnung", "content":  "[P] = (kg⋅m/s²⋅m)/s = N⋅m/s = W"},
-			{"title": "Lösung", "content": "Lösungsformel: " + loesung},
-			{"title": "Antwortsatz", "content": "Zeile 5"},
-		];
-		my.data.table = my.data.tableAll;
+		my.data = my.problemData;
+
+
+		// render the table contents and store them in model
+		for (var i = 0; i < my.section.length; i++) {
+			var tmplId = '#tmpl-table-' + my.section[i].identifier;
+			var template = $(tmplId).html();
+			my.section[i].tableContent = Mustache.render(Mustache.render(template, model.data), model.data);
+		};
+
+		// could be more elegant
+		my.data.table = my.section;
 	};
 
 	my.updateTableData = function(index) {
 		model.data.table = [];
-		for (var i = 0; i < model.data.tableAll.length; i++) {
-			var content = model.data.tableAll[i].content;
+		for (var i = 0; i < model.section.length; i++) {
+			var content = model.section[i].tableContent;
 			if (index <= i) {
 				content = "";
 			};
 			model.data.table.push({
-				"title": model.data.tableAll[i].title,
-				"content": content
+				"title": model.section[i].title,
+				"tableContent": content
 			});
 		};
 	};
@@ -101,41 +131,19 @@ var view = (function() {
 	};
 
 	my.updateTable = function(index) {
+		// render table
 		model.updateTableData(index);
 		var template = $('#tmpl-table').html();
 		Mustache.parse(template);   // optional, speeds up future uses
 		var rendered = Mustache.render(template, model.data);
 		$("#table-container").html(rendered);
 
-		switch(index) {
-			case 0:
-				var template = $('#tmpl-groessen').html();
-				// TODO
-				var selectRow = $('.select-row-gegeben').html();
-				selectRow = '<div class="select-row-gegeben">' + selectRow + '</div>';
-				for (var i = 1; i < 4; i++) {
-					$('.select-row-gegeben:last').after(selectRow);
-				};
-				break;
-			case 1:
-				var template = $('#tmpl-formulae').html();
-				break;
-			case 2:
-				var template = $('#tmpl-einheitenrechnung').html();
-				break;
-			case 3:
-				var template = $('#tmpl-loesung').html();
-				break;
-			case 4:
-				// render twice because the solution phrases contain templates
-				var template = Mustache.render($('#tmpl-antwortsatz').html(), model.data);
-				break;
-			case 5:
-				var template = "Fertig!";
-				break;
-		};
-		var rendered = Mustache.render(template, model.data);
-		$('#workingarea').html(rendered);
+		// render main view
+		var tmplId = '#tmpl-' + model.section[index].identifier;
+		template = $(tmplId).html();
+		console.log(model.section);
+		var rendered = Mustache.render(Mustache.render(template, model.section[index]), model.section[index]);
+		$('#center-stage').html(rendered);
 		switch(index) {
 			case 0:
 				var selectRow = $('.select-row-gegeben').html();
@@ -222,7 +230,6 @@ var controller = (function() {
  			model.allowNextStep = false;
  		};
 		controller.subtractLife();
-		console.log(view.getDropdownSelection());
 	};
 
 	my.addLife = function() {
@@ -243,7 +250,6 @@ var controller = (function() {
 	my.step = [
 		function() {
 			var selection = view.getDropdownSelection();
-			console.log("It works!");
 			return true;
 		},
 		function() {
@@ -261,5 +267,4 @@ $(document).ready(function(){
 
 	model.init();
 	view.init();
-
 });
