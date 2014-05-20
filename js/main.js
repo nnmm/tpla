@@ -7,6 +7,7 @@ var model = (function() {
 	my.init = function() {
 		my.data = jsonObject;
 		model.prepareData();
+		model.extraLife = true;
 		step = 0;
 	};
 
@@ -17,6 +18,8 @@ var model = (function() {
 	my.addStep = function() {
 		step = step + 1;
 	};
+
+	my.allowNextStep = false;
 
 	my.prepareData = function() {
 		// augment the loaded js object with additional items and shuffle
@@ -71,6 +74,7 @@ var model = (function() {
 
 	my.subtractLife = function (lives) {
 		localStorage.setItem("lives", my.getLives()-1);
+		model.extraLife = false;
 	};
 
 	my.addLife = function (lives) {
@@ -93,7 +97,7 @@ var view = (function() {
 	};
 
 	my.registerListeners = function() {
-
+		$("#pruefen").click(controller.pruefenWeiter);
 	};
 
 	my.updateTable = function(index) {
@@ -120,11 +124,14 @@ var view = (function() {
 				var template = $('#tmpl-einheitenrechnung').html();
 				break;
 			case 3:
+				var template = $('#tmpl-loesung').html();
+				break;
+			case 4:
 				// render twice because the solution phrases contain templates
 				var template = Mustache.render($('#tmpl-antwortsatz').html(), model.data);
 				break;
-			case 4:
-				var template = "";
+			case 5:
+				var template = "Fertig!";
 				break;
 		};
 		var rendered = Mustache.render(template, model.data);
@@ -200,6 +207,24 @@ var controller = (function() {
  		view.updateTable(index);
  	}
 
+ 	my.pruefenWeiter = function(event) {
+ 		if (!model.allowNextStep) {
+ 			// prüfen
+ 			var correct = controller.step[0]();
+ 			if (!correct) {
+ 				model.subtractLife();
+ 			};
+ 			model.allowNextStep = true;
+ 		}
+ 		else {
+ 			// weiter
+ 			controller.nextStep();
+ 			model.allowNextStep = false;
+ 		};
+		controller.subtractLife();
+		console.log(view.getDropdownSelection());
+	};
+
 	my.addLife = function() {
 		model.addLife();
 		view.showLives();
@@ -215,6 +240,17 @@ var controller = (function() {
 		// TODO
 	};
 
+	my.step = [
+		function() {
+			var selection = view.getDropdownSelection();
+			console.log("It works!");
+			return true;
+		},
+		function() {
+			// 1
+		}
+	];
+
 	return my;
 }());
 
@@ -225,30 +261,5 @@ $(document).ready(function(){
 
 	model.init();
 	view.init();
-
-
-
-
-	$("#groessen").click(view.showStepOne);
-	$("#formeln").click(view.showStepTwo);
-	$("#einheitenrechnung").click(view.showStepThree);
-	$("#loesung").click(view.showStepFour);
-	$("#antwortsatz").click(function(event) {
-		$('#target-4').html("P = 0.000096 W");
-
-		var template = $('#tmpl-antwortsatz').html();
-		Mustache.parse(template);   // optional, speeds up future uses
-		// call twice so the {{solution.value}} gets substituted
-		var rendered = Mustache.render(Mustache.render(template, model.data), model.data);
-		$('#workingarea').html(rendered);
-	});
-
-	$("#pruefen").click(function(event) {
-		controller.subtractLife();
-		console.log(view.getDropdownSelection());
-	});
-
-	$("#weiter").click(controller.nextStep);
-
 
 });

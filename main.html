@@ -35,7 +35,9 @@
       <h3>Aufgabe 1</h3>
       <p>Eine Kuckucksuhr hängt an der Wand und tickt schon seit 250 Jahren vor sich hin. Die beiden Eisengewichte (Fichtenzapfen) von je 3,5 kg werden einmal in der Woche hochgezogen und liefern auf ihrer Talfahrt von 85 cm die nötige Energie für das Uhrwerk und den Antrieb des Kuckucks.</p>
       <p>Was ist die Leistung der Uhr?</p>
-
+    <div class="pull-right">
+      <button type="button" id="pruefen" class="btn btn-primary">Prüfen</button>
+    </div>
     <div class="row">
       <div class="col-md-12" id="table-container">
         <!--
@@ -65,10 +67,7 @@
       <div id="workingarea" class="col-md-12">
       </div>
     </div>
-    <div class="pull-right">
-      <button type="button" id="pruefen" class="btn btn-primary">Prüfen</button>
-      <button type="button" id="weiter" class="btn btn-primary">Weiter</button>
-    </div>
+
     <div class="clearfix"></div>
     <hr>
 
@@ -199,11 +198,17 @@
 
     <script id="tmpl-einheitenrechnung" type="x-tmpl-mustache">
       <p>Ausgehend von der Lösungsformel mit eingesetzten Einheiten [P] = (kg⋅m/s²⋅m)/s, was ist der richtige Zwischenschritt beim Errechnen der Einheit von P?</p>
-      <div class="btn-group-vertical">
+      <div class="btn-group">
         {{#units}}
         <button type="button" class="btn btn-default">{{.}}</button>
         {{/units}}
       </div>
+    </script>
+
+
+    <script id="tmpl-loesung" type="x-tmpl-mustache">
+      <p>Was ist die gesuchte Größe?</p>
+      <input type="number" class="form-control" placeholder="Zahl eingeben">
     </script>
 
 
