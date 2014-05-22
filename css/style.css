@@ -18,6 +18,14 @@ h4 {
   margin-bottom: 0;
 }
 
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
+
 #center-stage {
   padding-top: 15px;
   padding-bottom: 15px;

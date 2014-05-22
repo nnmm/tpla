@@ -21,7 +21,76 @@ var model = (function() {
 			"identifier": "groessen",
 			"optionsGiven": my.problemData.given,
 			"optionsUnknown": { "letter": my.problemData.solution.letter, "index": my.problemData.solution.index},
-			verify: function() {},
+			verify: function() {
+				var userInput = view.getDropdownSelection();
+				var correction = [];
+
+				// store if the input occurs in solution and vice versa
+				var inputMatched = [];
+				var numInputs = userInput.selectedGegeben.length;
+				while(numInputs--) inputMatched.push("false");
+				var solutionMatched = [];
+				var numSolutions = this.optionsGiven.length;
+				while(numSolutions--) solutionMatched.push("false");
+
+				// ignore empty rows in input
+				for (var i = 0; i < userInput.selectedGegeben.length; i++) {
+					var curInput = userInput.selectedGegeben[i];
+					var empty = true;
+					for (var p in curInput) {
+						if ("" !== curInput[p]) {
+							empty = false;
+						};
+					};
+					if (empty) {
+						inputMatched[i] = "empty";
+					};
+				};
+
+				// for all solutions
+				for (var i = 0; i < this.optionsGiven.length; i++) {
+					var curSolution = this.optionsGiven[i];
+					// for all input rows
+					for (var j = 0; j < userInput.selectedGegeben.length; j++) {
+						var curInput = userInput.selectedGegeben[j];
+ 						var equal = true;
+						for (var p in curSolution) {
+							if (curSolution[p] == curInput[p]) {
+								continue;
+							} else {
+								equal = false;
+							};
+						};
+						if (equal) {
+							solutionMatched[i] = "true";
+							inputMatched[j] = "true";
+						};
+					};
+				};
+
+
+				// now all elements of inputMatched have to be true or empty
+				var allInputs = true;
+				for (var i = 0; i < inputMatched.length; i++) {
+ 					if (inputMatched[i] !== "true" && inputMatched[i] !== "empty") {
+						allInputs = false;
+					};
+				};
+				// and all elements of solutionMatched have to be true
+				var allSolutions = true;
+				for (var i = 0; i < solutionMatched.length; i++) {
+					if (solutionMatched[i] !== "true") {
+						allSolutions = false;
+					};
+				};
+				console.log(inputMatched);
+				console.log(solutionMatched);
+				console.log(this.optionsGiven);
+				console.log(userInput.selectedGegeben);
+				console.log("allInputs: " + allInputs + ", allSolutions: " + allSolutions + ", &&: " + (allInputs&&allSolutions));
+				view.showDropdownCorrection(inputMatched, allSolutions);
+				return (allInputs && allSolutions);
+			},
 
 		});
 		my.section.push({
@@ -224,6 +293,19 @@ var view = (function() {
 		return {"selectedGegeben": selectedGegeben, "selectedGesucht": selectedGesucht};
 	};
 
+
+	my.showDropdownCorrection = function(input, allSolutions) {
+		$(".select-row-gegeben").each(function(index) {
+			var $iconSpan = $(this).find("span")
+			if (input[index] === "true") {
+				$iconSpan.addClass("glyphicon glyphicon-ok green");
+			} else if (input[index] === "false") {
+				$iconSpan.addClass("glyphicon glyphicon-remove red");
+			};
+		});
+		console.log("In Funktion");
+	};
+
 	return my;
 }());
 
@@ -237,12 +319,11 @@ var controller = (function() {
  		var index = model.getCurSection();
  		if (!model.allownextSection) {
  			// prüfen
- 			var correct = true;
- 			view.updateTable(index);
-
+ 			var correct = model.section[index - 1].verify();
  			if (!correct) {
- 				model.subtractLife();
+ 				controller.subtractLife();
  			};
+ 			view.updateTable(index);
  			model.allownextSection = true;
  		} else if (index < 5) {
  			view.updateCenterStage(index);
@@ -279,4 +360,5 @@ $(document).ready(function(){
 
 	model.init();
 	view.init();
+
 });
