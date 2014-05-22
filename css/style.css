@@ -26,6 +26,31 @@ h4 {
     color: red;
 }
 
+.fraction, .top, .bottom {
+    padding: 0 5px;    
+}
+
+.fraction {
+    font-size: 85%;
+    display: inline-block;
+    text-align: center;    
+}
+
+.bottom {
+    border-top: 1px solid #000;
+    display: block;
+}
+
+.btn-primary .bottom {
+    border-top: 1px solid #fff;
+}
+
+.operator {
+  overflow: auto;
+  display: block;
+  margin-bottom: 5px;
+}
+
 #center-stage {
   padding-top: 15px;
   padding-bottom: 15px;

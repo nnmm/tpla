@@ -14,6 +14,7 @@ var model = (function() {
 
 
 	my.prepareData = function() {
+		var d = my.problemData;
 		my.section = [];
 		my.section.push({
 			// Größen finden
@@ -68,7 +69,6 @@ var model = (function() {
 					};
 				};
 
-
 				// now all elements of inputMatched have to be true or empty
 				var allInputs = true;
 				for (var i = 0; i < inputMatched.length; i++) {
@@ -83,13 +83,16 @@ var model = (function() {
 						allSolutions = false;
 					};
 				};
-				console.log(inputMatched);
-				console.log(solutionMatched);
-				console.log(this.optionsGiven);
-				console.log(userInput.selectedGegeben);
-				console.log("allInputs: " + allInputs + ", allSolutions: " + allSolutions + ", &&: " + (allInputs&&allSolutions));
-				view.showDropdownCorrection(inputMatched, allSolutions);
-				return (allInputs && allSolutions);
+
+				// unknown
+				var unknownCorrect = "false";
+				var inputGesucht = userInput.selectedGesucht;
+				console.log(inputGesucht);
+				if (inputGesucht.letter === this.optionsUnknown.letter && inputGesucht.index === this.optionsUnknown.index) {
+					unknownCorrect = "true";
+				};
+				view.showDropdownCorrection(inputMatched, allSolutions, unknownCorrect);
+				return (allInputs && allSolutions && unknownCorrect);
 			},
 
 		});
@@ -103,9 +106,18 @@ var model = (function() {
 			// Einheiten vereinfachen
 			"title": "Einheitenrechnung",
 			"identifier": "einheiten",
-			"options": my.problemData.units,
-			"solution": "P = m⋅g⋅h/Δt",
-			verify: function() {},
+			"options": util.shuffle([].concat(d.units.correct, d.units.wrong)),
+			"solution": d.units.correct,
+			verify: function() {
+				var userSelection = view.getMultipleChoiceSelection();
+				console.log("selection: " + userSelection + ", solution: " + this.solution);
+				var correct = false;
+				if (userSelection === this.solution) {
+					correct = true;
+				};
+				view.showMultipleChoiceCorrection(correct);
+				return correct;
+			},
 		});
 		my.section.push({
 			// Das Ergebnis errechnen
@@ -124,7 +136,7 @@ var model = (function() {
 		});
 
 		my.data = my.problemData;
-
+		console.log(my.section[2].options);
 
 		// render the table contents and store them in model
 		for (var i = 0; i < my.section.length; i++) {
@@ -274,8 +286,11 @@ var view = (function() {
 		} else {
 			$('#pruefen').html("Prüfen");
 		};
-	}
+	};
 
+	my.getMultipleChoiceSelection = function() {
+		return $("input:radio:checked").val();
+	};
 
 	my.getDropdownSelection = function() {
 		var selectedGegeben = [],
@@ -293,17 +308,29 @@ var view = (function() {
 		return {"selectedGegeben": selectedGegeben, "selectedGesucht": selectedGesucht};
 	};
 
-
-	my.showDropdownCorrection = function(input, allSolutions) {
+	my.showDropdownCorrection = function(given, allSolutions, unknown) {
 		$(".select-row-gegeben").each(function(index) {
 			var $iconSpan = $(this).find("span")
-			if (input[index] === "true") {
+			if (given[index] === "true") {
 				$iconSpan.addClass("glyphicon glyphicon-ok green");
-			} else if (input[index] === "false") {
+			} else if (given[index] === "false") {
 				$iconSpan.addClass("glyphicon glyphicon-remove red");
 			};
 		});
-		console.log("In Funktion");
+		var $iconSpan = $(".select-row-gesucht").find("span");
+			if (unknown === "true") {
+				$iconSpan.addClass("glyphicon glyphicon-ok green");
+			} else if (unknown === "false") {
+				$iconSpan.addClass("glyphicon glyphicon-remove red");
+			};
+	};
+
+	my.showMultipleChoiceCorrection = function(correct) {
+		if (correct) {
+			$("#center-stage span").addClass("glyphicon glyphicon-ok green");
+		} else {
+			$("#center-stage span").addClass("glyphicon glyphicon-remove red");
+		};
 	};
 
 	return my;
@@ -360,5 +387,62 @@ $(document).ready(function(){
 
 	model.init();
 	view.init();
-
 });
+
+
+var util = (function() {
+    var my = {};
+
+    my.shuffle = function(array) {
+		var counter = array.length, temp, index;
+
+	    // While there are elements in the array
+	    while (counter > 0) {
+	        // Pick a random index
+	        index = Math.floor(Math.random() * counter);
+
+	        // Decrease counter by 1
+	        counter--;
+
+	        // And swap the last element with it
+	        temp = array[counter];
+	        array[counter] = array[index];
+	        array[index] = temp;
+	    }
+
+	    return array;
+    };
+
+    my.renderFraction = function(data) {
+    	var fraction = data;
+    	var splittext;
+    	var result = '';
+    	if(fraction.indexOf('=')>=0){
+    		var fractionwo;
+    		splittext = fraction.split('=');
+    		fractionwo = splittext[1].split('/');
+
+    		if(fractionwo.length==1){
+
+    			result = result + '<div class ="fraction"><span class="operator">' + splittext[0] + ' = ' + fractionwo[0]+'</span></div>';
+    		}
+    		else{
+    			result = result + '<div class ="fraction"><span class="operator">' + splittext[0] + ' = </span></div><div class="fraction"><span class="top">'+ fractionwo[0]+'</span><span class="bottom">'+fractionwo[1]+'</span></div>';
+    		}    
+
+    	}
+
+    	else{
+    		if (fraction.indexOf('/')>=0){
+    			splittext = fraction.split('/');
+    			result = result + '<div class="fraction"><span class="top">'+splittext[0]+'</span><span class="bottom">'+splittext[1]+'</span></div>';
+    		}
+    		else {
+    			result = result + '<div class="fraction"><span class="operator">'+fraction+'</span></div>';
+    		}
+    	}  
+    	return result; 
+    };
+
+    return my;
+}());
