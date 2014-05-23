@@ -136,7 +136,6 @@ var model = (function() {
 		});
 
 		my.data = my.problemData;
-		console.log(my.section[2].options);
 
 		// render the table contents and store them in model
 		for (var i = 0; i < my.section.length; i++) {
@@ -210,8 +209,8 @@ var view = (function() {
 		view.showLives();
 		view.registerListeners();
 		//
-		view.updateTable(0);
-		view.updateCenterStage(0);
+		view.updateTable(1);
+		view.updateCenterStage(1);
 		model.nextSection();
 	};
 

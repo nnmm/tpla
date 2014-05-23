@@ -12,9 +12,19 @@ var eqCanvas = (function() {
     stage = new createjs.Stage("demoCanvas");
     stage.mouseMoveOutside = true;
 
+    stage.on("mousedown", function(evt) {
+      var x = evt.stageX;
+      var y = evt.stageY;
+      //var obj = stage.children[1].children[0].hitTest(x, y);
+      //console.log(obj);
+      for (var i = 1; i < stage.getNumChildren(); i++) {
+      };
+    });
+
+
     // background
     bg = new createjs.Shape();
-    stage.addChild(bg);
+    stage.addChildAt(bg, 0);
     bg.graphics.beginFill("rgb(240, 240, 240)").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
     stage.update();
   };
@@ -54,6 +64,7 @@ var eqCanvas = (function() {
   function Quantity(text, xpos, ypos, prnt) {
     this.text = text;
     var circle = new createjs.Shape();
+    this.circle = circle;
     circle.graphics.beginFill("rgb(130, 130, 255)").drawCircle(0, 0, 20);
     var label = new createjs.Text(text, "14px Arial", "#FFFFFF");
     label.textAlign = "center";
@@ -63,6 +74,20 @@ var eqCanvas = (function() {
     this.container.on("pressmove", function(evt) {
       if (prnt != null) {
         prnt.moveLine(evt, self);
+      };
+    });
+    this.container.on("pressup", function(evt) {
+      if (prnt == null) { 
+       for (var i = 0; i < equations.length; i++) {
+          for (var j = 0; j < equations[i].variablen.length; j++) {
+            var obj = equations[i].variablen[j].circle;
+            var localCoords = obj.globalToLocal(evt.stageX, evt.stageY);
+            if (obj.hitTest(localCoords.x, localCoords.y)) {
+              equations[i].variablen[j].joinWith(obj);
+              return;
+            }
+          };
+        };
       };
     });
   }
@@ -75,8 +100,15 @@ var eqCanvas = (function() {
 
 
   Quantity.prototype.joinWith = function(otherQty) {
+    console.log("In joinWith");
+    // gets called on mouse release?
+    // align with otherQty
+    // you need to drag a free or equation quantity onto an equation quantity
+    // otherQty needs to be an equation quantity that doesn't already have a joined quantity
     // check for correct units
-    // if has parent, not the same as parent of other joined qties
+    // TODO: test if moving works
+    // if this has a parent, its other qantities may not be joined to other children of the parent of otherQty
+    // call function to check if the equation is solved
     // symmetric joining?
   };
 
@@ -85,7 +117,7 @@ var eqCanvas = (function() {
     this.text = text;
     var vars = text.replace(/\s+/g, '').split(/=|\*|\⋅|\/|\+|\-/);
     var radius = 100, angle = Math.PI;
-    this.variablen = new Array();
+    this.variablen = [];
     for (var i = 0; i < vars.length; i++) {
       var xpos_ = radius*Math.cos(angle) + xpos;
       var ypos_ = radius*Math.sin(angle) + ypos;
@@ -104,7 +136,7 @@ var eqCanvas = (function() {
       self.moveAllLines();
     });
 
-    this.lines = new Array();
+    this.lines = [];
     for (var i = 0; i < this.variablen.length; i++) {
       var line = new createjs.Shape();
       var x = this.variablen[i].container.x;
