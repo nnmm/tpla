@@ -235,11 +235,14 @@
 
     <script id="tmpl-antwortsatz" type="x-tmpl-mustache">
       <p>Welcher Antwortsatz beantwortet die Aufgabe am besten?</p>
-      <div class="btn-group-vertical">
+      <div class="btn-group-vertical" data-toggle="buttons">
         {{#options}}
-        <button type="button" class="btn btn-default">{{.}}</button>
+        <label class="btn btn-primary">
+          <input type="radio" name="options" value="{{.}}">{{{.}}}
+        </label>
         {{/options}}
       </div>
+      <span></span>
     </script>
 
 

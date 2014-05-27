@@ -29,6 +29,7 @@ var eqCanvas = (function() {
     for (var i = quantities.length - 2; i >= 0; i--) {
       quantities[i].setColor('rgb(100, 200, 100)');
     };
+    quantities[quantities.length-1].setColor('rgb(200, 100, 100)');
     stage.update();
 
   };
@@ -244,6 +245,8 @@ var eqCanvas = (function() {
     // align with otherVar - doesn't work yet with 
     this.setTransform(otherVar.x, otherVar.y);
     stage.update();
+
+    // TODO: redraw lines
   };
 
   vp.unjoin = function() {

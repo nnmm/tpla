@@ -110,7 +110,6 @@ var model = (function() {
 			"solution": d.units.correct,
 			verify: function() {
 				var userSelection = view.getMultipleChoiceSelection();
-				console.log("selection: " + userSelection + ", solution: " + this.solution);
 				var correct = false;
 				if (userSelection === this.solution) {
 					correct = true;
@@ -130,9 +129,27 @@ var model = (function() {
 			// Den besten Antwortsatz finden
 			"title": "Antwortsatz",
 			"identifier": "antwortsatz",
-			"options": my.problemData.alternative_solution_phrases,
-			"solution": my.problemData.solution,
-			verify: function() {},
+			"options": function() {
+				var options = [];
+				for (var i = 0; i < my.problemData.alternative_solution_phrases.length; i++) {
+					var tmpl = my.problemData.alternative_solution_phrases[i];
+					options.push(Mustache.render(tmpl, my.problemData));
+				};
+				options.push(this.solution);
+				return util.shuffle(options);
+			},
+			"solution": Mustache.render(my.problemData.correct_solution_phrase, my.problemData),
+			verify: function() {
+				console.log(this.solution);
+				var userSelection = view.getMultipleChoiceSelection();
+				console.log(userSelection);
+				var correct = false;
+				if (userSelection === this.solution) {
+					correct = true;
+				};
+				view.showMultipleChoiceCorrection(correct);
+				return correct;
+			},
 		});
 
 		my.data = my.problemData;
@@ -416,22 +433,19 @@ var util = (function() {
     	var fraction = data;
     	var splittext;
     	var result = '';
-    	if(fraction.indexOf('=')>=0){
+    	if (fraction.indexOf('=') >= 0){
     		var fractionwo;
     		splittext = fraction.split('=');
     		fractionwo = splittext[1].split('/');
 
-    		if(fractionwo.length==1){
-
+    		if(fractionwo.length == 1){
     			result = result + '<div class ="fraction"><span class="operator">' + splittext[0] + ' = ' + fractionwo[0]+'</span></div>';
     		}
     		else{
     			result = result + '<div class ="fraction"><span class="operator">' + splittext[0] + ' = </span></div><div class="fraction"><span class="top">'+ fractionwo[0]+'</span><span class="bottom">'+fractionwo[1]+'</span></div>';
     		}    
 
-    	}
-
-    	else{
+    	} else {
     		if (fraction.indexOf('/')>=0){
     			splittext = fraction.split('/');
     			result = result + '<div class="fraction"><span class="top">'+splittext[0]+'</span><span class="bottom">'+splittext[1]+'</span></div>';
