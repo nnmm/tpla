@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+
     <title>TPLA-Demo</title>
 
     <!-- Bootstrap -->
@@ -217,9 +219,16 @@
 
 
     <script id="tmpl-ergebnis" type="x-tmpl-mustache">
-      <p>Was ist die gesuchte Größe?</p>
-      <input type="text" class="form-control" placeholder="Zahl eingeben">
-      <span></span>
+      <div class="col-md-6">
+        <p>Was ist der Wert der gesuchten Größe? Achte darauf, richtig zu runden.</p>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group has-feedback">
+          <label class="control-label">Zahl eingeben</label>
+          <input type="text" class="form-control">
+          <span class="form-control-feedback"></span>
+        </div>
+      </div>
     </script>
 
 

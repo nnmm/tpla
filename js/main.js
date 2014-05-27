@@ -143,12 +143,11 @@ var model = (function() {
 			},
 			verify: function() {
 				var userInput = $('input').val();
-				console.log(userInput);
 				var correct = false;
 				if (this.solutionVariations().indexOf(userInput) >= 0) {
 					correct = true;
 				};
-				view.showMultipleChoiceCorrection(correct);
+				view.showInputCorrection();
 				return correct;
 			},
 		});
@@ -224,7 +223,6 @@ var model = (function() {
 			section = 0;
 			localStorage.setItem("section", 0);
 		};
-		console.log("Section " + section);
 		return section;
 	};
 
@@ -276,7 +274,6 @@ var view = (function() {
 		var rendered = Mustache.render(template, model.data);
 		$("#table-container").html(rendered);
 		$("#table-container tbody tr").each(function(rowIndex) {
-			console.log("hi, row" + rowIndex);
 			if (rowIndex < index) {
 				$(this).addClass('success');
 			};
@@ -384,6 +381,16 @@ var view = (function() {
 			$('input:radio:checked').parent().removeClass().addClass("btn btn-warning active");
 
 		};
+	};
+
+	my.showInputCorrection = function(correct) {
+		if (correct) {
+			$('input').next('span').addClass('glyphicon glyphicon-ok');
+			$('input').parent().addClass('has-success');
+ 		} else {
+			$('input').next('span').addClass('glyphicon glyphicon-remove');
+			$('input').parent().addClass('has-error');
+ 		};
 	};
 
 	return my;
