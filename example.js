@@ -19,7 +19,8 @@ var jsonObject = {
         "letter": "P",
         "index": "",
         "value": 0.000096,
-        "unit": "Watt",
+        "unit": "W",
+        "unit_long": "Watt",
         "formula": "P = m⋅g⋅h/Δt",
         "formula_image": "solution1.png"
     },

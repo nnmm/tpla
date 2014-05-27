@@ -122,8 +122,22 @@ var model = (function() {
 			// Das Ergebnis errechnen
 			"title": "Ergebnis",
 			"identifier": "ergebnis",
-			"solution": my.problemData.solution,
-			verify: function() {},
+			"solution": function() {
+				var options = [];
+				options.push(my.problemData.solution.value + " " + my.problemData.solution.unit);
+				options.push(my.problemData.solution.value + " " + my.problemData.solution.unit_long);
+				return options;
+			},
+			verify: function() {
+				var userInput = $('input').val();
+				console.log(userInput);
+				var correct = false;
+				if (this.solution().indexOf(userInput) >= 0) {
+					correct = true;
+				};
+				view.showMultipleChoiceCorrection(correct);
+				return correct;
+			},
 		});
 		my.section.push({
 			// Den besten Antwortsatz finden
@@ -203,7 +217,7 @@ var model = (function() {
 		var section = parseInt(localStorage.getItem("section"));
 		// if there is nothing stored, reset section to 0
 		if (isNaN(section)) {
-			section = 3;
+			section = 0;
 			localStorage.setItem("section", 0);
 		};
 		return section;

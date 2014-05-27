@@ -21,17 +21,12 @@ var eqCanvas = (function() {
 
 
   my.addGivenQuantities = function () {
-    quantities.push(new Variable('Δt', 850, 50, null));
-    quantities.push(new Variable('m', 850, 100, null));
-    quantities.push(new Variable('g', 850, 150, null));
-    quantities.push(new Variable('h', 850, 200, null));
-    quantities.push(new Variable('P', 850, 350, null));
-    for (var i = quantities.length - 2; i >= 0; i--) {
-      quantities[i].setColor('rgb(100, 200, 100)');
-    };
-    quantities[quantities.length-1].setColor('rgb(200, 100, 100)');
+    quantities.push(new Variable('Δt', 850, 50, "given", null));
+    quantities.push(new Variable('m', 850, 100, "given", null));
+    quantities.push(new Variable('g', 850, 150, "given", null));
+    quantities.push(new Variable('h', 850, 200, "given", null));
+    quantities.push(new Variable('P', 850, 350, "unknown", null));
     stage.update();
-
   };
 
   my.addEquations = function(textarray) {
@@ -65,7 +60,7 @@ var eqCanvas = (function() {
 
     // circle and label
     this.shape = new createjs.Shape();
-    this.shape.graphics.beginFill('rgb(130, 130, 255)').drawCircle(0, 0, 2*RADIUS);
+    this.shape.graphics.beginFill(COLOR_DEFAULT).drawCircle(0, 0, 2*RADIUS);
     this.label = new createjs.Text(text, '14px Arial', '#FFFFFF');
     this.label.textAlign = 'center';
     this.label.y = -7;
@@ -89,7 +84,7 @@ var eqCanvas = (function() {
     for (var i = 0; i < this.variablesAsStrings.length; i++) {
       var xrel = radius*Math.cos(angle) + xpos;
       var yrel = radius*Math.sin(angle) + ypos;
-      this.variablen.push(new Variable(this.variablesAsStrings[i], xrel, yrel, this));
+      this.variablen.push(new Variable(this.variablesAsStrings[i], xrel, yrel, "equation", this));
       angle = angle + 2 * Math.PI/this.variablesAsStrings.length;
     };
 
@@ -99,7 +94,9 @@ var eqCanvas = (function() {
       var line = new createjs.Shape();
       var x = this.variablen[i].x;
       var y = this.variablen[i].y;
-      line.graphics.setStrokeStyle(5).beginStroke('rgb(130, 130, 255)');
+      line.color = COLOR_EQUATION;
+      line.color_active = COLOR_EQUATION_ACTIVE;
+      line.graphics.setStrokeStyle(5).beginStroke(COLOR_DEFAULT);
       line.graphics.moveTo(xpos, ypos).lineTo(x,y);
       this.lines.push(line);
       stage.addChildAt(line, 1);
@@ -117,26 +114,43 @@ var eqCanvas = (function() {
 
 
   ep.moveLine = function(evt, child) {
+    this.drawLine(child);
+  };
+
+  ep.drawLine = function(child) {
     var index = this.variablen.indexOf(child);
     if (index >= 0) {
-      var x = evt.currentTarget.x;
-      var y = evt.currentTarget.y;
       this.lines[index].graphics.clear();
-      this.lines[index].graphics.setStrokeStyle(5).beginStroke('rgb(130, 130, 255)');
-      this.lines[index].graphics.moveTo(this.x, this.y).lineTo(x,y);
+      this.lines[index].graphics.setStrokeStyle(5).beginStroke(COLOR_DEFAULT);
+      this.lines[index].graphics.moveTo(this.x, this.y).lineTo(child.x, child.y);
     };
     stage.update();
-  };
+  }
 
   ep.moveAllLines = function() {
     for (var i = 0; i < this.variablen.length; i++) {
       var x = this.variablen[i].x;
       var y = this.variablen[i].y;
       this.lines[i].graphics.clear();
-      this.lines[i].graphics.setStrokeStyle(5).beginStroke('rgb(130, 130, 255)');
+      this.lines[i].graphics.setStrokeStyle(5).beginStroke(COLOR_DEFAULT);
       this.lines[i].graphics.moveTo(this.x, this.y).lineTo(x,y);
     };
     stage.update();
+  };
+
+  ep.isComplete = function() {
+    var complete = true;
+    for (var i = 0; i < this.variablen.length; i++) {
+      if (this.variablen[i].joined == null) {
+        complete = false;
+      };
+    };
+    return complete;
+  };
+
+  ep.setColor = function(color) {
+    this.shape.graphics.clear();
+    this.shape.graphics.beginFill(color).drawCircle(0, 0, 2*RADIUS);
   };
 
 
@@ -144,9 +158,15 @@ var eqCanvas = (function() {
   // ------------------------------------------------------------------------------------------------
 
   var RADIUS = 20,
-    DEFAULTCOLOR = 'rgb(130, 130, 255)';
+    COLOR_DEFAULT = 'rgb(130, 130, 255)',
+    COLOR_GIVEN = 'rgb(150, 200, 150)',
+    COLOR_EQUATION = 'rgb(130, 130, 255)',
+    COLOR_UNKNOWN = 'rgb(200, 150, 150)',
+    COLOR_GIVEN_ACTIVE = 'rgb(100, 200, 100)',
+    COLOR_EQUATION_ACTIVE = 'rgb(100, 200, 100)',
+    COLOR_UNKNOWN_ACTIVE = 'rgb(200, 100, 100)'
 
-  function Variable(text, xpos, ypos, prnt) {
+  function Variable(text, xpos, ypos, type, prnt) {
     this.initialize();
 
     this.text = text;
@@ -154,14 +174,31 @@ var eqCanvas = (function() {
     this.y = ypos;
     this.prnt = prnt;
     this.joined = null;
+    this.type = type;
+    switch (type) {
+      case "equation":
+        this.color = COLOR_DEFAULT;
+        this.color_active = COLOR_GIVEN_ACTIVE;
+        break;
+      case "given":
+        this.color = COLOR_GIVEN;
+        this.color_active = COLOR_GIVEN_ACTIVE;
+        break;
+      case "unknown":
+        this.color = COLOR_UNKNOWN;
+        this.color_active = COLOR_UNKNOWN_ACTIVE;
+        break;
+    };
+
 
     // circle and label
     this.shape = new createjs.Shape();
-    this.shape.graphics.beginFill(DEFAULTCOLOR).drawCircle(0, 0, RADIUS);
+    this.shape.graphics.beginFill(COLOR_DEFAULT).drawCircle(0, 0, RADIUS);
     this.label = new createjs.Text(text, '14px Arial', '#FFFFFF');
     this.label.textAlign = 'center';
     this.label.y = -7;
     this.addChild(this.shape, this.label);
+    this.setColor(this.color);
 
     // add self to stage
     stage.addChild(this);
@@ -240,16 +277,31 @@ var eqCanvas = (function() {
     // symmetric joining
     this.joined = otherVar;
     otherVar.joined = this;
+    // change color
+    this.setColor(this.color_active);
+    this.joined.setColor(this.color_active);
 
-    // TODO: call function to check if the equation is solved
+    // call function to check if the equation is solved
+    if (otherVar.prnt.isComplete()) {
+      otherVar.prnt.setColor(COLOR_EQUATION_ACTIVE);
+    };
+
     // align with otherVar - doesn't work yet with 
     this.setTransform(otherVar.x, otherVar.y);
+    console.log("Type: " + this.type);
+    if (this.type == "equation") {
+      console.log("Hello");
+      this.prnt.drawLine(this);
+    };
     stage.update();
 
-    // TODO: redraw lines
   };
 
   vp.unjoin = function() {
+    // change color
+    this.setColor(this.color);
+    this.joined.setColor(this.joined.color);
+
     this.joined.joined = null;
     this.joined = null;
   };
