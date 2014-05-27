@@ -14,14 +14,24 @@ var model = (function() {
 
 
 	my.prepareData = function() {
+		var verifyMultipleChoice = function() {
+			var userSelection = view.getMultipleChoiceSelection();
+			var correct = false;
+			if (userSelection === this.solution) {
+				correct = true;
+			};
+			view.showMultipleChoiceCorrection(correct);
+			return correct;
+		};
+
 		var d = my.problemData;
 		my.section = [];
 		my.section.push({
 			// Größen finden
 			"title": "Größen",
 			"identifier": "groessen",
-			"optionsGiven": my.problemData.given,
-			"optionsUnknown": { "letter": my.problemData.solution.letter, "index": my.problemData.solution.index},
+			"optionsGiven": d.given,
+			"optionsUnknown": { "letter": d.solution.letter, "index": d.solution.index},
 			verify: function() {
 				var userInput = view.getDropdownSelection();
 				var correction = [];
@@ -100,7 +110,8 @@ var model = (function() {
 			// Basis- und Lösungsformel finden
 			"title": "Basis- und Lösungsformel",
 			"identifier": "formeln",
-			verify: function() {},
+			"options": util.shuffle([].concat(d.alternative_solution_equations, d.solution.equation)),
+			"verify": verifyMultipleChoice,
 		});
 		my.section.push({
 			// Einheiten vereinfachen
@@ -108,15 +119,8 @@ var model = (function() {
 			"identifier": "einheiten",
 			"options": util.shuffle([].concat(d.units.correct, d.units.wrong)),
 			"solution": d.units.correct,
-			verify: function() {
-				var userSelection = view.getMultipleChoiceSelection();
-				var correct = false;
-				if (userSelection === this.solution) {
-					correct = true;
-				};
-				view.showMultipleChoiceCorrection(correct);
-				return correct;
-			},
+			"verify": verifyMultipleChoice,
+
 		});
 		my.section.push({
 			// Das Ergebnis errechnen
@@ -153,17 +157,8 @@ var model = (function() {
 				return util.shuffle(options);
 			},
 			"solution": Mustache.render(my.problemData.correct_solution_phrase, my.problemData),
-			verify: function() {
-				console.log(this.solution);
-				var userSelection = view.getMultipleChoiceSelection();
-				console.log(userSelection);
-				var correct = false;
-				if (userSelection === this.solution) {
-					correct = true;
-				};
-				view.showMultipleChoiceCorrection(correct);
-				return correct;
-			},
+			"verify": verifyMultipleChoice,
+
 		});
 
 		my.data = my.problemData;
@@ -250,7 +245,7 @@ var view = (function() {
 	};
 
 	my.updateTable = function(index) {
-		console.log("updateTable " + index);
+		// console.log("updateTable " + index);
 		if (index > model.section.length) {
 			return;
 		};
@@ -264,7 +259,7 @@ var view = (function() {
 	};
 
 	my.updateCenterStage = function(index) {
-		console.log("updateCenterStage " + index);
+		// console.log("updateCenterStage " + index);
 
 		// render main view
 		var tmplId = '#tmpl-' + model.section[index].identifier;

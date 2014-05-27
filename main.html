@@ -110,7 +110,7 @@
       {{#equations}}
       <p>{{.}}</p>
       {{/equations}}
-      <p>Lösungsformel: {{solution.formula}}</p>
+      <p>Lösungsformel: {{solution.equation}}</p>
     </script>
 
     <script id="tmpl-table-einheiten" type="x-tmpl-mustache">
@@ -211,6 +211,14 @@
         <option>E = ½⋅m⋅v²</option>
         <option>v = s/Δt</option>
       </select>
+      <div class="btn-group-vertical hidden" data-toggle="buttons">
+        {{#options}}
+        <label class="btn btn-primary">
+          <input type="radio" name="options" value="{{.}}">{{{.}}}
+        </label>
+        {{/options}}
+      </div>
+      <span></span>
     </script>
 
 

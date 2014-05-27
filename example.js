@@ -21,9 +21,14 @@ var jsonObject = {
         "value": 0.000096,
         "unit": "W",
         "unit_long": "Watt",
-        "formula": "P = m⋅g⋅h/Δt",
-        "formula_image": "solution1.png"
+        "equation": "P = m⋅g⋅h/Δt",
     },
+    "alternative_solution_equations": [
+        "P = Δt/(m⋅g⋅h)",
+        "P = m/Δt ⋅ g/h",
+        "P = Δt + m⋅g⋅h",
+        "P = m⋅g⋅h - Δt"
+    ],
     "units": {
         "correct": "N⋅m/s",
         "wrong": [

@@ -46,6 +46,25 @@ var eqCanvas = (function() {
     my.addGivenQuantities();
   };
 
+  my.checkCompleteness = function () {
+    var allComplete = true;
+    for (var i = 0; i < equations.length; i++) {
+      if(!equations[i].isComplete()) {
+        allComplete = false;
+      };
+    };
+    for (var i = 0; i < quantities.length; i++) {
+      if(quantities[i].joined == null) {
+        allComplete = false;
+      };
+    };
+    // TODO: maybe have a cleaner separation between canvas and stage
+    if (allComplete) {
+      $('.hidden').removeClass('hidden');
+    };
+    return allComplete;
+  }
+
 
 
   // ------------------------------------------------------------------------------------------------
@@ -96,6 +115,7 @@ var eqCanvas = (function() {
       var y = this.variablen[i].y;
       line.color = COLOR_EQUATION;
       line.color_active = COLOR_EQUATION_ACTIVE;
+      line.color_current = line.color;
       line.graphics.setStrokeStyle(5).beginStroke(COLOR_DEFAULT);
       line.graphics.moveTo(xpos, ypos).lineTo(x,y);
       this.lines.push(line);
@@ -121,18 +141,24 @@ var eqCanvas = (function() {
     var index = this.variablen.indexOf(child);
     if (index >= 0) {
       this.lines[index].graphics.clear();
-      this.lines[index].graphics.setStrokeStyle(5).beginStroke(COLOR_DEFAULT);
+      this.lines[index].graphics.setStrokeStyle(5).beginStroke(this.lines[index].color_current);
       this.lines[index].graphics.moveTo(this.x, this.y).lineTo(child.x, child.y);
     };
     stage.update();
-  }
+  };
+
+  ep.setLineColor = function(child, color) {
+    var index = this.variablen.indexOf(child);
+    this.lines[index].color_current = color;
+    this.drawLine(child);
+  };
 
   ep.moveAllLines = function() {
     for (var i = 0; i < this.variablen.length; i++) {
       var x = this.variablen[i].x;
       var y = this.variablen[i].y;
       this.lines[i].graphics.clear();
-      this.lines[i].graphics.setStrokeStyle(5).beginStroke(COLOR_DEFAULT);
+      this.lines[i].graphics.setStrokeStyle(5).beginStroke(this.lines[i].color_current);
       this.lines[i].graphics.moveTo(this.x, this.y).lineTo(x,y);
     };
     stage.update();
@@ -144,6 +170,11 @@ var eqCanvas = (function() {
       if (this.variablen[i].joined == null) {
         complete = false;
       };
+    };
+    if (complete) {
+      this.setColor(COLOR_EQUATION_ACTIVE);
+    } else{
+      this.setColor(COLOR_EQUATION);
     };
     return complete;
   };
@@ -265,7 +296,6 @@ var eqCanvas = (function() {
           if (otherChildren[j] !== otherVar && myChildren[i] !== this) {
             // we don't need to test the other way since it's symmetric
             if (otherChildren[j].joined === myChildren[i]) {
-              console.log("Parents already joined");
               return;
             };
           };
@@ -273,7 +303,7 @@ var eqCanvas = (function() {
       };
     }
 
-    console.log('Joining ' + this.text + ' with ' + otherVar.text);
+    // console.log('Joining ' + this.text + ' with ' + otherVar.text);
     // symmetric joining
     this.joined = otherVar;
     otherVar.joined = this;
@@ -281,18 +311,16 @@ var eqCanvas = (function() {
     this.setColor(this.color_active);
     this.joined.setColor(this.color_active);
 
-    // call function to check if the equation is solved
-    if (otherVar.prnt.isComplete()) {
-      otherVar.prnt.setColor(COLOR_EQUATION_ACTIVE);
-    };
-
     // align with otherVar - doesn't work yet with 
     this.setTransform(otherVar.x, otherVar.y);
-    console.log("Type: " + this.type);
     if (this.type == "equation") {
-      console.log("Hello");
+      this.prnt.setLineColor(this, COLOR_EQUATION_ACTIVE);
       this.prnt.drawLine(this);
     };
+    otherVar.prnt.setLineColor(otherVar, COLOR_EQUATION_ACTIVE);
+
+    // are we done?
+    my.checkCompleteness();
     stage.update();
 
   };
@@ -301,6 +329,10 @@ var eqCanvas = (function() {
     // change color
     this.setColor(this.color);
     this.joined.setColor(this.joined.color);
+    if (this.type == "equation") {
+      this.prnt.setLineColor(this, COLOR_EQUATION);
+    };
+    this.joined.prnt.setLineColor(this.joined, COLOR_EQUATION);
 
     this.joined.joined = null;
     this.joined = null;
