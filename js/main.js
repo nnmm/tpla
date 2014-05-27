@@ -235,8 +235,8 @@ var view = (function() {
 		view.showLives();
 		view.registerListeners();
 		//
-		view.updateTable(1);
-		view.updateCenterStage(1);
+		view.updateTable(0);
+		view.updateCenterStage(0);
 		model.nextSection();
 	};
 
