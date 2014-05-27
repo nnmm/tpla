@@ -97,24 +97,24 @@
 
     <script id="tmpl-table-groessen" type="x-tmpl-mustache">
       <p>
-        Gegeben: {{#given}}
+        Gegeben: {{#solutionGiven}}
         {{letter}}<sub>{{index}}</sub> = {{value}} {{unit}},
-        {{/given}}
+        {{/solutionGiven}}
       </p>
       <p>
-        Gesucht: {{solution.letter}}<sub>{{solution.index}}</sub>
+        Gesucht: {{solutionUnknown.letter}}<sub>{{solutionUnknown.index}}</sub>
       </p>
     </script>
 
     <script id="tmpl-table-formeln" type="x-tmpl-mustache">
-      {{#equations}}
+      {{#solutionEquations}}
       <p>{{.}}</p>
-      {{/equations}}
-      <p>Lösungsformel: {{solution.equation}}</p>
+      {{/solutionEquations}}
+      <p>Lösungsformel: {{solution}}</p>
     </script>
 
     <script id="tmpl-table-einheiten" type="x-tmpl-mustache">
-      [{{solution.letter}}] = {{solution.unit}}
+      [{{letter}}] = {{unit}}
     </script>
 
     <script id="tmpl-table-ergebnis" type="x-tmpl-mustache">
@@ -122,7 +122,7 @@
     </script>
 
     <script id="tmpl-table-antwortsatz" type="x-tmpl-mustache">
-      {{correct_solution_phrase}}
+      {{solution}}
     </script>
 
 

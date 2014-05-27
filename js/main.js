@@ -1,10 +1,12 @@
+// for debugging
+var startAt = 4;
+
 // MVC pattern
 var model = (function() {
 	'use strict';
 	var my = {};
 
 	my.init = function() {
-		my.problemData = jsonObject;
 		model.prepareData();
 		// the user gets an extra life if no mistake is made
 		model.extraLife = true;
@@ -24,14 +26,16 @@ var model = (function() {
 			return correct;
 		};
 
-		var d = my.problemData;
+		// contains *all* the data required for one section
 		my.section = [];
 		my.section.push({
 			// Größen finden
 			"title": "Größen",
 			"identifier": "groessen",
 			"optionsGiven": d.given,
+			"solutionGiven": d.given,
 			"optionsUnknown": { "letter": d.solution.letter, "index": d.solution.index},
+			"solutionUnknown": { "letter": d.solution.letter, "index": d.solution.index},
 			verify: function() {
 				var userInput = view.getDropdownSelection();
 				var correction = [];
@@ -41,7 +45,7 @@ var model = (function() {
 				var numInputs = userInput.selectedGegeben.length;
 				while(numInputs--) inputMatched.push("false");
 				var solutionMatched = [];
-				var numSolutions = this.optionsGiven.length;
+				var numSolutions = this.solutionGiven.length;
 				while(numSolutions--) solutionMatched.push("false");
 
 				// ignore empty rows in input
@@ -59,8 +63,8 @@ var model = (function() {
 				};
 
 				// for all solutions
-				for (var i = 0; i < this.optionsGiven.length; i++) {
-					var curSolution = this.optionsGiven[i];
+				for (var i = 0; i < this.solutionGiven.length; i++) {
+					var curSolution = this.solutionGiven[i];
 					// for all input rows
 					for (var j = 0; j < userInput.selectedGegeben.length; j++) {
 						var curInput = userInput.selectedGegeben[j];
@@ -98,7 +102,7 @@ var model = (function() {
 				var unknownCorrect = "false";
 				var inputGesucht = userInput.selectedGesucht;
 				console.log(inputGesucht);
-				if (inputGesucht.letter === this.optionsUnknown.letter && inputGesucht.index === this.optionsUnknown.index) {
+				if (inputGesucht.letter === this.solutionUnknown.letter && inputGesucht.index === this.solutionUnknown.index) {
 					unknownCorrect = "true";
 				};
 				view.showDropdownCorrection(inputMatched, allSolutions, unknownCorrect);
@@ -107,18 +111,22 @@ var model = (function() {
 
 		});
 		my.section.push({
-			// Basis- und Lösungsformel finden
+			// Basis- und Lösungsformel finden – multiple choice
 			"title": "Basis- und Lösungsformel",
 			"identifier": "formeln",
+			"solutionEquations": d.equations,
+			"solution": d.solution.equation,
 			"options": util.shuffle([].concat(d.alternative_solution_equations, d.solution.equation)),
 			"verify": verifyMultipleChoice,
 		});
 		my.section.push({
-			// Einheiten vereinfachen
+			// Einheiten vereinfachen – multiple choice
 			"title": "Einheitenrechnung",
 			"identifier": "einheiten",
 			"options": util.shuffle([].concat(d.units.correct, d.units.wrong)),
 			"solution": d.units.correct,
+			"letter": d.solution.letter,
+			"unit": d.solution.unit,
 			"verify": verifyMultipleChoice,
 
 		});
@@ -126,17 +134,18 @@ var model = (function() {
 			// Das Ergebnis errechnen
 			"title": "Ergebnis",
 			"identifier": "ergebnis",
-			"solution": function() {
+			"solution": d.solution,
+			"solutionVariations": function() {
 				var options = [];
-				options.push(my.problemData.solution.value + " " + my.problemData.solution.unit);
-				options.push(my.problemData.solution.value + " " + my.problemData.solution.unit_long);
+				options.push(d.solution.value + " " + d.solution.unit);
+				options.push(d.solution.value + " " + d.solution.unit_long);
 				return options;
 			},
 			verify: function() {
 				var userInput = $('input').val();
 				console.log(userInput);
 				var correct = false;
-				if (this.solution().indexOf(userInput) >= 0) {
+				if (this.solutionVariations().indexOf(userInput) >= 0) {
 					correct = true;
 				};
 				view.showMultipleChoiceCorrection(correct);
@@ -144,30 +153,30 @@ var model = (function() {
 			},
 		});
 		my.section.push({
-			// Den besten Antwortsatz finden
+			// Den besten Antwortsatz finden – multiple choice
 			"title": "Antwortsatz",
 			"identifier": "antwortsatz",
+			"solution": Mustache.render(d.correct_solution_phrase, d),
 			"options": function() {
 				var options = [];
-				for (var i = 0; i < my.problemData.alternative_solution_phrases.length; i++) {
-					var tmpl = my.problemData.alternative_solution_phrases[i];
-					options.push(Mustache.render(tmpl, my.problemData));
+				for (var i = 0; i < d.alternative_solution_phrases.length; i++) {
+					var tmpl = d.alternative_solution_phrases[i];
+					options.push(Mustache.render(tmpl, d));
 				};
 				options.push(this.solution);
 				return util.shuffle(options);
 			},
-			"solution": Mustache.render(my.problemData.correct_solution_phrase, my.problemData),
 			"verify": verifyMultipleChoice,
 
 		});
 
-		my.data = my.problemData;
+		my.data = d;
 
 		// render the table contents and store them in model
 		for (var i = 0; i < my.section.length; i++) {
 			var tmplId = '#tmpl-table-' + my.section[i].identifier;
 			var template = $(tmplId).html();
-			my.section[i].tableContent = Mustache.render(Mustache.render(template, model.data), model.data);
+			my.section[i].tableContent = Mustache.render(Mustache.render(template, model.section[i]), model.section[i]);
 		};
 
 		// could be more elegant
@@ -234,9 +243,9 @@ var view = (function() {
 	my.init = function() {
 		view.showLives();
 		view.registerListeners();
-		//
-		view.updateTable(0);
-		view.updateCenterStage(0);
+		// for debugging
+		view.updateTable(startAt);
+		view.updateCenterStage(startAt);
 		model.nextSection();
 	};
 
