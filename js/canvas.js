@@ -38,7 +38,7 @@ var eqCanvas = (function() {
 
     var eqOffset = 150;
     stage.addChildAt(bg, 0);
-    for (var i = textarray.length - 1; i >= 0; i--) {
+    for (var i = Math.min(textarray.length - 1, 2); i >= 0; i--) {
       equations.push(new Equation(textarray[i], eqOffset, 150));
       eqOffset = (eqOffset + 250) % 800;
     };
@@ -336,6 +336,9 @@ var eqCanvas = (function() {
 
     this.joined.joined = null;
     this.joined = null;
+
+    my.checkCompleteness();
+    stage.update();
   };
 
   // ------------------------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 // for debugging
-var startAt = 4;
+var startAt = 0;
 
 // MVC pattern
 var model = (function() {
@@ -11,7 +11,8 @@ var model = (function() {
 		// the user gets an extra life if no mistake is made
 		model.extraLife = true;
 		my.allownextSection = false;
-		localStorage.setItem("section", 0);
+		// debugging
+		localStorage.setItem("section", startAt);
 	};
 
 
@@ -101,7 +102,6 @@ var model = (function() {
 				// unknown
 				var unknownCorrect = "false";
 				var inputGesucht = userInput.selectedGesucht;
-				console.log(inputGesucht);
 				if (inputGesucht.letter === this.solutionUnknown.letter && inputGesucht.index === this.solutionUnknown.index) {
 					unknownCorrect = "true";
 				};
@@ -224,6 +224,7 @@ var model = (function() {
 			section = 0;
 			localStorage.setItem("section", 0);
 		};
+		console.log("Section " + section);
 		return section;
 	};
 
@@ -246,7 +247,16 @@ var view = (function() {
 		// for debugging
 		view.updateTable(startAt);
 		view.updateCenterStage(startAt);
+
 		model.nextSection();
+
+		renderProblem();
+	};
+
+	var renderProblem = function() {
+		var template = $('#tmpl-problem').html();
+		var rendered = Mustache.render(template, model.data);
+		$("#problem-container").html(rendered);
 	};
 
 	my.registerListeners = function() {
@@ -265,6 +275,12 @@ var view = (function() {
 		Mustache.parse(template);   // optional, speeds up future uses
 		var rendered = Mustache.render(template, model.data);
 		$("#table-container").html(rendered);
+		$("#table-container tbody tr").each(function(rowIndex) {
+			console.log("hi, row" + rowIndex);
+			if (rowIndex < index) {
+				$(this).addClass('success');
+			};
+		});
 	};
 
 	my.updateCenterStage = function(index) {
@@ -316,7 +332,7 @@ var view = (function() {
 
 	my.toggleWeiter = function() {
 		if ($('#pruefen').html() == "Prüfen") {
-			$('#pruefen').html("Weiter");
+			$('#pruefen').html('Weiter <span class="glyphicon glyphicon-arrow-right"></span>');
 		} else {
 			$('#pruefen').html("Prüfen");
 		};
@@ -361,9 +377,12 @@ var view = (function() {
 
 	my.showMultipleChoiceCorrection = function(correct) {
 		if (correct) {
-			$("#center-stage span").addClass("glyphicon glyphicon-ok green");
+			//$('input:radio:checked').parent().next('span').addClass("glyphicon glyphicon-ok green");
+			$('input:radio:checked').parent().removeClass().addClass("btn btn-success active");
 		} else {
-			$("#center-stage span").addClass("glyphicon glyphicon-remove red");
+			//$('input:radio:checked').parent().next('span').addClass("glyphicon glyphicon-remove red");
+			$('input:radio:checked').parent().removeClass().addClass("btn btn-warning active");
+
 		};
 	};
 
