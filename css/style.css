@@ -1,10 +1,13 @@
 body {
   overflow-y:scroll;
+  background-repeat: repeat;
+  background-image: url(../img/congruent_pentagon.png);
 }
 
 .container {
   padding-right: 15px;
   padding-left: 15px;
+  background-color: white;
 }
 
 h4 {

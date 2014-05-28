@@ -6,9 +6,9 @@ var d = {
     "problem": "Was ist die Leistung der Uhr?",
     "image": false,
     "given": [
-        { "letter": "Δt", "index": "1", "value": 604800, "unit": "s" },
+        { "letter": "Δt", "index": "", "value": 604800, "unit": "s" },
         { "letter": "m",  "index": "Gewichte", "value": 7, "unit": "kg" },
-        { "letter": "h",  "index": "", "value": 0.85, "unit": "m" },
+        { "letter": "Δh",  "index": "", "value": 0.85, "unit": "m" },
         { "letter": "g",  "index": "", "value": 9.81, "unit": "m/s²" }
     ],
     "equations": [

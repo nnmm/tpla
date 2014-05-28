@@ -147,7 +147,7 @@ var model = (function() {
 				if (this.solutionVariations().indexOf(userInput) >= 0) {
 					correct = true;
 				};
-				view.showInputCorrection();
+				view.showInputCorrection(correct);
 				return correct;
 			},
 		});
