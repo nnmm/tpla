@@ -85,6 +85,14 @@ var model = (function() {
 			"optionsUnknown": { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit},
 			"solutionUnknown": { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit},
 			"verify": verifyDropdownSelection,
+			"onRender": function() {
+				// oh no view code in model!
+				var selectRow = $('.select-row-gegeben').html();
+				selectRow = '<div class="select-row-gegeben">' + selectRow + '</div>';
+				for (var i = 1; i < 4; i++) {
+					$('.select-row-gegeben:last').after(selectRow);
+				};
+			}
 		});
 
 		my.section.push({
@@ -109,6 +117,17 @@ var model = (function() {
 				return opts;
 			},
 			"verify": verifyMultipleChoice,
+			"onRender": function() {
+				$("select[name=basisformeln]").change(function() {
+					var eqs = [];
+				    $("select[name=basisformeln] option:selected").each(function() {
+				    	eqs.push($(this).text());
+				    });
+				    eqCanvas.addEquations(eqs);
+		 		});
+				eqCanvas.init();
+				eqCanvas.addGivenQuantities();
+			}
 		});
 
 		my.section.push({
@@ -145,14 +164,7 @@ var model = (function() {
 				options.push(sd.solution.value + " " + sd.solution.unit_long);
 				return options;
 			},
-			verify: function(userInput) {
-				var correct = false;
-				if (this.solutionVariations().indexOf(userInput) >= 0) {
-					correct = true;
-				};
-				view.showInputCorrection(correct);
-				return correct;
-			},
+			verify: verifyTextInput,
 		});
 
 		my.section.push({
@@ -175,11 +187,16 @@ var model = (function() {
 
 		my.data = d;
 
-		// render the table contents and store them in model
+		// render the table contents and store them in model.section
 		for (var i = 0; i < my.section.length; i++) {
 			var tmplId = '#tmpl-table-' + my.section[i].identifier;
 			var template = $(tmplId).html();
 			my.section[i].tableContent = Mustache.render(Mustache.render(template, model.section[i]), model.section[i]);
+		};
+
+		// also store the result
+		for (var i = 0; i < my.section.length; i++) {
+			my.section[i].correct = "";
 		};
 
 		// could be more elegant
@@ -257,7 +274,8 @@ var model = (function() {
 			unknownCorrect = "true";
 		};
 		view.showDropdownCorrection(inputMatched, allSolutions, unknownCorrect);
-		return (allInputs && allSolutions && unknownCorrect);
+		this.correct = allInputs && allSolutions && unknownCorrect;
+		return this.correct;
 	};
 
 	var verifyMultipleChoice = function(userInput) {
@@ -266,6 +284,17 @@ var model = (function() {
 			correct = true;
 		};
 		view.showMultipleChoiceCorrection(correct);
+		this.correct = correct;
+		return correct;
+	};
+
+	var verifyTextInput = function(userInput) {
+		var correct = false;
+		if (this.solutionVariations().indexOf(userInput) >= 0) {
+			correct = true;
+		};
+		view.showInputCorrection(correct);
+		this.correct = correct;
 		return correct;
 	};
 
@@ -281,7 +310,7 @@ var model = (function() {
 	};
 
 	my.subtractLife = function (lives) {
-		localStorage.setItem("lives", my.getLives()-1);
+		localStorage.setItem("lives", Math.max(my.getLives()-1, 0));
 		model.extraLife = false;
 	};
 
@@ -341,7 +370,11 @@ var view = (function() {
 		$("#table-container").html(rendered);
 		$("#table-container tbody tr").each(function(rowIndex) {
 			if (rowIndex < index) {
-				$(this).addClass('success');
+				if (model.section[rowIndex].correct) {
+					$(this).addClass('success');
+				} else{
+					$(this).addClass('danger');
+				};
 			};
 		});
 	};
@@ -353,31 +386,10 @@ var view = (function() {
 		var template = $(tmplId).html();
 		var rendered = Mustache.render(Mustache.render(template, model.section[index]), model.section[index]);
 		$('#center-stage').html(rendered);
-		switch(index) {
-			case 0:
-				var selectRow = $('.select-row-gegeben').html();
-				selectRow = '<div class="select-row-gegeben">' + selectRow + '</div>';
-				for (var i = 1; i < 4; i++) {
-					$('.select-row-gegeben:last').after(selectRow);
-				};
-				break;
-			case 1:
-				$("select[name=basisformeln]").change(function() {
-					var eqs = [];
-				    $("select[name=basisformeln] option:selected").each(function() {
-				    	eqs.push($(this).text());
-				    });
-				    eqCanvas.addEquations(eqs);
-		 		});
-				eqCanvas.init();
-				eqCanvas.addGivenQuantities();
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
+
+		// ugly
+		if (typeof model.section[index].onRender !== 'undefined') {
+			model.section[index].onRender();
 		};
 	};
 

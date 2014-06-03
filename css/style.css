@@ -47,12 +47,8 @@ h4 {
 }
 
 .bottom {
-    border-top: 1px solid #000;
-    display: block;
-}
-
-.btn-primary .bottom {
     border-top: 1px solid #fff;
+    display: block;
 }
 
 .operator {
