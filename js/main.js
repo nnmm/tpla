@@ -320,7 +320,7 @@ var view = (function() {
 
 	my.showLives = function() {
 		var lives = model.getLives();
-		$("#lives").children().each(function (index) {
+		$("#lives span").each(function (index) {
 			if (lives >= index + 1) {
 				$(this).removeClass().addClass("glyphicon glyphicon-heart");
 			} else{

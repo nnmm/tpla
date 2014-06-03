@@ -2,6 +2,8 @@ body {
   overflow-y:scroll;
   background-repeat: repeat;
   background-image: url(../img/congruent_pentagon.png);
+  /* for navbar */
+  padding-top: 70px;
 }
 
 .container {
@@ -9,6 +11,8 @@ body {
   padding-left: 15px;
   background-color: white;
 }
+
+
 
 h4 {
   margin-top: 25px;
