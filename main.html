@@ -230,7 +230,7 @@
         <div class="btn-group-horizontal" data-toggle="buttons">
           {{#options}}
           <label class="btn btn-primary">
-            <input type="radio" name="options" value="{{.}}">{{{.}}}
+            <input type="radio" name="options" value="{{val}}">{{{text}}}
           </label>
           {{/options}}
         </div>
@@ -239,11 +239,11 @@
 
 
     <script id="tmpl-einheiten" type="x-tmpl-mustache">
-      <p>Ausgehend von der Lösungsformel mit eingesetzten Einheiten [P] = (kg⋅m/s²⋅m)/s, was ist der richtige Zwischenschritt beim Errechnen der Einheit von P?</p>
+      <p>Ausgehend von der Lösungsformel mit eingesetzten Einheiten, was ist der richtige Zwischenschritt beim Errechnen der Einheit von P?</p>
       <div class="btn-group" data-toggle="buttons">
         {{#options}}
         <label class="btn btn-primary">
-          <input type="radio" name="options" value="{{.}}">{{{.}}}
+          <input type="radio" name="options" value="{{val}}">{{{text}}}
         </label>
         {{/options}}
       </div>

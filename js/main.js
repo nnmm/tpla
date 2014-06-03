@@ -1,32 +1,76 @@
-// for debugging
-var startAt = 0;
-
 // MVC pattern
+// controller
+var controller = (function() {
+	'use strict';
+ 	var my = {};
+
+ 	var allownextSection = false;
+
+	// is called only on pageload
+ 	my.init = function() {
+
+ 		model.initSubtask(0);
+ 		model.nextSection();
+
+ 		// persistent data
+ 		var lives = model.getLives();
+ 		// TODO: initialize/load timer and subtask
+
+ 		view.showLives(lives);
+ 		view.renderProblem();
+ 		view.registerListeners();
+		view.updateTable(0);
+		view.updateCenterStage(0);
+ 	};
+
+ 	my.pruefenWeiter = function(event) {
+ 		var index = model.getCurSection();
+ 		if (!allownextSection) {
+ 			// prüfen
+ 			var userInput = view.getUserInput(model.section[index-1].type);
+ 			var correct = model.section[index - 1].verify(userInput);
+ 			if (!correct) {
+ 				controller.subtractLife();
+ 			};
+ 			view.updateTable(index);
+ 		} else if (index < 5) {
+ 			view.updateCenterStage(index);
+ 			model.nextSection();
+ 		} else {
+ 			console.log("Continue to next block");
+ 		};
+ 		allownextSection = !allownextSection;
+		view.toggleWeiter(allownextSection);
+	};
+
+	my.addLife = function() {
+		model.addLife();
+		view.showLives();
+	};
+
+	my.subtractLife = function() {
+		model.subtractLife();
+		view.showLives();
+	};
+
+	my.verifySolution = function() {
+		var selection = view.getDropdownSelection();
+		// TODO
+	};
+
+	return my;
+}());
+
+
+
+
 var model = (function() {
 	'use strict';
 	var my = {};
 
-	my.init = function(index) {
-		model.prepareData(index);
-		// the user gets an extra life if no mistake is made
-		model.extraLife = true;
-		my.allownextSection = false;
-		// debugging
-		localStorage.setItem("section", startAt);
-	};
-
-
-	my.prepareData = function(index) {
-		var verifyMultipleChoice = function() {
-			var userSelection = view.getMultipleChoiceSelection();
-			var correct = false;
-			if (userSelection === this.solution) {
-				correct = true;
-			};
-			view.showMultipleChoiceCorrection(correct);
-			return correct;
-		};
-		console.log(d.subtasks);
+	// is called at the beginning of each subtask
+	my.initSubtask  = function(index) {
+		
 		var sd = d.subtasks[index];
 
 		// contains *all* the data required for one section
@@ -35,110 +79,65 @@ var model = (function() {
 			// Größen finden
 			"title": "Größen",
 			"identifier": "groessen",
+			"type": "dropdown",
 			"optionsGiven": sd.given,
 			"solutionGiven": sd.given,
 			"optionsUnknown": { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit},
 			"solutionUnknown": { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit},
-			verify: function() {
-				var userInput = view.getDropdownSelection();
-				var correction = [];
-
-				// store if the input occurs in solution and vice versa
-				var inputMatched = [];
-				var numInputs = userInput.selectedGegeben.length;
-				while(numInputs--) inputMatched.push("false");
-				var solutionMatched = [];
-				var numSolutions = this.solutionGiven.length;
-				while(numSolutions--) solutionMatched.push("false");
-
-				// ignore empty rows in input
-				for (var i = 0; i < userInput.selectedGegeben.length; i++) {
-					var curInput = userInput.selectedGegeben[i];
-					var empty = true;
-					for (var p in curInput) {
-						if ("" !== curInput[p]) {
-							empty = false;
-						};
-					};
-					if (empty) {
-						inputMatched[i] = "empty";
-					};
-				};
-
-				// for all solutions
-				for (var i = 0; i < this.solutionGiven.length; i++) {
-					var curSolution = this.solutionGiven[i];
-					// for all input rows
-					for (var j = 0; j < userInput.selectedGegeben.length; j++) {
-						var curInput = userInput.selectedGegeben[j];
- 						var equal = true;
-						for (var p in curSolution) {
-							if (curSolution[p] == curInput[p]) {
-								continue;
-							} else {
-								equal = false;
-							};
-						};
-						if (equal) {
-							solutionMatched[i] = "true";
-							inputMatched[j] = "true";
-						};
-					};
-				};
-
-				// now all elements of inputMatched have to be true or empty
-				var allInputs = true;
-				for (var i = 0; i < inputMatched.length; i++) {
- 					if (inputMatched[i] !== "true" && inputMatched[i] !== "empty") {
-						allInputs = false;
-					};
-				};
-				// and all elements of solutionMatched have to be true
-				var allSolutions = true;
-				for (var i = 0; i < solutionMatched.length; i++) {
-					if (solutionMatched[i] !== "true") {
-						allSolutions = false;
-					};
-				};
-
-				// unknown
-				var unknownCorrect = "false";
-				var inputGesucht = userInput.selectedGesucht;
-				if (inputGesucht.letter === this.solutionUnknown.letter && inputGesucht.index === this.solutionUnknown.index && inputGesucht.unit === this.solutionUnknown.unit) {
-					unknownCorrect = "true";
-				};
-				view.showDropdownCorrection(inputMatched, allSolutions, unknownCorrect);
-				return (allInputs && allSolutions && unknownCorrect);
-			},
-
+			"verify": verifyDropdownSelection,
 		});
+
 		my.section.push({
 			// Basis- und Lösungsformel finden – multiple choice
 			"title": "Basis- und Lösungsformel",
 			"identifier": "formeln",
+			"type": "multipleChoice",
 			"width": "900px",
 			"height": "400px",
 			"optionsEquations": sd.equations,
 			"solutionEquations": sd.equations,
 			"solution": sd.solution.equation,
-			"options": util.shuffle([].concat(util.renderFractions(sd.alternative_solution_equations), util.renderFraction(sd.solution.equation))),
+			"options": function() {
+				var opts = [];
+				var values = util.shuffle([].concat(sd.alternative_solution_equations, sd.solution.equation));
+				for (var i = 0; i < values.length; i++) {
+					opts.push({
+						"val": values[i],
+						"text": util.renderFraction(values[i]),
+					});
+				};
+				return opts;
+			},
 			"verify": verifyMultipleChoice,
 		});
+
 		my.section.push({
 			// Einheiten vereinfachen – multiple choice
 			"title": "Einheitenrechnung",
 			"identifier": "einheiten",
-			"options": util.shuffle([].concat(util.renderFraction(sd.units.correct), util.renderFractions(sd.units.wrong))),
+			"type": "multipleChoice",
+			"options": function() {
+				var opts = [];
+				var values = util.shuffle([].concat(sd.units.correct, sd.units.wrong));
+				for (var i = 0; i < values.length; i++) {
+					opts.push({
+						"val": values[i],
+						"text": util.renderFraction(values[i]),
+					});
+				};
+				return opts;
+			},
 			"solution": sd.units.correct,
 			"letter": sd.solution.letter,
 			"unit": sd.solution.unit,
 			"verify": verifyMultipleChoice,
-
 		});
+
 		my.section.push({
 			// Das Ergebnis errechnen
 			"title": "Ergebnis",
 			"identifier": "ergebnis",
+			"type": "textInput",
 			"solution": sd.solution,
 			"solutionVariations": function() {
 				var options = [];
@@ -146,8 +145,7 @@ var model = (function() {
 				options.push(sd.solution.value + " " + sd.solution.unit_long);
 				return options;
 			},
-			verify: function() {
-				var userInput = $('input').val();
+			verify: function(userInput) {
 				var correct = false;
 				if (this.solutionVariations().indexOf(userInput) >= 0) {
 					correct = true;
@@ -156,10 +154,12 @@ var model = (function() {
 				return correct;
 			},
 		});
+
 		my.section.push({
 			// Den besten Antwortsatz finden – multiple choice
 			"title": "Antwortsatz",
 			"identifier": "antwortsatz",
+			"type": "multipleChoice",
 			"solution": Mustache.render(sd.correct_solution_phrase, sd),
 			"options": function() {
 				var options = [];
@@ -171,7 +171,6 @@ var model = (function() {
 				return util.shuffle(options);
 			},
 			"verify": verifyMultipleChoice,
-
 		});
 
 		my.data = d;
@@ -185,20 +184,89 @@ var model = (function() {
 
 		// could be more elegant
 		my.data.table = my.section;
+		my.curSection = 0;
+
+		// the user gets an extra life if no mistake is made
+		my.extraLife = true;
 	};
 
-	my.updateTableData = function(index) {
-		model.data.table = [];
-		for (var i = 0; i < model.section.length; i++) {
-			var content = model.section[i].tableContent;
-			if (index <= i) {
-				content = "";
+	var verifyDropdownSelection = function(userInput) {
+		var correction = [];
+		// store if the input occurs in solution and vice versa
+		var inputMatched = [];
+		var numInputs = userInput.selectedGegeben.length;
+		while(numInputs--) inputMatched.push("false");
+		var solutionMatched = [];
+		var numSolutions = this.solutionGiven.length;
+		while(numSolutions--) solutionMatched.push("false");
+
+		// ignore empty rows in input
+		for (var i = 0; i < userInput.selectedGegeben.length; i++) {
+			var curInput = userInput.selectedGegeben[i];
+			var empty = true;
+			for (var p in curInput) {
+				if ("" !== curInput[p]) {
+					empty = false;
+				};
 			};
-			model.data.table.push({
-				"title": model.section[i].title,
-				"tableContent": content
-			});
+			if (empty) {
+				inputMatched[i] = "empty";
+			};
 		};
+
+		// for all solutions
+		for (var i = 0; i < this.solutionGiven.length; i++) {
+			var curSolution = this.solutionGiven[i];
+			// for all input rows
+			for (var j = 0; j < userInput.selectedGegeben.length; j++) {
+				var curInput = userInput.selectedGegeben[j];
+					var equal = true;
+				for (var p in curSolution) {
+					if (curSolution[p] == curInput[p]) {
+						continue;
+					} else {
+						equal = false;
+					};
+				};
+				if (equal) {
+					solutionMatched[i] = "true";
+					inputMatched[j] = "true";
+				};
+			};
+		};
+
+		// now all elements of inputMatched have to be true or empty
+		var allInputs = true;
+		for (var i = 0; i < inputMatched.length; i++) {
+				if (inputMatched[i] !== "true" && inputMatched[i] !== "empty") {
+				allInputs = false;
+			};
+		};
+		// and all elements of solutionMatched have to be true
+		var allSolutions = true;
+		for (var i = 0; i < solutionMatched.length; i++) {
+			if (solutionMatched[i] !== "true") {
+				allSolutions = false;
+			};
+		};
+
+		// unknown
+		var unknownCorrect = "false";
+		var inputGesucht = userInput.selectedGesucht;
+		if (inputGesucht.letter === this.solutionUnknown.letter && inputGesucht.index === this.solutionUnknown.index && inputGesucht.unit === this.solutionUnknown.unit) {
+			unknownCorrect = "true";
+		};
+		view.showDropdownCorrection(inputMatched, allSolutions, unknownCorrect);
+		return (allInputs && allSolutions && unknownCorrect);
+	};
+
+	var verifyMultipleChoice = function(userInput) {
+		var correct = false;
+		if (userInput === this.solution) {
+			correct = true;
+		};
+		view.showMultipleChoiceCorrection(correct);
+		return correct;
 	};
 
 	my.getLives = function () {
@@ -222,17 +290,11 @@ var model = (function() {
 	};
 
 	my.getCurSection = function() {
-		var section = parseInt(localStorage.getItem("section"));
-		// if there is nothing stored, reset section to 0
-		if (isNaN(section)) {
-			section = 0;
-			localStorage.setItem("section", 0);
-		};
-		return section;
+		return my.curSection;
 	};
 
 	my.nextSection = function() {
-		localStorage.setItem("section", my.getCurSection()+1);
+		my.curSection = my.curSection + 1;
 	};
 
 	return my;
@@ -244,19 +306,7 @@ var view = (function() {
 	'use strict';
 	var my = {};
 
-	my.init = function(index) {
-		view.showLives();
-		view.registerListeners();
-		// for debugging
-		view.updateTable(startAt);
-		view.updateCenterStage(startAt);
-
-		model.nextSection();
-
-		renderProblem();
-	};
-
-	var renderProblem = function() {
+	my.renderProblem = function() {
 		var template = $('#tmpl-problem').html();
 		var rendered = Mustache.render(template, model.data);
 		$("#problem-container").html(rendered);
@@ -267,16 +317,27 @@ var view = (function() {
 	};
 
 	my.updateTable = function(index) {
-		// console.log("updateTable " + index);
 		if (index > model.section.length) {
 			return;
 		};
 
+		// only render part of the table
+		var table = [];
+		for (var i = 0; i < model.section.length; i++) {
+			var content = model.section[i].tableContent;
+			if (index <= i) {
+				content = "";
+			};
+			table.push({
+				"title": model.section[i].title,
+				"tableContent": content
+			});
+		};
+
 		// render table
-		model.updateTableData(index);
 		var template = $('#tmpl-table').html();
 		Mustache.parse(template);   // optional, speeds up future uses
-		var rendered = Mustache.render(template, model.data);
+		var rendered = Mustache.render(template, {"table": table});
 		$("#table-container").html(rendered);
 		$("#table-container tbody tr").each(function(rowIndex) {
 			if (rowIndex < index) {
@@ -286,7 +347,6 @@ var view = (function() {
 	};
 
 	my.updateCenterStage = function(index) {
-		// console.log("updateCenterStage " + index);
 
 		// render main view
 		var tmplId = '#tmpl-' + model.section[index].identifier;
@@ -321,8 +381,7 @@ var view = (function() {
 		};
 	};
 
-	my.showLives = function() {
-		var lives = model.getLives();
+	my.showLives = function(lives) {
 		$("#lives span").each(function (index) {
 			if (lives >= index + 1) {
 				$(this).removeClass().addClass("glyphicon glyphicon-heart");
@@ -332,19 +391,31 @@ var view = (function() {
 		});
 	};
 
-	my.toggleWeiter = function() {
-		if ($('#pruefen').html() == "Prüfen") {
+	my.toggleWeiter = function(toggle) {
+		if (toggle) {
 			$('#pruefen').html('Weiter <span class="glyphicon glyphicon-arrow-right"></span>');
 		} else {
 			$('#pruefen').html("Prüfen");
 		};
 	};
 
-	my.getMultipleChoiceSelection = function() {
-		return $("input:radio:checked").val();
+	my.getUserInput = function(type) {
+		switch(type) {
+			case "dropdown":
+				return getDropdownSelection();
+				break;
+			case "multipleChoice":
+				return getMultipleChoiceSelection();
+				break;
+			case "textInput":
+				return getTextInputSelection();
+				break;
+			default:
+				console.log("Error in getUserInput");
+		};
 	};
 
-	my.getDropdownSelection = function() {
+	var getDropdownSelection = function() {
 		var selectedGegeben = [],
 			selectedGesucht = {};
 		$(".select-row-gegeben").each(function(index) {
@@ -359,6 +430,14 @@ var view = (function() {
 		});
 		return {"selectedGegeben": selectedGegeben, "selectedGesucht": selectedGesucht};
 	};
+
+	var getMultipleChoiceSelection = function() {
+		return $("input:radio:checked").val();
+	};
+
+	var getTextInputSelection = function() {
+		return $('input').val();
+	}
 
 	my.showDropdownCorrection = function(given, allSolutions, unknown) {
 		$(".select-row-gegeben").each(function(index) {
@@ -402,56 +481,14 @@ var view = (function() {
 }());
 
 
-// controller
-var controller = (function() {
-	'use strict';
- 	var my = {};
 
- 	my.pruefenWeiter = function(event) {
- 		var index = model.getCurSection();
- 		if (!model.allownextSection) {
- 			// prüfen
- 			var correct = model.section[index - 1].verify();
- 			if (!correct) {
- 				controller.subtractLife();
- 			};
- 			view.updateTable(index);
- 			model.allownextSection = true;
- 		} else if (index < 5) {
- 			view.updateCenterStage(index);
- 			model.nextSection();
- 			model.allownextSection = false;
- 		} else {
- 			console.log("Continue to next block");
- 		};
-		view.toggleWeiter();
-	};
-
-	my.addLife = function() {
-		model.addLife();
-		view.showLives();
-	};
-
-	my.subtractLife = function() {
-		model.subtractLife();
-		view.showLives();
-	};
-
-	my.verifySolution = function() {
-		var selection = view.getDropdownSelection();
-		// TODO
-	};
-
-	return my;
-}());
 
 
 // main
 $(document).ready(function(){
 	'use strict';
 
-	model.init(0);
-	view.init(0);
+	controller.init();
 });
 
 
