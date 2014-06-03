@@ -12,6 +12,10 @@ body {
   background-color: white;
 }
 
+canvas {
+  margin-bottom: 15px;
+}
+
 h4 {
   margin-top: 25px;
 }
@@ -36,6 +40,7 @@ h4 {
 }
 
 .fraction {
+    vertical-align: middle;
     font-size: 85%;
     display: inline-block;
     text-align: center;    
