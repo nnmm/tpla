@@ -7,7 +7,7 @@ var model = (function() {
 	var my = {};
 
 	my.init = function() {
-		model.prepareData();
+		model.prepareData(0);
 		// the user gets an extra life if no mistake is made
 		model.extraLife = true;
 		my.allownextSection = false;
@@ -16,7 +16,7 @@ var model = (function() {
 	};
 
 
-	my.prepareData = function() {
+	my.prepareData = function(index) {
 		var verifyMultipleChoice = function() {
 			var userSelection = view.getMultipleChoiceSelection();
 			var correct = false;
@@ -26,6 +26,8 @@ var model = (function() {
 			view.showMultipleChoiceCorrection(correct);
 			return correct;
 		};
+		console.log(d.subtasks);
+		var sd = d.subtasks[index];
 
 		// contains *all* the data required for one section
 		my.section = [];
@@ -33,10 +35,10 @@ var model = (function() {
 			// Größen finden
 			"title": "Größen",
 			"identifier": "groessen",
-			"optionsGiven": d.given,
-			"solutionGiven": d.given,
-			"optionsUnknown": { "letter": d.solution.letter, "index": d.solution.index},
-			"solutionUnknown": { "letter": d.solution.letter, "index": d.solution.index},
+			"optionsGiven": sd.given,
+			"solutionGiven": sd.given,
+			"optionsUnknown": { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit},
+			"solutionUnknown": { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit},
 			verify: function() {
 				var userInput = view.getDropdownSelection();
 				var correction = [];
@@ -102,7 +104,7 @@ var model = (function() {
 				// unknown
 				var unknownCorrect = "false";
 				var inputGesucht = userInput.selectedGesucht;
-				if (inputGesucht.letter === this.solutionUnknown.letter && inputGesucht.index === this.solutionUnknown.index) {
+				if (inputGesucht.letter === this.solutionUnknown.letter && inputGesucht.index === this.solutionUnknown.index && inputGesucht.unit === this.solutionUnknown.unit) {
 					unknownCorrect = "true";
 				};
 				view.showDropdownCorrection(inputMatched, allSolutions, unknownCorrect);
@@ -114,19 +116,19 @@ var model = (function() {
 			// Basis- und Lösungsformel finden – multiple choice
 			"title": "Basis- und Lösungsformel",
 			"identifier": "formeln",
-			"solutionEquations": d.equations,
-			"solution": d.solution.equation,
-			"options": util.shuffle([].concat(d.alternative_solution_equations, d.solution.equation)),
+			"solutionEquations": sd.equations,
+			"solution": sd.solution.equation,
+			"options": util.shuffle([].concat(sd.alternative_solution_equations, sd.solution.equation)),
 			"verify": verifyMultipleChoice,
 		});
 		my.section.push({
 			// Einheiten vereinfachen – multiple choice
 			"title": "Einheitenrechnung",
 			"identifier": "einheiten",
-			"options": util.shuffle([].concat(d.units.correct, d.units.wrong)),
-			"solution": d.units.correct,
-			"letter": d.solution.letter,
-			"unit": d.solution.unit,
+			"options": util.shuffle([].concat(sd.units.correct, sd.units.wrong)),
+			"solution": sd.units.correct,
+			"letter": sd.solution.letter,
+			"unit": sd.solution.unit,
 			"verify": verifyMultipleChoice,
 
 		});
@@ -134,11 +136,11 @@ var model = (function() {
 			// Das Ergebnis errechnen
 			"title": "Ergebnis",
 			"identifier": "ergebnis",
-			"solution": d.solution,
+			"solution": sd.solution,
 			"solutionVariations": function() {
 				var options = [];
-				options.push(d.solution.value + " " + d.solution.unit);
-				options.push(d.solution.value + " " + d.solution.unit_long);
+				options.push(sd.solution.value + " " + sd.solution.unit);
+				options.push(sd.solution.value + " " + sd.solution.unit_long);
 				return options;
 			},
 			verify: function() {
@@ -155,12 +157,12 @@ var model = (function() {
 			// Den besten Antwortsatz finden – multiple choice
 			"title": "Antwortsatz",
 			"identifier": "antwortsatz",
-			"solution": Mustache.render(d.correct_solution_phrase, d),
+			"solution": Mustache.render(sd.correct_solution_phrase, sd),
 			"options": function() {
 				var options = [];
-				for (var i = 0; i < d.alternative_solution_phrases.length; i++) {
-					var tmpl = d.alternative_solution_phrases[i];
-					options.push(Mustache.render(tmpl, d));
+				for (var i = 0; i < sd.alternative_solution_phrases.length; i++) {
+					var tmpl = sd.alternative_solution_phrases[i];
+					options.push(Mustache.render(tmpl, sd));
 				};
 				options.push(this.solution);
 				return util.shuffle(options);
