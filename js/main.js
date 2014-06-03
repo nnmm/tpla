@@ -10,8 +10,7 @@ var controller = (function() {
  	my.init = function() {
 
  		model.initSubtask(0);
- 		model.nextSection();
-
+ 		
  		// persistent data
  		localStorage.clear("lives");
  		var lives = model.getLives();
@@ -39,7 +38,10 @@ var controller = (function() {
  			view.updateCenterStage(index);
  			model.nextSection();
  		} else {
- 			console.log("Continue to next block");
+ 			view.renderProblem();
+ 			model.initSubtask(0);
+ 			view.updateTable(0);
+ 			view.updateCenterStage(0);
  		};
  		allownextSection = !allownextSection;
 		view.toggleWeiter(allownextSection);
@@ -198,7 +200,7 @@ var model = (function() {
 
 		// could be more elegant
 		my.data.table = my.section;
-		my.curSection = 0;
+		my.curSection = 1;
 
 		// the user gets an extra life if no mistake is made
 		my.extraLife = true;

@@ -43,7 +43,7 @@ var d = {
                 "Der LKW hat eine Leistung von {{solution.value}} {{solution.unit}}.",
                 "Der Lastwagen generiert {{solution.value}} {{solution.unit}} an Energie"
             ]
-        }
+        },
         {
             "type": "tpla",
             "title": "Aufgabe 2",
@@ -89,7 +89,7 @@ var d = {
                 "Der LKW hat eine Leistung von {{solution.value}} {{solution.unit}}.",
                 "Der Lastwagen hat eine potentielle Energie von {{solution.value}} {{solution.unit}}."
             ]
-        }
+        },
         {
             "type": "tpla",
             "title": "Aufgabe 3",
@@ -135,7 +135,7 @@ var d = {
                 "Der LKW hat eine Wärmeenergie von {{solution.value}} {{solution.unit}}.",
                 "Der Lastwagen hat eine potentielle Energie von {{solution.value}} {{solution.unit}}."
             ]
-        }
+        },
         {
             "type": "tpla",
             "title": "Aufgabe 4",
