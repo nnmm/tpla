@@ -13,6 +13,7 @@ var controller = (function() {
  		model.nextSection();
 
  		// persistent data
+ 		localStorage.clear("lives");
  		var lives = model.getLives();
  		// TODO: initialize/load timer and subtask
 
@@ -31,6 +32,7 @@ var controller = (function() {
  			var correct = model.section[index - 1].verify(userInput);
  			if (!correct) {
  				controller.subtractLife();
+ 				view.showLives(model.getLives());
  			};
  			view.updateTable(index);
  		} else if (index < 5) {
@@ -51,11 +53,6 @@ var controller = (function() {
 	my.subtractLife = function() {
 		model.subtractLife();
 		view.showLives();
-	};
-
-	my.verifySolution = function() {
-		var selection = view.getDropdownSelection();
-		// TODO
 	};
 
 	return my;
@@ -207,6 +204,34 @@ var model = (function() {
 		my.extraLife = true;
 	};
 
+	my.getCurSection = function() {
+		return my.curSection;
+	};
+
+	my.nextSection = function() {
+		my.curSection = my.curSection + 1;
+	};
+
+	my.getLives = function () {
+		// retrieve lives from localStorage
+		var lives = parseInt(localStorage.getItem("lives"));
+		// if there is nothing stored, reset lives to 3
+		if (isNaN(lives)) {
+			lives = 3;
+			localStorage.setItem("lives", 3);
+		};
+		return lives;
+	};
+
+	my.subtractLife = function (lives) {
+		localStorage.setItem("lives", Math.max(my.getLives()-1, 0));
+		model.extraLife = false;
+	};
+
+	my.addLife = function (lives) {
+		localStorage.setItem("lives", my.getLives()+1);
+	};
+
 	var verifyDropdownSelection = function(userInput) {
 		var correction = [];
 		// store if the input occurs in solution and vice versa
@@ -296,34 +321,6 @@ var model = (function() {
 		view.showInputCorrection(correct);
 		this.correct = correct;
 		return correct;
-	};
-
-	my.getLives = function () {
-		// retrieve lives from localStorage
-		var lives = parseInt(localStorage.getItem("lives"));
-		// if there is nothing stored, reset lives to 3
-		if (isNaN(lives)) {
-			lives = 3;
-			localStorage.setItem("lives", 3);
-		};
-		return lives;
-	};
-
-	my.subtractLife = function (lives) {
-		localStorage.setItem("lives", Math.max(my.getLives()-1, 0));
-		model.extraLife = false;
-	};
-
-	my.addLife = function (lives) {
-		localStorage.setItem("lives", my.getLives()+1);
-	};
-
-	my.getCurSection = function() {
-		return my.curSection;
-	};
-
-	my.nextSection = function() {
-		my.curSection = my.curSection + 1;
 	};
 
 	return my;
@@ -427,30 +424,6 @@ var view = (function() {
 		};
 	};
 
-	var getDropdownSelection = function() {
-		var selectedGegeben = [],
-			selectedGesucht = {};
-		$(".select-row-gegeben").each(function(index) {
-			var selected = {};
-			$(this).find("select").each(function() {
-				selected[$(this).attr("name")] = $(this).val();
-			});
-			selectedGegeben.push(selected);
-		});
-		$(".select-row-gesucht select").each(function(index) {
-			selectedGesucht[$(this).attr("name")] = $(this).val();
-		});
-		return {"selectedGegeben": selectedGegeben, "selectedGesucht": selectedGesucht};
-	};
-
-	var getMultipleChoiceSelection = function() {
-		return $("input:radio:checked").val();
-	};
-
-	var getTextInputSelection = function() {
-		return $('input').val();
-	}
-
 	my.showDropdownCorrection = function(given, allSolutions, unknown) {
 		$(".select-row-gegeben").each(function(index) {
 			var $iconSpan = $(this).find("span")
@@ -487,6 +460,30 @@ var view = (function() {
 			$('input').next('span').addClass('glyphicon glyphicon-remove');
 			$('input').parent().addClass('has-error');
  		};
+	};
+
+	var getDropdownSelection = function() {
+		var selectedGegeben = [],
+			selectedGesucht = {};
+		$(".select-row-gegeben").each(function(index) {
+			var selected = {};
+			$(this).find("select").each(function() {
+				selected[$(this).attr("name")] = $(this).val();
+			});
+			selectedGegeben.push(selected);
+		});
+		$(".select-row-gesucht select").each(function(index) {
+			selectedGesucht[$(this).attr("name")] = $(this).val();
+		});
+		return {"selectedGegeben": selectedGegeben, "selectedGesucht": selectedGesucht};
+	};
+
+	var getMultipleChoiceSelection = function() {
+		return $("input:radio:checked").val();
+	};
+
+	var getTextInputSelection = function() {
+		return $('input').val();
 	};
 
 	return my;
