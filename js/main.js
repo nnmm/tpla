@@ -6,8 +6,8 @@ var model = (function() {
 	'use strict';
 	var my = {};
 
-	my.init = function() {
-		model.prepareData(0);
+	my.init = function(index) {
+		model.prepareData(index);
 		// the user gets an extra life if no mistake is made
 		model.extraLife = true;
 		my.allownextSection = false;
@@ -116,16 +116,19 @@ var model = (function() {
 			// Basis- und Lösungsformel finden – multiple choice
 			"title": "Basis- und Lösungsformel",
 			"identifier": "formeln",
+			"width": "900px",
+			"height": "400px",
+			"optionsEquations": sd.equations,
 			"solutionEquations": sd.equations,
 			"solution": sd.solution.equation,
-			"options": util.shuffle([].concat(sd.alternative_solution_equations, sd.solution.equation)),
+			"options": util.shuffle([].concat(util.renderFractions(sd.alternative_solution_equations), util.renderFraction(sd.solution.equation))),
 			"verify": verifyMultipleChoice,
 		});
 		my.section.push({
 			// Einheiten vereinfachen – multiple choice
 			"title": "Einheitenrechnung",
 			"identifier": "einheiten",
-			"options": util.shuffle([].concat(sd.units.correct, sd.units.wrong)),
+			"options": util.shuffle([].concat(util.renderFraction(sd.units.correct), util.renderFractions(sd.units.wrong))),
 			"solution": sd.units.correct,
 			"letter": sd.solution.letter,
 			"unit": sd.solution.unit,
@@ -241,7 +244,7 @@ var view = (function() {
 	'use strict';
 	var my = {};
 
-	my.init = function() {
+	my.init = function(index) {
 		view.showLives();
 		view.registerListeners();
 		// for debugging
@@ -447,8 +450,8 @@ var controller = (function() {
 $(document).ready(function(){
 	'use strict';
 
-	model.init();
-	view.init();
+	model.init(0);
+	view.init(0);
 });
 
 
@@ -501,6 +504,14 @@ var util = (function() {
     		}
     	}  
     	return result; 
+    };
+
+    my.renderFractions = function(data){
+    	var result = [];
+    	for (var i = 0; i < data.length ; i++) {
+    		result.push(util.renderFraction(data[i]));
+    	};
+    	return result;
     };
 
     return my;
