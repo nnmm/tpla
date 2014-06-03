@@ -91,6 +91,7 @@ var model = (function() {
 				for (var i = 1; i < 4; i++) {
 					$('.select-row-gegeben:last').after(selectRow);
 				};
+				$('select').first().focus();
 			}
 		});
 
@@ -99,12 +100,15 @@ var model = (function() {
 			"title": "Basis- und Lösungsformel",
 			"identifier": "formeln",
 			"type": "multipleChoice",
-			"width": "900px",
+			"width": function() {
+				return ($('#center-stage').width() * 0.8) + "px"
+			},
 			"height": "400px",
 			"optionsEquations": sd.equations,
 			"solutionEquations": sd.equations,
 			"solution": sd.solution.equation,
 			"options": function() {
+				console.log();
 				var opts = [];
 				var values = util.shuffle([].concat(sd.alternative_solution_equations, sd.solution.equation));
 				for (var i = 0; i < values.length; i++) {
@@ -163,7 +167,10 @@ var model = (function() {
 				options.push(sd.solution.value + " " + sd.solution.unit_long);
 				return options;
 			},
-			verify: verifyTextInput,
+			"verify": verifyTextInput,
+			"onRender": function() {
+				$('input').focus();
+			},
 		});
 
 		my.section.push({
@@ -297,7 +304,9 @@ var model = (function() {
 		// unknown
 		var unknownCorrect = "false";
 		var inputGesucht = userInput.selectedGesucht;
-		if (inputGesucht.letter === this.solutionUnknown.letter && inputGesucht.index === this.solutionUnknown.index && inputGesucht.unit === this.solutionUnknown.unit) {
+		if (inputGesucht.letter === this.solutionUnknown.letter &&
+			inputGesucht.index === this.solutionUnknown.index &&
+			inputGesucht.unit === this.solutionUnknown.unit) {
 			unknownCorrect = "true";
 		};
 		view.showDropdownCorrection(inputMatched, allSolutions, unknownCorrect);
@@ -506,6 +515,7 @@ $(document).ready(function(){
 var util = (function() {
     var my = {};
 
+    // use in combination with slice()
     my.shuffle = function(array) {
 		var counter = array.length, temp, index;
 
@@ -522,8 +532,19 @@ var util = (function() {
 	        array[counter] = array[index];
 	        array[index] = temp;
 	    }
-
 	    return array;
+    };
+
+    my.unique = function(array) {
+       var u = {}, a = [];
+       for(var i = 0, l = array.length; i < l; ++i){
+          if(u.hasOwnProperty(array[i])) {
+             continue;
+          }
+          a.push(array[i]);
+          u[array[i]] = 1;
+       }
+       return a;
     };
 
     my.renderFraction = function(data) {
@@ -561,6 +582,8 @@ var util = (function() {
     	};
     	return result;
     };
+
+
 
     return my;
 }());
