@@ -86,13 +86,12 @@ var model = (function() {
 			"verify": verifyDropdownSelection,
 			"onRender": function() {
 				// oh no view code in model!
-				var selectRow = $('.select-row-gegeben').html();
-				selectRow = '<div class="row select-row-gegeben form-horizontal">' + selectRow + '</div>';
+				var selectRow = $('.select-row-gegeben')[0].outerHTML;
 				for (var i = 1; i < 4; i++) {
 					$('.select-row-gegeben:last').after(selectRow);
 				};
 				$('select').first().focus();
-			}
+			},
 		});
 
 		my.section.push({
@@ -351,6 +350,13 @@ var view = (function() {
 
 	my.registerListeners = function() {
 		$("#pruefen").click(controller.pruefenWeiter);
+
+		$('html').keypress(function (e) {
+		  if (e.which == 13) {
+		    $('#pruefen').focus().click();
+		    return false;
+		  }
+		});
 	};
 
 	my.updateTable = function(index) {
