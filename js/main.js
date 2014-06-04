@@ -2,14 +2,14 @@
 // controller
 var controller = (function() {
 	'use strict';
- 	var my = {};
+ 	var my = {},
+ 		allownextSection = false;
 
- 	var allownextSection = false;
 
 	// is called only on pageload
  	my.init = function() {
 
- 		model.initSubtask(0);
+ 		model.initSubtask();
  		
  		// persistent data
  		localStorage.clear("lives");
@@ -17,7 +17,6 @@ var controller = (function() {
  		// TODO: initialize/load timer and subtask
 
  		view.showLives(lives);
- 		view.renderProblem();
  		view.registerListeners();
 		view.updateTable(0);
 		view.updateCenterStage(0);
@@ -39,9 +38,15 @@ var controller = (function() {
  			model.nextSection();
  		} else {
  			view.renderProblem();
- 			model.initSubtask(0);
+ 			// Are there further subtasks?
+ 			var success = model.initSubtask();
+ 			if (success) {
  			view.updateTable(0);
  			view.updateCenterStage(0);
+ 			} else {
+ 				// We're at the end of the exercise
+ 				$("#problem-container, #table-container, #center-stage").delay(1500).addClass("fade");
+ 			};
  		};
  		allownextSection = !allownextSection;
 		view.toggleWeiter(allownextSection);
@@ -68,9 +73,16 @@ var model = (function() {
 	var my = {};
 
 	// is called at the beginning of each subtask
-	my.initSubtask  = function(index) {
-		
-		var sd = d.subtasks[index];
+	my.initSubtask  = function() {
+		// ugly?
+		if (typeof my.curSubtask === 'undefined') {
+			my.curSubtask = 0;
+		};
+		if (my.curSubtask == d.subtasks.length) {
+			return false;
+		};
+		var sd = d.subtasks[my.curSubtask];
+		my.curSubtask++;
 
 		// contains *all* the data required for one section
 		my.section = [];
@@ -105,9 +117,10 @@ var model = (function() {
 			"height": "400px",
 			"optionsEquations": sd.equations,
 			"solutionEquations": sd.equations,
+			"givenVariables": sd.given,
+			"unknownVariable": { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit},
 			"solution": sd.solution.equation,
 			"options": function() {
-				console.log();
 				var opts = [];
 				var values = util.shuffle([].concat(sd.alternative_solution_equations, sd.solution.equation));
 				for (var i = 0; i < values.length; i++) {
@@ -127,8 +140,7 @@ var model = (function() {
 				    });
 				    eqCanvas.addEquations(eqs);
 		 		});
-				eqCanvas.init();
-				eqCanvas.addGivenQuantities();
+				eqCanvas.init(this.givenVariables, this.unknownVariable);
 			}
 		});
 
@@ -207,10 +219,26 @@ var model = (function() {
 		// could be more elegant
 		my.data.table = my.section;
 		my.curSection = 1;
+		view.renderProblem({
+			"title": d.title,
+			"blocktext": d.blocktext,
+			"problem": sd.problem
+		});
 
 		// the user gets an extra life if no mistake is made
 		my.extraLife = true;
+
+		return true;
 	};
+
+	my.getCurSubtask = function() {
+
+		return my.curSubtask;
+	};
+
+	my.nextSubtask = function() {
+		my.curSubtask++;
+	}
 
 	my.getCurSection = function() {
 		return my.curSection;
@@ -342,16 +370,16 @@ var view = (function() {
 	'use strict';
 	var my = {};
 
-	my.renderProblem = function() {
+	my.renderProblem = function(problemData) {
 		var template = $('#tmpl-problem').html();
-		var rendered = Mustache.render(template, model.data);
+		var rendered = Mustache.render(template, problemData);
 		$("#problem-container").html(rendered);
 	};
 
 	my.registerListeners = function() {
 		$("#pruefen").click(controller.pruefenWeiter);
 
-		$('html').keypress(function (e) {
+		$(document).keypress(function (e) {
 		  if (e.which == 13) {
 		    $('#pruefen').focus().click();
 		    return false;

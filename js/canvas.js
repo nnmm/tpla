@@ -4,10 +4,11 @@ var eqCanvas = (function() {
   var my = {},
     equations = [],
     quantities = [],
+    rawVariables,
     bg,
     stage;
 
-  my.init = function() {
+  my.init = function(givenVariables, unknownVariables) {
     // see easelJS documentation
     stage = new createjs.Stage('demoCanvas');
     stage.mouseMoveOutside = true;
@@ -16,16 +17,19 @@ var eqCanvas = (function() {
     bg = new createjs.Shape();
     stage.addChildAt(bg, 0);
     bg.graphics.beginFill('rgb(240, 240, 240)').drawRect(0, 0, stage.canvas.width, stage.canvas.height);
+
+    // given variables
+    rawVariables = [].concat(unknownVariables, givenVariables);
+    my.resetVariables();
     stage.update();
   };
 
 
-  my.addGivenQuantities = function () {
-    quantities.push(new Variable('Δt', 850, 50, "given", null));
-    quantities.push(new Variable('m', 850, 100, "given", null));
-    quantities.push(new Variable('g', 850, 150, "given", null));
-    quantities.push(new Variable('h', 850, 200, "given", null));
-    quantities.push(new Variable('P', 850, 350, "unknown", null));
+  my.resetVariables = function () {
+    quantities.push(new Variable(rawVariables[0].letter, 850, 350, "unknown", null));
+    for (var i = 1; i < rawVariables.length; i++) {
+      quantities.push(new Variable(rawVariables[i].letter, 850, i*50, "given", null));
+    };
     stage.update();
   };
 
@@ -42,8 +46,8 @@ var eqCanvas = (function() {
       equations.push(new Equation(textarray[i], eqOffset, 150));
       eqOffset = (eqOffset + 250) % 800;
     };
+    my.resetVariables();
     stage.update();
-    my.addGivenQuantities();
   };
 
   my.checkCompleteness = function () {
@@ -93,10 +97,8 @@ var eqCanvas = (function() {
     this.on('pressmove', handleMove);
 
     // TODO: factor out all the boilerplate above into own class
-
-    // e. g. E = m⋅g⋅h becomes ['E', 'm', 'g', 'h']
-    this.variablesAsStrings = text.replace(/\s+/g, '').split(/=|\*|\⋅|\/|\+|\-/);
-
+    this.variablesAsStrings = textToVariables(text);
+    
     // arrange the variables in a circle around the center
     var radius = 100, angle = Math.PI;
     this.variablen = [];
@@ -183,6 +185,20 @@ var eqCanvas = (function() {
     this.shape.graphics.clear();
     this.shape.graphics.beginFill(color).drawCircle(0, 0, 2*RADIUS);
   };
+
+
+  var textToVariables = function(text) {
+    // e. g. E = m⋅g⋅h becomes ['E', 'm', 'g', 'h']
+    // replace() removes whitespace and other characters
+    var variableArray = text.replace(/\s+|²|½/g, '').split(/=|\*|\⋅|\/|\+|\-/);
+    for (var i = 0; i < variableArray.length; i++) {
+      if (variableArray[i] == "") {         
+        variableArray.splice(i, 1);
+        i--;
+      };
+    };
+    return variableArray;
+  }
 
 
 

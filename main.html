@@ -119,7 +119,7 @@
     </script>
 
     <script id="tmpl-table-einheiten" type="x-tmpl-mustache">
-      [{{letter}}] = {{unit}}
+      [{{letter}}] = {{solution}} = {{unit}}
     </script>
 
     <script id="tmpl-table-ergebnis" type="x-tmpl-mustache">
@@ -155,8 +155,8 @@
           </div>
           <div class="col-xs-1 nopadding">
             <p class="text-center form-control-static">=</p>
-            </div>
-            <div class="col-xs-2 nopadding">
+          </div>
+          <div class="col-xs-2 nopadding">
             <select class="form-control input-sm" name="value">
               <option></option>
               {{#optionsGiven}}
@@ -199,6 +199,9 @@
               {{/optionsUnknown}}
             </select>
           </div>
+          <div class="col-xs-1 nopadding">
+            <p class="text-center form-control-static">in</p>
+          </div>
           <div class="col-xs-2 nopadding">
             <select class="form-control input-sm" name="unit">
               <option></option>
@@ -209,7 +212,7 @@
           </div>
           <div class="col-xs-1 nopadding">
           </div>
-          <div class="col-xs-5 nopadding">
+          <div class="col-xs-1 nopadding">
             <p class="form-control-static"><span>&nbsp;</span></p>
           </div>
         </div>
@@ -281,6 +284,6 @@
     <script src="js/main.js"></script>
     <script src="js/canvas.js"> </script>
     <script src="js/mustache.js"></script>
-    <script src="example.js"></script>
+    <script src="data.js"></script>
   </body>
 </html>
