@@ -39,7 +39,7 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><button type="button" id="pruefen" class="btn btn-default navbar-btn">Prüfen</button></li>
+        <li><button type="button" id="pruefen" class="btn btn-default navbar-btn btn-success">Prüfen</button></li>
         <li><p id="timer" class="navbar-text">[Todo: Timer]</p></li>
       </ul>
       <ul id="lives" class="nav navbar-nav navbar-right">
@@ -136,53 +136,53 @@
     <script id="tmpl-groessen" type="x-tmpl-mustache">
       <div class="col-md-5 nopadding">
         <p><strong>Gegebene Größen:</strong> Trage die gegebenen Größen mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
-        <div class="select-row-gegeben">
+        <div class="row select-row-gegeben form-horizontal">
           <div class="col-xs-2 nopadding">
-          <select class="form-control input-sm" name="letter">
-            <option></option>
-            {{#optionsGiven}}
-            <option>{{letter}}</option>
-            {{/optionsGiven}}
-          </select>
+            <select class="form-control input-sm" name="letter">
+              <option></option>
+              {{#optionsGiven}}
+              <option>{{letter}}</option>
+              {{/optionsGiven}}
+            </select>
           </div>
           <div class="col-xs-2 nopadding">
-          <select class="form-control input-sm" name="index">
-            <option></option>
-            {{#optionsGiven}}
-            <option>{{index}}</option>
-            {{/optionsGiven}}
-          </select>
+            <select class="form-control input-sm" name="index">
+              <option></option>
+              {{#optionsGiven}}
+              <option>{{index}}</option>
+              {{/optionsGiven}}
+            </select>
           </div>
           <div class="col-xs-1 nopadding">
-          <p class="text-center">=</p>
+            <p class="text-center form-control-static">=</p>
+            </div>
+            <div class="col-xs-2 nopadding">
+            <select class="form-control input-sm" name="value">
+              <option></option>
+              {{#optionsGiven}}
+              <option>{{value}}</option>
+              {{/optionsGiven}}
+            </select>
           </div>
           <div class="col-xs-2 nopadding">
-          <select class="form-control input-sm" name="value">
-            <option></option>
-            {{#optionsGiven}}
-            <option>{{value}}</option>
-            {{/optionsGiven}}
-          </select>
-          </div>
-          <div class="col-xs-2 nopadding">
-          <select class="form-control input-sm" name="unit">
-            <option></option>
-            {{#optionsGiven}}
-            <option>{{unit}}</option>
-            {{/optionsGiven}}
-          </select>
+            <select class="form-control input-sm" name="unit">
+              <option></option>
+              {{#optionsGiven}}
+              <option>{{unit}}</option>
+              {{/optionsGiven}}
+            </select>
           </div>
           <div class="col-xs-1 nopadding">
           </div>
           <div class="col-xs-2 nopadding">
-            <p><span>&nbsp;</span></p>
+            <p class="form-control-static"><span>&nbsp;</span></p>
           </div>
         </div>
       </div>
       <div class="col-md-1 nopadding"></div>
       <div class="col-md-5 nopadding">
-        <p><strong>Gesuchte Größen:</strong>Trage die gesuchte Größe mit Formelzeichen, optionalem Index und Einheit unten ein!</p>
-        <div class="select-row-gesucht">
+        <p><strong>Gesuchte Größen:</strong> Trage die gesuchte Größe mit Formelzeichen, optionalem Index und Einheit unten ein!</p>
+        <div class="select-row-gesucht form-horizontal">
           <div class="col-xs-2 nopadding">
             <select class="form-control input-sm" name="letter">
               <option></option>
@@ -190,26 +190,27 @@
               <option>{{letter}}</option>
               {{/optionsUnknown}}
             </select>
-            </div>
-            <div class="col-xs-2 nopadding">
+          </div>
+          <div class="col-xs-2 nopadding">
             <select class="form-control input-sm" name="index">
               <option></option>
               {{#optionsUnknown}}
               <option>{{index}}</option>
               {{/optionsUnknown}}
             </select>
-            </div>
-            <div class="col-xs-2 nopadding">
+          </div>
+          <div class="col-xs-2 nopadding">
             <select class="form-control input-sm" name="unit">
               <option></option>
               {{#optionsUnknown}}
               <option>{{unit}}</option>
               {{/optionsUnknown}}
             </select>
-            </div>
-          <div class="col-xs-1 nopadding"></div>
+          </div>
+          <div class="col-xs-1 nopadding">
+          </div>
           <div class="col-xs-5 nopadding">
-            <p><span>&nbsp;</span></p>
+            <p class="form-control-static"><span>&nbsp;</span></p>
           </div>
         </div>
       </div>

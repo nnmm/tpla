@@ -104,7 +104,8 @@ var d = {
             ],
             "equations": [
                 "E = ½⋅m⋅v²",
-                "E = ½⋅m⋅v²"
+                "E = ½⋅m⋅v²",
+                "∆E = E - E"
             ],
             "solution": {
                 "letter": "E",
@@ -155,7 +156,7 @@ var d = {
             ],
             "solution": {
                 "letter": "P",
-                "index": "",
+                "index": "Beschleunigung",
                 "value": 10,
                 "unit": "kW",
                 "unit_long": "Kilowatt",
@@ -181,6 +182,50 @@ var d = {
                 "Die Uhr generiert {{solution.value}} {{solution.unit}} an Leisung",
                 "Da ist schon wieder ein Stau. Der LKW rast hinein und es gibt 300 Tote",
                 "Der Lastwagen hat jetzt eine potentielle Energie von {{solution.value}} {{solution.unit}}."
+            ]
+        }
+        {
+            "type": "tpla",
+            "title": "Aufgabe 5",
+            "problem": "Im Fahrzeugschein des LKWs steht, dass der Motor eine Leistung von 500 kW beträgt. Welcher Bruchteil der Motorleistung wird für die vorherige Beschleunigung benötigt?",
+            "image": false,
+            "given": [
+                { "letter": "P",  "index": "Beschleunigung", "value": 10, "unit": "t" }
+                { "letter": "P",  "index": "Motor", "value": 500, "unit": "kW" }
+
+
+            ],
+            "equations": [
+                "Bruchteil = P/P"
+            ],
+            "solution": {
+                "letter": "P",
+                "index": "",
+                "value": 0.02,
+                "unit": "",
+                "unit_long": "",
+                "equation": "Bruchteil = P/P",
+            },
+            "alternative_solution_equations": [
+                "Bruchteil = P*P",
+                "Bruchteil = P+P",
+                "Bruchteil = P-P",
+                "Bruchteil = P²"
+            ],
+            "units": {
+                "correct": "W/W",
+                "wrong": [
+                    "W*W",
+                    "W²"
+                ]
+            },
+
+            "correct_solution_phrase": "Der Bruchteil der Motorleistung der für die Beschleunigung nötig ist beträgt {{solution.value*100}} %.",
+            "alternative_solution_phrases": [
+                "Der Motor braucht {{solution.value}} {{solution.unit}} mal so viel Leistung, wie normal.",
+                "Der Bruchteil der Motorleistung der für die Beschleunigung nötig ist beträgt {{solution.value}} %.",
+                "Da ist schon wieder ein Stau. Der LKW rast hinein und es gibt 0.02 Tote",
+                "Der  Motorleistung wird nur teilweise ausgenutzt."
             ]
         }
     ]

@@ -87,7 +87,7 @@ var model = (function() {
 			"onRender": function() {
 				// oh no view code in model!
 				var selectRow = $('.select-row-gegeben').html();
-				selectRow = '<div class="select-row-gegeben">' + selectRow + '</div>';
+				selectRow = '<div class="row select-row-gegeben form-horizontal">' + selectRow + '</div>';
 				for (var i = 1; i < 4; i++) {
 					$('.select-row-gegeben:last').after(selectRow);
 				};
