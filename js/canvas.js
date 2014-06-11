@@ -4,6 +4,8 @@ var eqCanvas = (function() {
   var my = {},
     equations = [],
     quantities = [],
+    WIDTH,
+    HEIGTH,
     rawVariables,
     bg,
     stage;
@@ -12,6 +14,9 @@ var eqCanvas = (function() {
     // see easelJS documentation
     stage = new createjs.Stage('demoCanvas');
     stage.mouseMoveOutside = true;
+
+    var canvas = document.getElementById('demoCanvas');
+    WIDTH = canvas.width;
 
     // background
     bg = new createjs.Shape();
@@ -26,9 +31,9 @@ var eqCanvas = (function() {
 
 
   my.resetVariables = function () {
-    quantities.push(new Variable(rawVariables[0].letter, 850, 350, "unknown", null));
+    quantities.push(new Variable(rawVariables[0].letter, WIDTH-50, 350, "unknown", null));
     for (var i = 1; i < rawVariables.length; i++) {
-      quantities.push(new Variable(rawVariables[i].letter, 850, i*50, "given", null));
+      quantities.push(new Variable(rawVariables[i].letter, WIDTH-50, i*50, "given", null));
     };
     stage.update();
   };
@@ -42,9 +47,9 @@ var eqCanvas = (function() {
 
     var eqOffset = 150;
     stage.addChildAt(bg, 0);
-    for (var i = Math.min(textarray.length - 1, 2); i >= 0; i--) {
+    for (var i = Math.min(textarray.length - 1, 3); i >= 0; i--) {
       equations.push(new Equation(textarray[i], eqOffset, 150));
-      eqOffset = (eqOffset + 250) % 800;
+      eqOffset = (eqOffset + 250) % (WIDTH-100);
     };
     my.resetVariables();
     stage.update();

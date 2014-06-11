@@ -2,6 +2,14 @@ var d = {
     "block": "Kuckucksuhr",
     "blocktext": "Eine Kuckucksuhr hängt an der Wand und tickt schon seit 250 Jahren vor sich hin. Die beiden Eisengewichte (Fichtenzapfen) von je 3,5 kg werden einmal in der Woche hochgezogen und liefern auf ihrer Talfahrt von 85 cm die nötige Energie für das Uhrwerk und den Antrieb des Kuckucks.",
     "subtasks": [
+
+
+
+
+
+
+
+    
         {
             "type": "tpla",
             "title": "Aufgabe 1",
@@ -47,5 +55,16 @@ var d = {
                 "Die Uhr generiert {{solution.value}} {{solution.unit}} an Leistung"
             ]
         }
+
+
+
+
+
+
     ]
 };
+
+
+
+
+

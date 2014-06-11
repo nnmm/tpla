@@ -112,7 +112,7 @@ var model = (function() {
 			"identifier": "formeln",
 			"type": "multipleChoice",
 			"width": function() {
-				return ($('#center-stage').width() * 0.8) + "px"
+				return ($('#center-stage').width() * 1) + "px"
 			},
 			"height": "400px",
 			"optionsEquations": sd.equations,
@@ -126,7 +126,7 @@ var model = (function() {
 				for (var i = 0; i < values.length; i++) {
 					opts.push({
 						"val": values[i],
-						"text": util.renderFraction(values[i]),
+						"text": util.fractionize(values[i]),
 					});
 				};
 				return opts;
@@ -155,7 +155,7 @@ var model = (function() {
 				for (var i = 0; i < values.length; i++) {
 					opts.push({
 						"val": values[i],
-						"text": util.renderFraction(values[i]),
+						"text": util.fractionize(values[i]),
 					});
 				};
 				return opts;
@@ -220,7 +220,7 @@ var model = (function() {
 		my.data.table = my.section;
 		my.curSection = 1;
 		view.renderProblem({
-			"title": d.title,
+			"title": sd.title,
 			"blocktext": d.blocktext,
 			"problem": sd.problem
 		});
@@ -543,6 +543,8 @@ $(document).ready(function(){
 	'use strict';
 
 	controller.init();
+	// DEBUGGING
+	util.fractionize();
 });
 
 
@@ -612,12 +614,28 @@ var util = (function() {
     my.renderFractions = function(data){
     	var result = [];
     	for (var i = 0; i < data.length ; i++) {
-    		result.push(util.renderFraction(data[i]));
+    		result.push(util.fractionize(data[i]));
     	};
     	return result;
     };
 
-
+    my.fractionize = function(string) {
+    	// http://stackoverflow.com/questions/22142058/how-to-display-all-fractions-in-web-app
+    	// TODO
+    	// var string = "E = k + [2⋅μ⋅r]/[g] ⋅ [Q]/[ΔT] + 2μ";
+    	// captures a […]/[…] pattern and everything else
+    	var re = /(\[[^\]]*\]\/\[[^\]]*\]|[^\[\]]+)/g
+    	var array = string.match(re);
+    	var result = "";
+    	for (var i = 0; i < array.length; i++) {
+    		array[i] = array[i].replace(/\[([^\]]*)\]\/\[([^\]]*)\]/g,'<span class="top">$1</span><span class="bottom">$2</span>');
+    		array[i] = array[i].replace(/([^\[\]]+)/g, '<span class="operator">$1</span>');
+    		array[i] = array[i] = '<div class="fraction">' + array[i] + '</div>';
+    		result += array[i];
+    	};
+    	//$('#tmp').html(result);
+    	return result;
+    };
 
     return my;
 }());

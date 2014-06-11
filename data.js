@@ -4,8 +4,8 @@ var d = {
     "subtasks": [
         {
             "type": "tpla",
-            "title": "Aufgabe 1",
-            "problem": "Welche kinetische Energie, in Kilojoule, besitzt der LKW?",
+            "title": "Aufgabe a",
+            "problem": "Welche kinetische Energie, in Megajoule, besitzt der LKW?",
             "image": false,
             "given": [
                 { "letter": "v", "index": "LKW", "value": "72.0", "unit": "km/h" },
@@ -17,9 +17,9 @@ var d = {
             "solution": {
                 "letter": "E",
                 "index": "LKW",
-                "value": "400",
-                "unit": "kJ",
-                "unit_long": "Kilojoule",
+                "value": "8,0",
+                "unit": "MJ",
+                "unit_long": "Megajoule",
                 "equation": "E = ½⋅m⋅v²",
             },
             "alternative_solution_equations": [
@@ -51,6 +51,7 @@ var d = {
             "given": [
                 { "letter": "v", "index": "LKW", "value": "72,0", "unit": "km/h" },
                 { "letter": "m",  "index": "LKW", "value": "40", "unit": "t" },
+                { "letter": "m",  "index": "LKW", "value": "40", "unit": "t" },
                 { "letter": "g",  "index": "", "value": "9,81", "unit": "m/s²" }
 
 
@@ -62,22 +63,22 @@ var d = {
             "solution": {
                 "letter": "h",
                 "index": "LKW",
-                "value": "40,8",
+                "value": "20",
                 "unit": "m",
                 "unit_long": "Meter",
                 "equation": "h = ½⋅m⋅v²/m⋅g",
             },
             "alternative_solution_equations": [
-                "h = ½⋅m⋅v²/m⋅g²",
-                "h = ½⋅v²/m⋅g",
+                "h = [½⋅m⋅v²]/[m⋅g²]",
+                "h = [½⋅v²]/[m⋅g]",
                 "h = m⋅g/½⋅m⋅v",
                 "h = m⋅g/½⋅m⋅v²"
             ],
             "units": {
-                "correct": "(m/s)²/(m/s²)",
+                "correct": "[m/s]²/[m/s²]",
                 "wrong": [
-                    "(m/s²)/(m/s)²",
-                    "(m²/s)/(m/s²)"
+                    "[m/s²]/[m/s²]",
+                    "[m²/s]/[m/s²]"
                 ]
             },
 
@@ -97,6 +98,7 @@ var d = {
             "given": [
                 { "letter": "v", "index": "max", "value": 72, "unit": "km/h" },
                 { "letter": "v",  "index": "min", "value": 18, "unit": "km/h" },
+                { "letter": "m",  "index": "LKW", "value": 40, "unit": "t" },
                 { "letter": "m",  "index": "LKW", "value": 40, "unit": "t" }
             ],
             "equations": [
@@ -105,18 +107,18 @@ var d = {
                 "∆E = E - E"
             ],
             "solution": {
-                "letter": "ΔE",
+                "letter": "∆E",
                 "index": "",
-                "value": "300",
-                "unit": "kJ",
-                "unit_long": "Kilojoule",
+                "value": "7,5",
+                "unit": "mJ",
+                "unit_long": "Megajoule",
                 "equation": "∆E = ½⋅m⋅v² - ½⋅m⋅v²",
             },
             "alternative_solution_equations": [
-                "E = ½⋅m⋅v² - ½⋅m⋅v²",
-                "E = ½⋅m⋅v² + ½⋅m⋅v²",
-                "E = ½⋅m⋅v - ½⋅m⋅v²",
-                "E = ½⋅m⋅v² - ½⋅m⋅v"
+                "∆E = ½⋅m⋅v + ½⋅m⋅v²",
+                "∆E = ½⋅m⋅v² + ½⋅m⋅v²",
+                "∆E = ½⋅m⋅v - ½⋅m⋅v²",
+                "∆E = ½⋅m⋅v² - ½⋅m⋅v"
             ],
             "units": {
                 "correct": "kg⋅m²/s² - kg⋅m²/s²",
@@ -126,7 +128,7 @@ var d = {
                 ]
             },
 
-            "correct_solution_phrase": "Die überführte Energiebetrag beträgt {{solution.value}} {{solution.unit}}.",
+            "correct_solution_phrase": "Der überführte Energiebetrag beträgt {{solution.value}} {{solution.unit}}.",
             "alternative_solution_phrases": [
                 "Es entsteht eine Energie von {{solution.value}} {{solution.unit}}.",
                 "Der Lastwagen schafft es nicht mehr abzubremsen. Es gibt einen Unfall mit {{solution.value}} Toten.",
@@ -140,20 +142,24 @@ var d = {
             "problem": "Da der Verkehr bald wieder fließt, beschleunigt der LKW jetzt wieder von 18 auf 54 km/h. Er benötigt dafür 20 Sekunden. Welche durchschnittliche Leistung ist für den Beschleunigungsvorgang nötig?",
             "image": false,
             "given": [
-                { "letter": "v", "index": "max", "value": "80", "unit": "km/h" },
-                { "letter": "v",  "index": "min", "value": "10", "unit": "km/h" },
-                { "letter": "m",  "index": "LKW", "value": "40", "unit": "t" }
+                { "letter": "v", "index": "max", "value": "54", "unit": "km/h" },
+                { "letter": "v",  "index": "min", "value": "18", "unit": "km/h" },
+                { "letter": "m",  "index": "LKW", "value": "40", "unit": "t" },
+                { "letter": "m",  "index": "LKW", "value": "40", "unit": "t" },
+                { "letter": "∆t",  "index": "Beschleunigung", "value": "20", "unit": "s" }
 
 
             ],
             "equations": [
-                "P = E/Δt",
+                "P = ∆E/Δt",
+                "∆E = E - E",
+                "E = ½⋅m⋅v²",
                 "E = ½⋅m⋅v²"
             ],
             "solution": {
                 "letter": "P",
                 "index": "Beschleunigung",
-                "value": "10",
+                "value": "200",
                 "unit": "kW",
                 "unit_long": "Kilowatt",
                 "equation": "P = (½⋅m⋅v² - ½⋅m⋅v²)/Δt",
@@ -175,7 +181,7 @@ var d = {
             "correct_solution_phrase": "Die Leistung, die zur Beschleunigung des LKWs nötig ist beträgt {{solution.value}} {{solution.unit}}.",
             "alternative_solution_phrases": [
                 "Die Leistung des LKWs pro Sekunde beträgt {{solution.value}} {{solution.unit}}.",
-                "Die Uhr generiert {{solution.value}} {{solution.unit}} an Leisung",
+                "Der LKW generiert {{solution.value}} {{solution.unit}} an Leisung",
                 "Da ist schon wieder ein Stau. Der LKW rast hinein und es gibt 300 Tote.",
                 "Der Lastwagen hat jetzt eine potentielle Energie von {{solution.value}} {{solution.unit}}."
             ]
@@ -186,7 +192,7 @@ var d = {
             "problem": "Im Fahrzeugschein des LKWs steht, dass der Motor eine maximale Leistung von 500 kW aufweist. Welcher Bruchteil α der maximalen Motorleistung wird für die vorherige Beschleunigung benötigt?",
             "image": false,
             "given": [
-                { "letter": "P",  "index": "Beschleunigung", "value": "10", "unit": "t" },
+                { "letter": "P",  "index": "Beschleunigung", "value": "200", "unit": "kW" },
                 { "letter": "P",  "index": "Motor", "value": "500", "unit": "kW" }
             ],
             "equations": [
@@ -195,7 +201,7 @@ var d = {
             "solution": {
                 "letter": "α",
                 "index": "",
-                "value": "2",
+                "value": "40",
                 "unit": "%",
                 "unit_long": "",
                 "equation": "α = P/P",
@@ -216,8 +222,8 @@ var d = {
             "correct_solution_phrase": "Der Bruchteil der Motorleistung der für die Beschleunigung nötig ist beträgt {{solution.value}} {{solution.unit}}.",
             "alternative_solution_phrases": [
                 "Der Motor braucht {{solution.value}} {{solution.unit}} mal so viel Leistung, wie normal.",
-                "Der Bruchteil der Motorleistung der für die Beschleunigung nötig ist beträgt {{solution.value}} %.",
-                "Da ist schon wieder ein Stau. Der LKW rast hinein und es gibt 0.02 Tote",
+                "Der Bruchteil der Motorleistung der für die Beschleunigung nötig ist beträgt 0.4 %.",
+                "Da ist schon wieder ein Stau. Der LKW rast hinein und es gibt 0.4 Tote",
                 "Der  Motorleistung wird nur teilweise ausgenutzt."
             ]
         }

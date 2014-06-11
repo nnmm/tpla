@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -39,7 +39,7 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><button type="button" id="pruefen" class="btn btn-default navbar-btn btn-success">Prüfen</button></li>
+        <li><button type="button" id="pruefen" class="btn navbar-btn btn-success">Prüfen</button></li>
         <li><p id="timer" class="navbar-text">[Todo: Timer]</p></li>
       </ul>
       <ul id="lives" class="nav navbar-nav navbar-right">
@@ -74,9 +74,8 @@
     <!-- templates -->
     <script id="tmpl-problem" type="x-tmpl-mustache">
     <div class="page-header">
-      <h1>Aufgabe 1 <small>{{block}}</small></h1>
+      <h1>Aufgabe 1 <small>{{title}}</small></h1>
     </div>
-      <h3>{{title}}</h3>
       <p>{{blocktext}}</p>
       <p>{{problem}}</p>
     </script>
@@ -85,14 +84,14 @@
       <table class="table table-condensed">
         <thead>
           <tr>
-            <th class="col-sm-4">Schritt</th>
-            <th class="col-sm-8">Ergebnis</th>
+            <th class="col-sm-3">Schritt</th>
+            <th class="col-sm-9">Ergebnis</th>
           </tr>
         </thead>
         <tbody>
           {{#table}}
           <tr>
-            <td><button type="button" class="btn btn-link nopadding"></button>{{title}}</td>
+            <td>{{title}}</td>
             <td>{{{tableContent}}}</td>
           </tr>
           {{/table}}
@@ -222,7 +221,7 @@
 
 
     <script id="tmpl-formeln" type="x-tmpl-mustache">
-      <p>Baue aus den Basisformeln und gegebenen Größen eine Lösungsformel!</p>
+      <p>Finde die richtigen <strong>Basisformeln</strong> setze aus ihnen die <strong>Lösungsformel</strong> zusammen, so dass die gesuchte Größe aus den gegebenen Größen errechnet werden kann!</p>
       <canvas id="demoCanvas" width={{width}} height={{height}}></canvas>
       <select name="basisformeln" multiple>
         {{#optionsEquations}}
@@ -243,7 +242,7 @@
 
 
     <script id="tmpl-einheiten" type="x-tmpl-mustache">
-      <p>Ausgehend von der Lösungsformel mit eingesetzten Einheiten, was ist der richtige Zwischenschritt beim Errechnen der Einheit von P?</p>
+      <p>Welcher der untenstehenden Ausdrücke stellt einen richtigen Zwischenschritt beim <strong>Vereinfachen der Einheiten</strong> der Lösungsformel dar?</p>
       <div class="btn-group" data-toggle="buttons">
         {{#options}}
         <label class="btn btn-primary">
@@ -255,21 +254,25 @@
 
 
     <script id="tmpl-ergebnis" type="x-tmpl-mustache">
-      <div class="col-md-6">
-        <p>Was ist der Wert der gesuchten Größe? Achte darauf, richtig zu runden.</p>
+      <div class="col-md-5">
+        <p>Was ist das <strong>Endergebnis</strong>? Achte darauf, richtig zu runden und die <strong>Einheit</strong> mit anzugeben.</p>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-4">
         <div class="form-group has-feedback">
           <label class="control-label">Zahl eingeben</label>
           <input type="text" class="form-control">
           <span class="form-control-feedback"></span>
         </div>
       </div>
+      <div class="col-md-2">
+      </div>
     </script>
 
 
     <script id="tmpl-antwortsatz" type="x-tmpl-mustache">
-      <p>Welcher Antwortsatz beantwortet die Aufgabe am besten?</p>
+      <p>Mit welchem der untenstehenden <strong>Antwortsätze</strong> wird die Aufgabe am genauesten beantwortet?</p>
       <div class="btn-group-vertical" data-toggle="buttons">
         {{#options}}
         <label class="btn btn-primary">
