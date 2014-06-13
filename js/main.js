@@ -93,7 +93,11 @@ var model = (function() {
 			"type": "dropdown",
 			"optionsGiven": sd.given,
 			"solutionGiven": sd.given,
-			"optionsUnknown": { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit},
+			"optionsUnknown": function() {
+				var correct = { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit};
+				var wrong = shared.given;
+				return correct;
+			},
 			"solutionUnknown": { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit},
 			"verify": verifyDropdownSelection,
 			"onRender": function() {
@@ -115,11 +119,17 @@ var model = (function() {
 				return ($('#center-stage').width() * 1) + "px"
 			},
 			"height": "400px",
-			"optionsEquations": sd.equations,
+			"optionsEquations": function() {
+				var correct = sd.equations;
+				// TODO: Only select equations that contain at least one of the variables
+				var wrong = util.shuffle(shared.equations).slice(0, 8 - correct.length);
+				return util.shuffle([].concat(wrong, correct));
+			},
 			"solutionEquations": sd.equations,
 			"givenVariables": sd.given,
 			"unknownVariable": { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit},
 			"solution": sd.solution.equation,
+			"eqs": [],
 			"options": function() {
 				var opts = [];
 				var values = util.shuffle([].concat(sd.alternative_solution_equations, sd.solution.equation));
@@ -133,12 +143,14 @@ var model = (function() {
 			},
 			"verify": verifyMultipleChoice,
 			"onRender": function() {
-				$("select[name=basisformeln]").change(function() {
-					var eqs = [];
-				    $("select[name=basisformeln] option:selected").each(function() {
-				    	eqs.push($(this).text());
-				    });
+				var eqs = this.eqs;
+				$("#basisformeln button").click(function() {
+				 	eqs.push($(this).text());
 				    eqCanvas.addEquations(eqs);
+		 		});
+		 		$("#reset_basisformeln").click(function() {
+		 			eqs = [];
+		 			eqCanvas.addEquations(eqs);
 		 		});
 				eqCanvas.init(this.givenVariables, this.unknownVariable);
 			}
@@ -174,8 +186,11 @@ var model = (function() {
 			"solution": sd.solution,
 			"solutionVariations": function() {
 				var options = [];
+				var valueDot = sd.solution.value.replace(replace(/,/g, '.'));
 				options.push(sd.solution.value + " " + sd.solution.unit);
 				options.push(sd.solution.value + " " + sd.solution.unit_long);
+				options.push(valueDot + " " + sd.solution.unit);
+				options.push(valueDot + " " + sd.solution.unit_long);
 				return options;
 			},
 			"verify": verifyTextInput,
@@ -543,8 +558,6 @@ $(document).ready(function(){
 	'use strict';
 
 	controller.init();
-	// DEBUGGING
-	util.fractionize();
 });
 
 
@@ -582,6 +595,10 @@ var util = (function() {
        }
        return a;
     };
+
+    my.generateOptions = function(correct, wrong) {
+    	return util.shuffle([].concat(wrong, correct);
+    }
 
     my.renderFraction = function(data) {
     	var fraction = data;
@@ -621,7 +638,8 @@ var util = (function() {
 
     my.fractionize = function(string) {
     	// http://stackoverflow.com/questions/22142058/how-to-display-all-fractions-in-web-app
-    	// TODO
+
+    	console.log("fractionize");
     	// var string = "E = k + [2⋅μ⋅r]/[g] ⋅ [Q]/[ΔT] + 2μ";
     	// captures a […]/[…] pattern and everything else
     	var re = /(\[[^\]]*\]\/\[[^\]]*\]|[^\[\]]+)/g

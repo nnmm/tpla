@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 
-    <title>TPLA-Demo</title>
+    <title>TPLA</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -221,15 +221,22 @@
 
 
     <script id="tmpl-formeln" type="x-tmpl-mustache">
-      <p>Finde die richtigen <strong>Basisformeln</strong> setze aus ihnen die <strong>Lösungsformel</strong> zusammen, so dass die gesuchte Größe aus den gegebenen Größen errechnet werden kann!</p>
+      <p>Finde die richtigen <strong>Basisformeln</strong>, füge sie unten hinzu, und setze aus ihnen die <strong>Lösungsformel</strong> zusammen, so dass die gesuchte Größe aus den gegebenen Größen errechnet werden kann!</p>
+      <div class="btn-toolbar">
+        <div id="reset_basisformeln" class="btn-group">
+          <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-minus"></span></button>
+          <button type="button" class="btn btn-primary">Alle entfernen</button>
+        </div>
+        <div id="basisformeln" class="btn-group">
+          <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-plus"></span></button>
+          {{#optionsEquations}}
+          <button type="button" class="btn btn-primary">{{.}}</button>
+          {{/optionsEquations}}
+        </div>
+      </div>
       <canvas id="demoCanvas" width={{width}} height={{height}}></canvas>
-      <select name="basisformeln" multiple>
-        {{#optionsEquations}}
-        <option>{{.}}</option>
-        {{/optionsEquations}}
-      </select>
       <div class="hidden">
-        <p>Wähle die richtige Lösungsformel!</p>
+        <p><span class="glyphicon glyphicon-pencil"></span> Finde nun die richtige <strong>Lösungsformel</strong>. Der obenstehende Formelbaum kann dir dabei helfen, herauszufinden wo du – falls nötig – Basisformeln <strong>ineinander einsetzen</strong> musst.</p>
         <div class="btn-group-horizontal" data-toggle="buttons">
           {{#options}}
           <label class="btn btn-primary">
@@ -242,7 +249,7 @@
 
 
     <script id="tmpl-einheiten" type="x-tmpl-mustache">
-      <p>Welcher der untenstehenden Ausdrücke stellt einen richtigen Zwischenschritt beim <strong>Vereinfachen der Einheiten</strong> der Lösungsformel dar?</p>
+      <p><span class="glyphicon glyphicon-pencil"></span> Ersetze die Größen in der Lösungsformel durch ihre <strong>Einheiten</strong> und vereinfache. Lautet die Lösungsformel beispielsweise Δx = ½⋅(Δv/Δt)⋅Δt², so sind die Einheiten [Δx] = m⋅s⁻¹⋅s⁻¹⋅s² = (kg⋅m⋅s⁻²)⋅kg⋅s² = m Welcher der untenstehenden Ausdrücke stellt dabei einen richtigen Zwischenschritt dar?</p>
       <div class="btn-group" data-toggle="buttons">
         {{#options}}
         <label class="btn btn-primary">
@@ -255,7 +262,7 @@
 
     <script id="tmpl-ergebnis" type="x-tmpl-mustache">
       <div class="col-md-5">
-        <p>Was ist das <strong>Endergebnis</strong>? Achte darauf, richtig zu runden und die <strong>Einheit</strong> mit anzugeben.</p>
+        <p><span class="glyphicon glyphicon-pencil"></span> Was ist das <strong>Endergebnis</strong>? Achte darauf, richtig zu runden und die <strong>Einheit</strong> mit anzugeben.</p>
       </div>
       <div class="col-md-1">
       </div>
@@ -287,6 +294,7 @@
     <script src="js/main.js"></script>
     <script src="js/canvas.js"> </script>
     <script src="js/mustache.js"></script>
+    <script src="js/shared.js"></script>
     <script src="data.js"></script>
   </body>
 </html>

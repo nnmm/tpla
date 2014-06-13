@@ -75,7 +75,7 @@ var d = {
                 "h = m⋅g/½⋅m⋅v²"
             ],
             "units": {
-                "correct": "[m/s]²/[m/s²]",
+                "correct": "[(m/s)²]/[m/s²]",
                 "wrong": [
                     "[m/s²]/[m/s²]",
                     "[m²/s]/[m/s²]"
@@ -146,7 +146,7 @@ var d = {
                 { "letter": "v",  "index": "min", "value": "18", "unit": "km/h" },
                 { "letter": "m",  "index": "LKW", "value": "40", "unit": "t" },
                 { "letter": "m",  "index": "LKW", "value": "40", "unit": "t" },
-                { "letter": "∆t",  "index": "Beschleunigung", "value": "20", "unit": "s" }
+                { "letter": "Δt",  "index": "Beschleunigung", "value": "20", "unit": "s" }
 
 
             ],

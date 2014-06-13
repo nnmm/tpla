@@ -14,6 +14,7 @@ body {
 
 canvas {
   margin-bottom: 15px;
+  margin-top: 15px;
 }
 
 h4 {
@@ -79,11 +80,4 @@ h4 {
 hr {
   margin-top: 40px;
   margin-bottom: 40px;
-}
-
-select[name="basisformeln"] {
-  height: 400px;
-  width: 200px;
-  vertical-align: top;
-  padding: 5px;
 }
