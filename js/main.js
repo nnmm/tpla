@@ -70,8 +70,8 @@ var controller = (function() {
 
 var model = (function() {
 	'use strict';
-	var my = {};
-
+	var my = {},
+		WRONG_OPTIONS = 5;
 	// is called at the beginning of each subtask
 	my.initSubtask  = function() {
 		// ugly?
@@ -91,12 +91,46 @@ var model = (function() {
 			"title": "Größen",
 			"identifier": "groessen",
 			"type": "dropdown",
-			"optionsGiven": sd.given,
+			"optionsGiven": function() {
+				var options = {"letter": [], "index": [], "value": [], "unit": []};
+				// add correct options
+				for (var i = 0; i < sd.given.length; i++) {
+					for (var p in options) {
+						options[p].push(sd.given[i][p]);
+					};
+				};
+				// add wrong letters and units
+				var wrong = util.shuffle(shared.variables).slice(0, WRONG_OPTIONS);
+				for (var i = 0; i < wrong.length; i++) {
+					for (var p in wrong[0]) {
+						options[p].push(wrong[i][p]);
+					};
+				};
+				// TODO: add wrong indices
+				// add wrong values
+				options.value.push("0", "1");
+				// remove duplicates
+				for (var p in options) {
+					options[p] = util.shuffle(util.unique(options[p]));
+				};
+				return options;
+			},
 			"solutionGiven": sd.given,
 			"optionsUnknown": function() {
-				var correct = { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit};
-				var wrong = shared.given;
-				return correct;
+				// add correct options
+				var options = {"letter": [sd.solution.letter], "index": [sd.solution.index], "unit": [sd.solution.unit]};
+				// add wrong letters and units
+				var wrong = util.shuffle(shared.variables).slice(0, WRONG_OPTIONS);
+				for (var i = 0; i < wrong.length; i++) {
+					for (var p in wrong[0]) {
+						options[p].push(wrong[i][p]);
+					};
+				};
+				// remove duplicates
+				for (var p in options) {
+					options[p] = util.shuffle(util.unique(options[p]));
+				};
+				return options;
 			},
 			"solutionUnknown": { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit},
 			"verify": verifyDropdownSelection,
@@ -597,8 +631,8 @@ var util = (function() {
     };
 
     my.generateOptions = function(correct, wrong) {
-    	return util.shuffle([].concat(wrong, correct);
-    }
+    	return util.shuffle([].concat(wrong, correct));
+    };
 
     my.renderFraction = function(data) {
     	var fraction = data;

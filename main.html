@@ -135,21 +135,22 @@
     <script id="tmpl-groessen" type="x-tmpl-mustache">
       <div class="col-md-5 nopadding">
         <p><strong>Gegebene Größen:</strong> Trage die gegebenen Größen mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
+        {{#optionsGiven}}
         <div class="row select-row-gegeben form-horizontal">
           <div class="col-xs-2 nopadding">
             <select class="form-control input-sm" name="letter">
               <option></option>
-              {{#optionsGiven}}
-              <option>{{letter}}</option>
-              {{/optionsGiven}}
+              {{#letter}}
+              <option>{{.}}</option>
+              {{/letter}}
             </select>
           </div>
           <div class="col-xs-2 nopadding">
             <select class="form-control input-sm" name="index">
               <option></option>
-              {{#optionsGiven}}
-              <option>{{index}}</option>
-              {{/optionsGiven}}
+              {{#index}}
+              <option>{{.}}</option>
+              {{/index}}
             </select>
           </div>
           <div class="col-xs-1 nopadding">
@@ -158,17 +159,17 @@
           <div class="col-xs-2 nopadding">
             <select class="form-control input-sm" name="value">
               <option></option>
-              {{#optionsGiven}}
-              <option>{{value}}</option>
-              {{/optionsGiven}}
+              {{#value}}
+              <option>{{.}}</option>
+              {{/value}}
             </select>
           </div>
           <div class="col-xs-2 nopadding">
             <select class="form-control input-sm" name="unit">
               <option></option>
-              {{#optionsGiven}}
-              <option>{{unit}}</option>
-              {{/optionsGiven}}
+              {{#unit}}
+              <option>{{.}}</option>
+              {{/unit}}
             </select>
           </div>
           <div class="col-xs-1 nopadding">
@@ -177,25 +178,27 @@
             <p class="form-control-static"><span>&nbsp;</span></p>
           </div>
         </div>
+        {{/optionsGiven}}
       </div>
       <div class="col-md-1 nopadding"></div>
       <div class="col-md-5 nopadding">
         <p><strong>Gesuchte Größen:</strong> Trage die gesuchte Größe mit Formelzeichen, optionalem Index und Einheit unten ein!</p>
+        {{#optionsUnknown}}
         <div class="select-row-gesucht form-horizontal">
           <div class="col-xs-2 nopadding">
             <select class="form-control input-sm" name="letter">
               <option></option>
-              {{#optionsUnknown}}
-              <option>{{letter}}</option>
-              {{/optionsUnknown}}
+              {{#letter}}
+              <option>{{.}}</option>
+              {{/letter}}
             </select>
           </div>
           <div class="col-xs-2 nopadding">
             <select class="form-control input-sm" name="index">
               <option></option>
-              {{#optionsUnknown}}
-              <option>{{index}}</option>
-              {{/optionsUnknown}}
+              {{#index}}
+              <option>{{.}}</option>
+              {{/index}}
             </select>
           </div>
           <div class="col-xs-1 nopadding">
@@ -204,9 +207,9 @@
           <div class="col-xs-2 nopadding">
             <select class="form-control input-sm" name="unit">
               <option></option>
-              {{#optionsUnknown}}
-              <option>{{unit}}</option>
-              {{/optionsUnknown}}
+              {{#unit}}
+              <option>{{.}}</option>
+              {{/unit}}
             </select>
           </div>
           <div class="col-xs-1 nopadding">
@@ -215,6 +218,7 @@
             <p class="form-control-static"><span>&nbsp;</span></p>
           </div>
         </div>
+        {{/optionsUnknown}}
       </div>
       <div class="col-md-1 nopadding"></div>
     </script>
