@@ -47,7 +47,7 @@ var controller = (function() {
  			view.updateCenterStage(0);
  			} else {
  				// We're at the end of the exercise
- 				var scoreData = model.saveScore();
+ 				var scoreData = model.saveAndGetScore();
  				view.showScore(scoreData);
  			};
  		};
@@ -332,13 +332,30 @@ var model = (function() {
 		localStorage.setItem("lives", my.getLives()+1);
 	};
 
-	my.saveScore = function(score) {
+	my.saveAndGetScore = function(score) {
+		// get the name of the exercise
 		var pathArray = window.location.pathname.split( '/' );
-		var identifier = "score_" + pathArray[pathArray.length - 2];
-		localStorage.setItem(identifier, score);
-		identifier = "time" + pathArray[pathArray.length - 2];
-		localStorage.setItem(identifier, score);
-		return {"time": "500s", "trophy": "gold"};
+		var identifier = "time_" + pathArray[pathArray.length - 2];
+		localStorage.setItem(identifier, my.time);
+		identifier = "score_" + pathArray[pathArray.length - 2];
+		var trophyOld = localStorage.getItem(identifier);
+		var trophyNew = "bronze";
+		// only save if it's better than the one before it
+		if (my.time/my.section.length < 500) {
+			trophyNew = "silver";
+			if (my.time/my.section.length < 360) {
+				trophyNew = "gold";
+			};
+		};
+		if (trophyOld === null) {
+			localStorage.setItem(identifier, score);
+		} else {
+			var medals = ["bronze", "silver", "gold"];
+			if (medals.indexOf(trophyNew) > medals.indexOf(trophyOld)) {
+				localStorage.setItem(identifier, score);
+			};
+		};
+		return {"time": my.timer, "trophy": trophyNew};
 	};
 
 	var verifyDropdownSelection = function(userInput) {
