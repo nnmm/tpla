@@ -304,7 +304,6 @@ var model = (function() {
 				my.timer += 1;
 				// TODO: separate
 				view.updateTimer(my.timer);
-				console.log("Uh?");
 			}, 1000);
 	}
 
@@ -340,10 +339,12 @@ var model = (function() {
 		identifier = "score_" + pathArray[pathArray.length - 2];
 		var trophyOld = localStorage.getItem(identifier);
 		var trophyNew = "bronze";
+		// TODO: include time penalty from losing a heart
+		var timePerSection = my.time/my.section.length;
 		// only save if it's better than the one before it
-		if (my.time/my.section.length < 500) {
+		if (timePerSection < 500) {
 			trophyNew = "silver";
-			if (my.time/my.section.length < 360) {
+			if (timePerSection < 360) {
 				trophyNew = "gold";
 			};
 		};

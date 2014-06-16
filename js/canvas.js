@@ -21,7 +21,7 @@ var eqCanvas = (function() {
     // background
     bg = new createjs.Shape();
     stage.addChildAt(bg, 0);
-    bg.graphics.beginFill('rgb(240, 240, 240)').drawRect(0, 0, stage.canvas.width, stage.canvas.height);
+    bg.graphics.beginFill('rgb(250, 250, 250)').drawRect(0, 0, stage.canvas.width, stage.canvas.height);
 
     // given variables
     rawVariables = [].concat(unknownVariables, givenVariables);
@@ -31,9 +31,9 @@ var eqCanvas = (function() {
 
 
   my.resetVariables = function () {
-    quantities.push(new Variable(rawVariables[0].letter, WIDTH-50, 350, "unknown", null));
+    quantities.push(new Variable(rawVariables[0].letter, rawVariables[0].index, WIDTH-50, 350, "unknown", null));
     for (var i = 1; i < rawVariables.length; i++) {
-      quantities.push(new Variable(rawVariables[i].letter, WIDTH-50, i*50, "given", null));
+      quantities.push(new Variable(rawVariables[i].letter, rawVariables[i].index, WIDTH-50, i*50, "given", null));
     };
     stage.update();
   };
@@ -103,14 +103,18 @@ var eqCanvas = (function() {
 
     // TODO: factor out all the boilerplate above into own class
     this.variablesAsStrings = textToVariables(text);
+    for (var i = 0; i < this.variablesAsStrings.length; i++) {
+    	var vas = this.variablesAsStrings[i];
+    	// TODO
+    };
     
     // arrange the variables in a circle around the center
-    var radius = 100, angle = Math.PI;
+    var radius = 120, angle = Math.PI;
     this.variablen = [];
     for (var i = 0; i < this.variablesAsStrings.length; i++) {
       var xrel = radius*Math.cos(angle) + xpos;
       var yrel = radius*Math.sin(angle) + ypos;
-      this.variablen.push(new Variable(this.variablesAsStrings[i], xrel, yrel, "equation", this));
+      this.variablen.push(new Variable(this.variablesAsStrings[i], null, xrel, yrel, "equation", this));
       angle = angle + 2 * Math.PI/this.variablesAsStrings.length;
     };
 
@@ -195,7 +199,7 @@ var eqCanvas = (function() {
   var textToVariables = function(text) {
     // e. g. E = m⋅g⋅h becomes ['E', 'm', 'g', 'h']
     // replace() removes whitespace and other characters
-    var variableArray = text.replace(/\s+|²|½/g, '').split(/=|\*|\⋅|\/|\+|\-/);
+    var variableArray = text.replace(/\s+|²|½|⅓|¼|⅔|\(|\)|\d/g, '').split(/=|\*|\⋅|\/|\+|\-/);
     for (var i = 0; i < variableArray.length; i++) {
       if (variableArray[i] == "") {         
         variableArray.splice(i, 1);
@@ -209,7 +213,7 @@ var eqCanvas = (function() {
 
   // ------------------------------------------------------------------------------------------------
 
-  var RADIUS = 20,
+  var RADIUS = 22,
     COLOR_DEFAULT = 'rgb(130, 130, 255)',
     COLOR_GIVEN = 'rgb(150, 200, 150)',
     COLOR_EQUATION = 'rgb(130, 130, 255)',
@@ -218,10 +222,11 @@ var eqCanvas = (function() {
     COLOR_EQUATION_ACTIVE = 'rgb(100, 200, 100)',
     COLOR_UNKNOWN_ACTIVE = 'rgb(200, 100, 100)'
 
-  function Variable(text, xpos, ypos, type, prnt) {
+  function Variable(text, index, xpos, ypos, type, prnt) {
     this.initialize();
 
     this.text = text;
+    this.unit = text.replace(/Δ|₀|₁|₂/g, '');
     this.x = xpos;
     this.y = ypos;
     this.prnt = prnt;
@@ -242,14 +247,23 @@ var eqCanvas = (function() {
         break;
     };
 
-
     // circle and label
     this.shape = new createjs.Shape();
     this.shape.graphics.beginFill(COLOR_DEFAULT).drawCircle(0, 0, RADIUS);
     this.label = new createjs.Text(text, '14px Arial', '#FFFFFF');
+	this.label.y = -7;
     this.label.textAlign = 'center';
-    this.label.y = -7;
+
+    //this.labelIndex.y = - 10;
     this.addChild(this.shape, this.label);
+    if (index !== null && index != "") {
+    	//this.label.x = -3;
+    	this.label.y = -9;
+    	this.label.textAlign = 'right';
+    	this.labelIndex = new createjs.Text(index, '9px Arial', '#FFFFFF');
+    	this.labelIndex.textAlign = 'left';
+    	this.addChild(this.labelIndex);
+    };
     this.setColor(this.color);
 
     // add self to stage
@@ -297,18 +311,21 @@ var eqCanvas = (function() {
 
   vp.joinWith = function(otherVar) {
     // otherVar is an equation variable
-    // TODO: check for equal units, not equal variables
-    if (this.text !== otherVar.text) {
+    if (this.unit !== otherVar.unit) {
       return;
     };
+
     // otherVar may not already have a joined variable
-    // TODO: read about == and === with null
-    if (otherVar.joined != null) {
+    if (otherVar.joined !== null) {
       return;
     };
 
     // if this has a parent, its other qantities may not be joined to other children of the parent of otherQty
     if (this.prnt != null) {
+      // TODO: proper graph checking
+      if (this.prnt === otherVar.prnt) {
+      	return;
+      };
       var myChildren = this.prnt.variablen;
       var otherChildren = otherVar.prnt.variablen;
       for (var i = 0; i < myChildren.length; i++) {
