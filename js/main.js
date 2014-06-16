@@ -45,7 +45,8 @@ var controller = (function() {
  			view.updateCenterStage(0);
  			} else {
  				// We're at the end of the exercise
- 				$("#problem-container, #table-container, #center-stage").delay(1500).addClass("fade");
+ 				var scoreData = model.saveScore();
+ 				view.showScore(scoreData);
  			};
  		};
  		allownextSection = !allownextSection;
@@ -317,6 +318,15 @@ var model = (function() {
 		localStorage.setItem("lives", my.getLives()+1);
 	};
 
+	my.saveScore = function(score) {
+		var pathArray = window.location.pathname.split( '/' );
+		var identifier = "score_" + pathArray[pathArray.length - 2];
+		localStorage.setItem(identifier, score);
+		identifier = "time" + pathArray[pathArray.length - 2];
+		localStorage.setItem(identifier, score);
+		return {"time": "500s", "trophy": "gold"};
+	}
+
 	var verifyDropdownSelection = function(userInput) {
 		var correction = [];
 		// store if the input occurs in solution and vice versa
@@ -556,6 +566,17 @@ var view = (function() {
  		};
 	};
 
+	my.showScore = function(scoreData) {
+ 		$("#problem-container, #table-container, #center-stage").addClass("fade");
+		window.scrollTo(0, 0);
+ 		var template = $("#tmpl-score").html();
+ 		var rendered = Mustache.render(template, scoreData);
+ 		$("#result-container").html(rendered);
+ 		$("#pruefen").prop("disabled", "disabled");
+ 		// remove keypress handler
+ 		$(document).off();
+	};
+
 	var getDropdownSelection = function() {
 		var selectedGegeben = [],
 			selectedGesucht = {};
@@ -579,6 +600,7 @@ var view = (function() {
 	var getTextInputSelection = function() {
 		return $('input').val();
 	};
+
 
 	return my;
 }());

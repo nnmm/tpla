@@ -5,76 +5,78 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+    <title>TPLA – Index</title>
 
     <!-- Custom styles for this template -->
-    <link href="css/styleIndex.css" rel="stylesheet">    
+    <link href="css/style.css" rel="stylesheet"> 
+    <script src="js/lib/jquery.js"></script>
+    <script src="js/lib/mustache.js"></script>
+    <script src="a/index.js"></script>
 </head>
 <body>
-  <div class="container">
-    <div class="page header">
-      <h1>Energie und Technik eLearning</h1>
-      <hr class="hrheader">
-      <div id="trophies" style="float:right">
-        0x <img class="trophystats" src="pictures/gold.gif">
-        0x <img class="trophystats" src="pictures/silver.gif">
-        0x <img class="trophystats" src="pictures/bronze.gif">
-      </div>  
+  <div class="container navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="./index.html" style="color:black">TPLearn</a>
+      <p class="navbar-text">Energie und Technik eLearning</p>
     </div>
-    <div class="aufgabenbody">
-      <p>Willkommen im eTraining zu Energie und Technik. W&aumlhle aus einem der folgenden Aufgabenbl&oumlcke:</p>
-      <hr>
-      <div class="aufgabe1">
-        <a class ="hovertext" href="main.html" title="Kuckucksuhr"><img src="pictures/uhr.gif" width="200" height="200"></a>
-        <img class="trophyinpicture" src="pictures/silver.gif">
-      </div>
+    <div class="navbar-collapse collapse">
+      <ul id="trophies" class="nav navbar-nav navbar-right">
+        <li><p class="navbar-text"><span id="gold">0</span> x <img class="trophystats" src="img/gold.png" /></p></li>
+        <li><p class="navbar-text"><span id="silver">0</span> x <img class="trophystats" src="img/silver.png" /></p></li>
+        <li><p class="navbar-text"><span id="bronze">0</span> x <img class="trophystats" src="img/bronze.png" /></p></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
 
-      <div class="aufgabe1">
-        <a class ="hovertext" href="main.html" title="Spielplatz"><img src="pictures/spielplatz.gif" width="200" height="200"></a>
-        <img class="trophyinpicture" src="pictures/gold.gif">
+  <div class="container">
+    <div class="page-header">
+      <h1>Aufgabe 1 <small>{{title}}</small></h1>
+    </div>
+    <p>Willkommen im eTraining zu Energie und Technik. Wähle aus einem der folgenden Aufgabenblöcke:</p>
+    <div class="row">
+      <div id="center-stage" class="col-md-12">
       </div>
-      <div class="aufgabe1">
-        <img src="pictures/frameShadow.gif" width="200" height="200">
-        <img class="trophyinpicture" src="pictures/gold.gif">
-      </div>
-      <div class="aufgabe1">
-        <img src="pictures/frameShadow.gif" width="200" height="200">
-        <img class="trophyinpicture" src="pictures/gold.gif">
-      </div>
-      <div class="aufgabe1">
-        <img src="pictures/frameShadow.gif" width="200" height="200">
-        <img class="trophyinpicture" src="pictures/silver.gif">
-      </div>
-      <div class="aufgabe1">
-        <img src="pictures/frameShadow.gif" width="200" height="200">
-        <img class="trophyinpicture" src="pictures/bronze.gif">
-      </div>
-      <div class="aufgabe1">
-        <img src="pictures/frameShadow.gif" width="200" height="200">
-        <img class="trophyinpicture" src="pictures/silver.gif">
-      </div>
-      <div class="aufgabe1">
-        <img src="pictures/frameShadow.gif" width="200" height="200">
-        <img class="trophyinpicture" src="pictures/silver.gif">
-      </div>
-      <div class="aufgabe1">
-        <img src="pictures/frameShadow.gif" width="200" height="200">
-        <img class="trophyinpicture" src="pictures/gold.gif">
-      </div>
-      <div class="aufgabe1">
-        <img src="pictures/frameShadow.gif" width="200" height="200">
-        <img class="trophyinpicture" src="pictures/bronze.gif">
-      </div>
-      <div class="aufgabe1">
-        <img src="pictures/frameShadow.gif" width="200" height="200">
-        <img class="trophyinpicture" src="pictures/gold.gif">
-      </div>
-      <div class="aufgabe1">
-        <img src="pictures/frameShadow.gif" width="200" height="200">
-        <img class="trophyinpicture" src="pictures/gold.gif">
-      </div>
-      <hr>
-    </div> <!--/aufgabenbody--> 
-    <p id="help">help</p>
-  </div> <!--/container-->   
+    </div>
+  </div><!--/container-->
+
+  <script id="tmpl-aufgabe" type="x-tmpl-mustache">
+    <div class="col-xs-6 col-md-3">
+      <a class ="thumbnail" href="a/{{id}}/main.html" title="Das Klettergerüst">
+        <img src="a/{{id}}/200.png" />
+      </a>
+      <img class="trophyinpicture" src="img/{{trophy}}.png">
+    </div>
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+      'use strict';
+
+      var trophyCounter = {"gold": 0, "silver": 0, "bronze": 0};
+      var template = $('#tmpl-aufgabe').html();
+      Mustache.parse(template);   // optional, speeds up future uses
+      for (var i = 0; i < aufgaben.length; i++) {
+        var trophy = localStorage.getItem("score" + aufgaben[i].id);
+        console.log(trophy);
+        if (trophy === null) {
+          trophy = "bronze";
+        };
+        trophyCounter[trophy] += 1;
+        var data = {
+          "id": aufgaben[i].id,
+          "img": aufgaben[i].img,
+          "trophy": trophy
+        };
+        var rendered = Mustache.render(template, data);
+        $('#center-stage').append(rendered);
+        for (var p in trophyCounter) {
+          $("#" + p).html(trophyCounter[p]);
+        };
+      };
+    });
+  </script>
+
+
 </body>  
 </html>

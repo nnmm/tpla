@@ -34,7 +34,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="./index.html">TPLearn</a>
+      <a class="navbar-brand" href="./index.html">TPLA-Demo</a>
       <p class="navbar-text">Energie und Leistung</p>
     </div>
     <div class="navbar-collapse collapse">
@@ -53,14 +53,11 @@
 
   <div class="container">
     
-    <div id="result-container">
-    </div>
-
     <div id="problem-container">
     </div>
 
     <div class="row">
-      <div id="table-container" class="col-md-12"></div>
+      <div class="col-md-12" id="table-container"></div>
     </div>
    
     <div class="row">
@@ -293,15 +290,6 @@
           <input type="radio" name="options" value="{{.}}">{{{.}}}
         </label>
         {{/options}}
-      </div>
-    </script>
-
-    <script id="tmpl-score" type="x-tmpl-mustache">
-      <div class="jumbotron">
-        <div class="pull-right"><img src="../../img/{{trophy}}.png" /></div>
-        <h1>Glückwunsch!</h1>
-        <p><span class="h2">Du hast die Aufgaben in {{time}} gelöst.</span></p>
-        <p><a class="btn btn-primary btn-lg" href="../../index.html" role="button">Zurück zum Menü</a></p>
       </div>
     </script>
 
