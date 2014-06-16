@@ -20,6 +20,8 @@ var controller = (function() {
  		view.registerListeners();
 		view.updateTable(0);
 		view.updateCenterStage(0);
+
+		model.initTimer();
  	};
 
  	my.pruefenWeiter = function(event) {
@@ -282,7 +284,6 @@ var model = (function() {
 	};
 
 	my.getCurSubtask = function() {
-
 		return my.curSubtask;
 	};
 
@@ -293,6 +294,19 @@ var model = (function() {
 	my.getCurSection = function() {
 		return my.curSection;
 	};
+
+	my.initTimer = function() {
+		if (my.intervalID !== undefined) {
+			clearTimeout(my.intervalID);
+		};
+		my.timer = 0;
+		my.intervalID = setInterval(function() {
+				my.timer += 1;
+				// TODO: separate
+				view.updateTimer(my.timer);
+				console.log("Uh?");
+			}, 1000);
+	}
 
 	my.nextSection = function() {
 		my.curSection = my.curSection + 1;
@@ -325,7 +339,7 @@ var model = (function() {
 		identifier = "time" + pathArray[pathArray.length - 2];
 		localStorage.setItem(identifier, score);
 		return {"time": "500s", "trophy": "gold"};
-	}
+	};
 
 	var verifyDropdownSelection = function(userInput) {
 		var correction = [];
@@ -503,6 +517,18 @@ var view = (function() {
 			};
 		});
 	};
+
+	my.updateTimer = function(time) {
+		var mins = Math.floor(time/60);
+		if (mins < 10) {
+			mins = "0" + mins;
+		};
+		var secs = time % 60;
+		if (secs < 10) {
+			secs = "0" + secs;
+		};
+		$("#timer").html(mins + ":" + secs);
+	}
 
 	my.toggleWeiter = function(toggle) {
 		if (toggle) {
