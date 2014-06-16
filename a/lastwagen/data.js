@@ -4,7 +4,7 @@ var d = {
     "subtasks": [
         {
             "type": "tpla",
-            "title": "Aufgabe a",
+            "title": "a",
             "problem": "Welche kinetische Energie, in Megajoule, besitzt der LKW?",
             "image": false,
             "given": [
@@ -45,7 +45,7 @@ var d = {
         },
         {
             "type": "tpla",
-            "title": "Aufgabe 2",
+            "title": "b",
             "problem": "Auf welche Höhe in Metern ließe sich der LKW mit dieser Energie heben? Die Erdbeschleunigung g = 9,81 m/s² kann hierfür als gegeben vorausgesetzt werden.",
             "image": false,
             "given": [
@@ -92,7 +92,7 @@ var d = {
         },
         {
             "type": "tpla",
-            "title": "Aufgabe 3",
+            "title": "c",
             "problem": "Der LKW trifft nun auf ein Stauende und muss abrupt von 72 auf 18 km/h abbremsen. Hierbei wird eine Energieform in einer andere überführt. Wie groß ist der überführte Energiebetrag?",
             "image": false,
             "given": [
@@ -138,7 +138,7 @@ var d = {
         },
         {
             "type": "tpla",
-            "title": "Aufgabe 4",
+            "title": "d",
             "problem": "Da der Verkehr bald wieder fließt, beschleunigt der LKW jetzt wieder von 18 auf 54 km/h. Er benötigt dafür 20 Sekunden. Welche durchschnittliche Leistung ist für den Beschleunigungsvorgang nötig?",
             "image": false,
             "given": [
@@ -188,7 +188,7 @@ var d = {
         },
         {
             "type": "tpla",
-            "title": "Aufgabe 5",
+            "title": "e",
             "problem": "Im Fahrzeugschein des LKWs steht, dass der Motor eine maximale Leistung von 500 kW aufweist. Welcher Bruchteil α der maximalen Motorleistung wird für die vorherige Beschleunigung benötigt?",
             "image": false,
             "given": [

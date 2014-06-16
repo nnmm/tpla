@@ -220,7 +220,7 @@ var model = (function() {
 			"solution": sd.solution,
 			"solutionVariations": function() {
 				var options = [];
-				var valueDot = sd.solution.value.replace(replace(/,/g, '.'));
+				var valueDot = sd.solution.value.replace(/,/g, '.');
 				options.push(sd.solution.value + " " + sd.solution.unit);
 				options.push(sd.solution.value + " " + sd.solution.unit_long);
 				options.push(valueDot + " " + sd.solution.unit);
@@ -634,46 +634,9 @@ var util = (function() {
     	return util.shuffle([].concat(wrong, correct));
     };
 
-    my.renderFraction = function(data) {
-    	var fraction = data;
-    	var splittext;
-    	var result = '';
-    	if (fraction.indexOf('=') >= 0){
-    		var fractionwo;
-    		splittext = fraction.split('=');
-    		fractionwo = splittext[1].split('/');
-
-    		if(fractionwo.length == 1){
-    			result = result + '<div class ="fraction"><span class="operator">' + splittext[0] + ' = ' + fractionwo[0]+'</span></div>';
-    		}
-    		else{
-    			result = result + '<div class ="fraction"><span class="operator">' + splittext[0] + ' = </span></div><div class="fraction"><span class="top">'+ fractionwo[0]+'</span><span class="bottom">'+fractionwo[1]+'</span></div>';
-    		}    
-
-    	} else {
-    		if (fraction.indexOf('/')>=0){
-    			splittext = fraction.split('/');
-    			result = result + '<div class="fraction"><span class="top">'+splittext[0]+'</span><span class="bottom">'+splittext[1]+'</span></div>';
-    		}
-    		else {
-    			result = result + '<div class="fraction"><span class="operator">'+fraction+'</span></div>';
-    		}
-    	}  
-    	return result; 
-    };
-
-    my.renderFractions = function(data){
-    	var result = [];
-    	for (var i = 0; i < data.length ; i++) {
-    		result.push(util.fractionize(data[i]));
-    	};
-    	return result;
-    };
-
     my.fractionize = function(string) {
     	// http://stackoverflow.com/questions/22142058/how-to-display-all-fractions-in-web-app
 
-    	console.log("fractionize");
     	// var string = "E = k + [2⋅μ⋅r]/[g] ⋅ [Q]/[ΔT] + 2μ";
     	// captures a […]/[…] pattern and everything else
     	var re = /(\[[^\]]*\]\/\[[^\]]*\]|[^\[\]]+)/g
