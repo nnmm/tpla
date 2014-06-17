@@ -49,8 +49,12 @@ h4 {
 }
 
 .bottom {
-    border-top: 1px solid #fff;
+    border-top: 1px solid black;
     display: block;
+}
+
+.btn .bottom {
+    border-top: 1px solid #fff;
 }
 
 .operator {

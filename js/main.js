@@ -167,7 +167,7 @@ var model = (function() {
 			"solutionEquations": sd.equations,
 			"givenVariables": sd.given,
 			"unknownVariable": { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit},
-			"solution": sd.solution.equation,
+			"solution": util.fractionize(sd.solution.equation),
 			"eqs": [],
 			"options": function() {
 				var opts = [];

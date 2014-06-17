@@ -1,6 +1,5 @@
 var shared = {
 	"equations": [
-		"E = m⋅g⋅h",
 		"ρ = m/V",
 		"F_G = m⋅g",
 		"F = D⋅s",
@@ -20,7 +19,7 @@ var shared = {
 		"W_sp = ½ ⋅D⋅(s - s₀²)",
 		"W_R = F_R⋅s",
 		"E_kin = ½⋅m⋅v²",
-		"E_pot = m⋅g⋅h",
+		"E_pot = m⋅g⋅Δh",
 		"E_pot = ½⋅D⋅s²",
 		"P = W/Δt",
 		"P = ΔE/Δt",

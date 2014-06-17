@@ -59,7 +59,7 @@ var d = {
             ],
             "equations": [
                 "E_kin = ½⋅m⋅v²",
-                "E_pot = m⋅g⋅∆h"
+                "E_pot = m⋅g⋅h"
             ],
             "solution": {
                 "letter": "h",
@@ -67,7 +67,7 @@ var d = {
                 "value": "20",
                 "unit": "m",
                 "unit_long": "Meter",
-                "equation": "∆h = [½⋅m<sub>LKW</sub>⋅v<sub>LKW</sub>²]/[m<sub>LKW</sub>⋅g]",
+                "equation": "h = [½⋅m<sub>LKW</sub>⋅v<sub>LKW</sub>²]/[m<sub>LKW</sub>⋅g]",
             },
             "alternative_solution_equations": [
                 "h = [½⋅m<sub>LKW</sub>⋅v<sub>LKW</sub>²]/[m<sub>LKW</sub>⋅g²]",
