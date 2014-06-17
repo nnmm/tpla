@@ -30,9 +30,7 @@ var controller = (function() {
  			// prüfen
  			var userInput = view.getUserInput(model.section[index-1].type);
  			var correct = model.section[index - 1].verify(userInput);
- 			console.log("correct: " + correct + ", type " + (typeof correct));
  			if (!correct) {
- 				console.log("Hier?");
  				controller.subtractLife();
  				view.showLives(model.getLives());
  			};
@@ -142,9 +140,13 @@ var model = (function() {
 			"onRender": function() {
 				// oh no view code in model!
 				var selectRow = $('.select-row-gegeben')[0].outerHTML;
-				for (var i = 1; i < 4; i++) {
+/*				for (var i = 1; i < 3; i++) {
 					$('.select-row-gegeben:last').after(selectRow);
-				};
+				};*/
+				$('#moreDropdowns').click(function() {
+					$('.select-row-gegeben:last').after(selectRow);
+					$('select').first().focus();
+				});
 				$('select').first().focus();
 			},
 		});
@@ -274,6 +276,7 @@ var model = (function() {
 		my.data.table = my.section;
 		my.curSection = 1;
 		view.renderProblem({
+			"block": d.block,
 			"title": sd.title,
 			"blocktext": d.blocktext,
 			"problem": sd.problem
@@ -713,7 +716,7 @@ var util = (function() {
     	for (var i = 0; i < array.length; i++) {
     		array[i] = array[i].replace(/\[([^\]]*)\]\/\[([^\]]*)\]/g,'<span class="top">$1</span><span class="bottom">$2</span>');
     		array[i] = array[i].replace(/([^\[\]]+)/g, '<span class="operator">$1</span>');
-    		array[i] = array[i] = '<div class="fraction">' + array[i] + '</div>';
+    		array[i] = array[i] = '<span class="fraction">' + array[i] + '</span>';
     		result += array[i];
     	};
     	//$('#tmp').html(result);

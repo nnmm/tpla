@@ -1,5 +1,5 @@
 var d = {
-    "block": "Der Klettergerüst",
+    "block": "Das Klettergerüst",
     "blocktext": "Ein 50 kg schwerer Junge klettert auf ein 2m hohes Klettergerüst. Für das Erklimmen der Spitze benötigt er 10s.",
     "subtasks": [
         {

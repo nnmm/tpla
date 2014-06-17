@@ -17,8 +17,8 @@
 <body>
   <div class="container navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="navbar-header">
-      <a class="navbar-brand" href="./index.html" style="color:black">TPLearn</a>
-      <p class="navbar-text">Energie und Technik eLearning</p>
+      <a class="navbar-brand" href="./index.html" style="color:black"><small><span class="glyphicon glyphicon-home"></span></small> TPLAne</a>
+      <p class="navbar-text">Fliegend zum Erfolg</p>
     </div>
     <div class="navbar-collapse collapse">
       <ul id="trophies" class="nav navbar-nav navbar-right">
@@ -30,19 +30,21 @@
   </div>
 
   <div class="container">
+    <img src="img/logo250x93.png" class="pull-right" />
     <div class="page-header">
-      <h1>Aufgabe 1 <small>{{title}}</small></h1>
+      <h1>Menu <small>Energie und Technik eLearning</small></h1>
     </div>
     <p>Willkommen im eTraining zu Energie und Technik. Wähle aus einem der folgenden Aufgabenblöcke:</p>
     <div class="row">
       <div id="center-stage" class="col-md-12">
       </div>
     </div>
+
   </div><!--/container-->
 
   <script id="tmpl-aufgabe" type="x-tmpl-mustache">
     <div class="col-md-3">
-      <a class ="thumbnail" href="a/{{id}}/main.html" title="Das Klettergerüst">
+      <a class ="thumbnail" href="a/{{id}}/main.html">
         <img src="a/{{id}}/200.png" />
       </a>
       <img class="trophyinpicture" src="img/{{trophy}}.png">
