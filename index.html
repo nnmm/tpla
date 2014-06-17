@@ -58,8 +58,6 @@
       Mustache.parse(template);   // optional, speeds up future uses
       for (var i = 0; i < aufgaben.length; i++) {
         var trophy = localStorage.getItem("trophy_" + aufgaben[i].id);
-        console.log(aufgaben[i].id);
-        console.log(trophy);
         if (trophy === null) {
           trophy = "none";
         };

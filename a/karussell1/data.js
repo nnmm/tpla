@@ -1,11 +1,11 @@
 var d = {
     "block": "Das Karussell I",
-    "blocktext": "In Ghana testet die Organisation Empower Playgrounds Inc. nun ob ein Karussell zur Strom Erzeugung genutzt werden kann. Man geht von der folgenden Situation aus: 4 Kinder schieben ein Karussell mit dem Radius 2m, mit jeweils 40 N und der Winkelgeschwindigkeit 0.3 Hz an. Aufgrund von Reibung und der Gewinnung von elektrischer Energie aus der Drehung wird das Karussell nicht schneller oder langsamer. Um eine Entscheidung zu treffen muss zunächste die Energie berechnet werden, die die Kinder in das Karussell einspeisen.",
+    "blocktext": "In Ghana testet die Organisation Empower Playgrounds Inc. nun ob ein Karussell zur Strom Erzeugung genutzt werden kann. Für die Berechnungen geht man von folgender Situation aus: 4 Kinder schieben ein Karussell mit dem Radius 2m, mit jeweils 40 N und der Winkelgeschwindigkeit 0.3 Hz an. Aufgrund von Reibung und der Gewinnung von elektrischer Energie aus der Drehung wird das Karussell nicht schneller oder langsamer. Um eine Entscheidung zu treffen muss zunächste die Energie berechnet werden, die die Kinder in das Karussell einspeisen.",
     "subtasks": [
         {
             "type": "tpla",
             "title": "a",
-            "problem": " Wie groß ist die Zentrifugalkraft für ein Kind, das das Karussell anschiebt wenn es 30 kg wiegt?",
+            "problem": " Wie groß ist die Zentrifugalkraft für ein Kind, dass das Karussell anschiebt wenn es 30 kg wiegt?",
             "image": false,
             "given": [
                 { "letter": "r", "index": "Karussell", "value": "2", "unit": "m" },

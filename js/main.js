@@ -30,7 +30,9 @@ var controller = (function() {
  			// prüfen
  			var userInput = view.getUserInput(model.section[index-1].type);
  			var correct = model.section[index - 1].verify(userInput);
+ 			console.log("correct: " + correct + ", type " + (typeof correct));
  			if (!correct) {
+ 				console.log("Hier?");
  				controller.subtractLife();
  				view.showLives(model.getLives());
  			};
@@ -349,13 +351,11 @@ var model = (function() {
 			};
 		};
 		if (trophyOld === null) {
-			console.log("Saving " + identifier);
 			localStorage.setItem(identifier, trophyNew);
 		} else {
 			var medals = ["bronze", "silver", "gold"];
 			if (medals.indexOf(trophyNew) > medals.indexOf(trophyOld)) {
 				localStorage.setItem(identifier, trophyNew);
-				console.log("Saving " + identifier);
 			};
 		};
 		return {"time": my.timer, "trophy": trophyNew};
@@ -422,12 +422,12 @@ var model = (function() {
 		};
 
 		// unknown
-		var unknownCorrect = "false";
+		var unknownCorrect = false;
 		var inputGesucht = userInput.selectedGesucht;
 		if (inputGesucht.letter === this.solutionUnknown.letter &&
 			inputGesucht.index === this.solutionUnknown.index &&
 			inputGesucht.unit === this.solutionUnknown.unit) {
-			unknownCorrect = "true";
+			unknownCorrect = true;
 		};
 		view.showDropdownCorrection(inputMatched, allSolutions, unknownCorrect);
 		this.correct = allInputs && allSolutions && unknownCorrect;
@@ -584,9 +584,9 @@ var view = (function() {
 			};
 		});
 		var $iconSpan = $(".select-row-gesucht").find("span");
-			if (unknown === "true") {
+			if (unknown === true) {
 				$iconSpan.addClass("glyphicon glyphicon-ok green");
-			} else if (unknown === "false") {
+			} else if (unknown === false) {
 				$iconSpan.addClass("glyphicon glyphicon-remove red");
 			};
 	};
