@@ -12,7 +12,7 @@ var controller = (function() {
  		model.initSubtask();
  		
  		// persistent data
- 		localStorage.clear("lives");
+ 		localStorage.setItem("lives", 3);
  		var lives = model.getLives();
  		// TODO: initialize/load timer and subtask
 
@@ -331,16 +331,16 @@ var model = (function() {
 		localStorage.setItem("lives", my.getLives()+1);
 	};
 
-	my.saveAndGetScore = function(score) {
+	my.saveAndGetScore = function() {
 		// get the name of the exercise
 		var pathArray = window.location.pathname.split( '/' );
 		var identifier = "time_" + pathArray[pathArray.length - 2];
-		localStorage.setItem(identifier, my.time);
-		identifier = "score_" + pathArray[pathArray.length - 2];
+		localStorage.setItem(identifier, my.timer);
+		identifier = "trophy_" + pathArray[pathArray.length - 2];
 		var trophyOld = localStorage.getItem(identifier);
 		var trophyNew = "bronze";
 		// TODO: include time penalty from losing a heart
-		var timePerSection = my.time/my.section.length;
+		var timePerSection = my.timer/my.section.length;
 		// only save if it's better than the one before it
 		if (timePerSection < 500) {
 			trophyNew = "silver";
@@ -349,11 +349,13 @@ var model = (function() {
 			};
 		};
 		if (trophyOld === null) {
-			localStorage.setItem(identifier, score);
+			console.log("Saving " + identifier);
+			localStorage.setItem(identifier, trophyNew);
 		} else {
 			var medals = ["bronze", "silver", "gold"];
 			if (medals.indexOf(trophyNew) > medals.indexOf(trophyOld)) {
-				localStorage.setItem(identifier, score);
+				localStorage.setItem(identifier, trophyNew);
+				console.log("Saving " + identifier);
 			};
 		};
 		return {"time": my.timer, "trophy": trophyNew};

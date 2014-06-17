@@ -1,11 +1,11 @@
 var d = {
-    "block": "Der Lastwagen",
-    "blocktext": "Ein Obsttransporter fährt auf der Autobahn von München nach Berlin. Da er voll beladen ist beträgt seine Masse 40 Tonnen. Da es der Fahrer nicht besonders eilig hat fährt er durchschnittlich mit einer Geschwindigkeit von 72.0 km/h.",
+    "block": "Der Obsttransporter",
+    "blocktext": "Ein voll beladener Obsttransporter ist auf der A9 von München nach Berlin unterwegs. Seine Masse beträgt 40 Tonnen. Da es der Fahrer nicht besonders eilig hat fährt er durchschnittlich mit einer Geschwindigkeit von 72.0 km/h.",
     "subtasks": [
         {
             "type": "tpla",
             "title": "a",
-            "problem": "Welche kinetische Energie, in Megajoule, besitzt der LKW?",
+            "problem": "Welche kinetische Energie (in Megajoule) besitzt der LKW?",
             "image": false,
             "given": [
                 { "letter": "v", "index": "LKW", "value": "72.0", "unit": "km/h" },
@@ -35,18 +35,18 @@ var d = {
                     "t⋅km/h"
                 ]
             },
-            "correct_solution_phrase": "Der LKW hat eine kinetische Energie von {{solution.value}} {{solution.unit}}.",
+            "correct_solution_phrase": "Der Obsttransporter hat eine kinetische Energie von {{solution.value}} {{solution.unit}}.",
             "alternative_solution_phrases": [
-                "Der Lastwagen fährt mit einer kinetischen Energie von {{solution.value}} {{solution.unit}}.",
+                "Der Obsttransporter fährt mit einer kinetischen Energie von {{solution.value}} {{solution.unit}}.",
                 "Der Obsttransporter fährt von Berlin nach München.",
-                "Der LKW hat eine Leistung von {{solution.value}} {{solution.unit}}.",
-                "Der Lastwagen generiert {{solution.value}} {{solution.unit}} an Energie"
+                "Der Obsttransporter hat eine Leistung von {{solution.value}} {{solution.unit}}.",
+                "Der Obsttransporter generiert {{solution.value}} {{solution.unit}} an Energie"
             ]
         },
         {
             "type": "tpla",
             "title": "b",
-            "problem": "Auf welche Höhe in Metern ließe sich der LKW mit dieser Energie heben? Die Erdbeschleunigung g = 9,81 m/s² kann hierfür als gegeben vorausgesetzt werden.",
+            "problem": "Auf welche Höhe (in Metern) ließe sich der Obsttransporter mit dieser Energie heben? Die Erdbeschleunigung g = 9,81 m/s² kann hierfür als gegeben vorausgesetzt werden.",
             "image": false,
             "given": [
                 { "letter": "v", "index": "LKW", "value": "72,0", "unit": "km/h" },
@@ -82,18 +82,18 @@ var d = {
                 ]
             },
 
-            "correct_solution_phrase": "Der LKW ließe sich auf eine Höhe von {{solution.value}} {{solution.unit}} heben.",
+            "correct_solution_phrase": "Der Obsttransporter ließe sich auf eine Höhe von {{solution.value}} {{solution.unit}} heben.",
             "alternative_solution_phrases": [
-                "Der Lastwagen könnte {{solution.value}} {{solution.unit}} bergauf fahren.",
-                "Würde der Fahrer aufhören Gas zu geben würde sein Lastwagen noch {{solution.value}} {{solution.unit}} rollen.",
-                "Der LKW hat eine Leistung von {{solution.value}} {{solution.unit}}.",
-                "Der Lastwagen hat eine potentielle Energie von {{solution.value}} {{solution.unit}}."
+                "Der Obsttransporter könnte {{solution.value}} {{solution.unit}} bergauf fahren.",
+                "Würde der Fahrer aufhören Gas zu geben würde sein Obsttransporter noch {{solution.value}} {{solution.unit}} rollen.",
+                "Der Obsttransporter hat eine Leistung von {{solution.value}} {{solution.unit}}.",
+                "Der Obsttransporter hat eine potentielle Energie von {{solution.value}} {{solution.unit}}."
             ]
         },
         {
             "type": "tpla",
             "title": "c",
-            "problem": "Der LKW trifft nun auf ein Stauende und muss abrupt von 72 auf 18 km/h abbremsen. Hierbei wird eine Energieform in einer andere überführt. Wie groß ist der überführte Energiebetrag?",
+            "problem": "Der Obsttransporter trifft nun auf ein Stauende und muss abrupt von 72 auf 18 km/h abbremsen. Hierbei wird eine Energieform in einer andere überführt. Wie groß ist der überführte Energiebetrag?",
             "image": false,
             "given": [
                 { "letter": "v", "index": "max", "value": 72, "unit": "km/h" },
@@ -131,15 +131,15 @@ var d = {
             "correct_solution_phrase": "Der überführte Energiebetrag beträgt {{solution.value}} {{solution.unit}}.",
             "alternative_solution_phrases": [
                 "Es entsteht eine Energie von {{solution.value}} {{solution.unit}}.",
-                "Der Lastwagen schafft es nicht mehr abzubremsen. Es gibt einen Unfall mit {{solution.value}} Toten.",
-                "Der LKW hat eine Wärmeenergie von {{solution.value}} {{solution.unit}}.",
-                "Der Lastwagen hat eine potentielle Energie von {{solution.value}} {{solution.unit}}."
+                "Der Obsttransporter schafft es nicht mehr abzubremsen. Es gibt einen Unfall mit {{solution.value}} Toten.",
+                "Der Obsttransporter hat eine Wärmeenergie von {{solution.value}} {{solution.unit}}.",
+                "Der Obsttransporter hat eine potentielle Energie von {{solution.value}} {{solution.unit}}."
             ]
         },
         {
             "type": "tpla",
             "title": "d",
-            "problem": "Da der Verkehr bald wieder fließt, beschleunigt der LKW jetzt wieder von 18 auf 54 km/h. Er benötigt dafür 20 Sekunden. Welche durchschnittliche Leistung ist für den Beschleunigungsvorgang nötig?",
+            "problem": "Da der Verkehr bald wieder fließt, beschleunigt der Obsttransporter von 18 auf 54 km/h. Er benötigt dafür 20 Sekunden. Welche durchschnittliche Leistung ist für den Beschleunigungsvorgang nötig?",
             "image": false,
             "given": [
                 { "letter": "v", "index": "max", "value": "54", "unit": "km/h" },
@@ -178,18 +178,18 @@ var d = {
                 ]
             },
 
-            "correct_solution_phrase": "Die Leistung, die zur Beschleunigung des LKWs nötig ist beträgt {{solution.value}} {{solution.unit}}.",
+            "correct_solution_phrase": "Die Leistung, die zur Beschleunigung des Obsttransporters nötig ist beträgt {{solution.value}} {{solution.unit}}.",
             "alternative_solution_phrases": [
-                "Die Leistung des LKWs pro Sekunde beträgt {{solution.value}} {{solution.unit}}.",
-                "Der LKW generiert {{solution.value}} {{solution.unit}} an Leisung",
-                "Da ist schon wieder ein Stau. Der LKW rast hinein und es gibt 300 Tote.",
-                "Der Lastwagen hat jetzt eine potentielle Energie von {{solution.value}} {{solution.unit}}."
+                "Die Leistung des Obsttransporter pro Sekunde beträgt {{solution.value}} {{solution.unit}}.",
+                "Der Obsttransporter generiert {{solution.value}} {{solution.unit}} an Leisung",
+                "Da ist schon wieder ein Stau. Der Obsttransporter rast hinein und es gibt 300 Tote.",
+                "Der Obsttransporter hat jetzt eine potentielle Energie von {{solution.value}} {{solution.unit}}."
             ]
         },
         {
             "type": "tpla",
             "title": "e",
-            "problem": "Im Fahrzeugschein des LKWs steht, dass der Motor eine maximale Leistung von 500 kW aufweist. Welcher Bruchteil α der maximalen Motorleistung wird für die vorherige Beschleunigung benötigt?",
+            "problem": "Im Fahrzeugschein des Obsttransporters steht, dass der Motor eine maximale Leistung von 500 kW aufweist. Welcher Bruchteil α der maximalen Motorleistung wird für die vorherige Beschleunigung benötigt?",
             "image": false,
             "given": [
                 { "letter": "P",  "index": "Beschleunigung", "value": "200", "unit": "kW" },
@@ -223,7 +223,7 @@ var d = {
             "alternative_solution_phrases": [
                 "Der Motor braucht {{solution.value}} {{solution.unit}} mal so viel Leistung, wie normal.",
                 "Der Bruchteil der Motorleistung der für die Beschleunigung nötig ist beträgt 0.4 %.",
-                "Da ist schon wieder ein Stau. Der LKW rast hinein und es gibt 0.4 Tote",
+                "Da ist schon wieder ein Stau. Der Obsttransporter rast hinein und es gibt 0.4 Tote",
                 "Der  Motorleistung wird nur teilweise ausgenutzt."
             ]
         }

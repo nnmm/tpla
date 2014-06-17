@@ -1,6 +1,8 @@
 var aufgaben = [
-	{"id": "klettergeruest"},
+	{"id": "klettergerüst"},
 	{"id": "karussell1"},
+	{"id": "karussell2"},
 	{"id": "obsttransporter"},
+
 	
 ];

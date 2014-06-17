@@ -228,7 +228,6 @@ var eqCanvas = (function() {
 
     this.text = text;
     this.unit = text.replace(/∆|Δ|₀|₁|₂|_\w+/g, '');
-    console.log(this);
     switch(this.unit) {
       case "u":
         this.unit = "v";
