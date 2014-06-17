@@ -87,9 +87,10 @@ var eqCanvas = (function() {
     this.y = ypos;
 
     // circle and label
-    this.shape = new createjs.Shape();
-    this.shape.graphics.beginFill(COLOR_DEFAULT).drawCircle(0, 0, 2*RADIUS);
     this.label = new createjs.Text(text, '14px Arial', '#FFFFFF');
+    var radiusInner = this.label.getMeasuredWidth()/2 + 10;
+    this.shape = new createjs.Shape();
+    this.shape.graphics.beginFill(COLOR_DEFAULT).drawCircle(0, 0, radiusInner);
     this.label.textAlign = 'center';
     this.label.y = -7;
     this.addChild(this.shape, this.label);
@@ -226,7 +227,15 @@ var eqCanvas = (function() {
     this.initialize();
 
     this.text = text;
-    this.unit = text.replace(/Δ|₀|₁|₂/g, '');
+    this.unit = text.replace(/Δ|₀|₁|₂|_\w+/g, '');
+    switch(this.unit) {
+      case "u":
+        this.unit = "v";
+        break;
+      case "W":
+        this.unit = "E";
+        break;
+    };
     this.x = xpos;
     this.y = ypos;
     this.prnt = prnt;

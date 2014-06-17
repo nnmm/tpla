@@ -1,0 +1,316 @@
+  <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon"/>
+
+    <title>TPLA</title>
+
+    <!-- Bootstrap -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../css/style.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../js/lib/jquery.js"></script>
+    <script src="../../js/lib/easeljs-0.7.1.min.js"></script>
+  </head>
+  <body>
+
+  <!-- Fixed navbar -->
+  <div class="container navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html">TPLearn</a>
+      <p class="navbar-text">Energie und Leistung</p>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><button type="button" id="pruefen" class="btn navbar-btn btn-success">Prüfen</button></li>
+        <li><p id="timer" class="navbar-text">00:00</p></li>
+      </ul>
+      <ul id="lives" class="nav navbar-nav navbar-right">
+        <li><p class="navbar-text"><span class="glyphicon glyphicon-heart-empty"></span></p></li>
+        <li><p class="navbar-text"><span class="glyphicon glyphicon-heart-empty"></span></p></li>
+        <li><p class="navbar-text"><span class="glyphicon glyphicon-heart-empty"></span></p></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+  
+
+  <div class="container">
+    
+    <div id="result-container">
+    </div>
+
+    <div id="problem-container">
+    </div>
+
+    <div class="row">
+      <div id="table-container" class="col-md-12"></div>
+    </div>
+   
+    <div class="row">
+      <div id="center-stage" class="col-md-12">
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <hr>
+
+
+  </div> <!-- /container -->
+
+    <!-- templates -->
+    <script id="tmpl-problem" type="x-tmpl-mustache">
+    <div class="page-header">
+      <h1>Aufgabe 1 <small>{{title}}</small></h1>
+    </div>
+      <p>{{blocktext}}</p>
+      <p>{{problem}}</p>
+    </script>
+
+    <script id="tmpl-table" type="x-tmpl-mustache">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th class="col-sm-3">Schritt</th>
+            <th class="col-sm-9">Ergebnis</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#table}}
+          <tr>
+            <td>{{title}}</td>
+            <td>{{{tableContent}}}</td>
+          </tr>
+          {{/table}}
+        </tbody>
+      </table>
+    </script>
+
+    <script id="tmpl-table-groessen" type="x-tmpl-mustache">
+      <p>
+        Gegeben: {{#solutionGiven}}
+        {{letter}}<sub>{{index}}</sub> = {{value}} {{unit}},
+        {{/solutionGiven}}
+      </p>
+      <p>
+        Gesucht: {{solutionUnknown.letter}}<sub>{{solutionUnknown.index}}</sub>
+      </p>
+    </script>
+
+    <script id="tmpl-table-formeln" type="x-tmpl-mustache">
+      {{#solutionEquations}}
+      <p>{{.}}</p>
+      {{/solutionEquations}}
+      <p>Lösungsformel: {{solution}}</p>
+    </script>
+
+    <script id="tmpl-table-einheiten" type="x-tmpl-mustache">
+      [{{letter}}] = {{solution}} = {{unit}}
+    </script>
+
+    <script id="tmpl-table-ergebnis" type="x-tmpl-mustache">
+      {{solution.letter}}<sub>{{solution.index}}</sub> = {{solution.value}} {{solution.unit}}
+    </script>
+
+    <script id="tmpl-table-antwortsatz" type="x-tmpl-mustache">
+      {{solution}}
+    </script>
+
+
+    <!-- templates -->
+
+    <script id="tmpl-groessen" type="x-tmpl-mustache">
+      <div class="col-md-5 nopadding">
+        <p><strong>Gegebene Größen:</strong> Trage die gegebenen Größen mit Formelzeichen und optionalem Index, Größe und Einheit unten ein!</p>
+        {{#optionsGiven}}
+        <div class="row select-row-gegeben form-horizontal">
+          <div class="col-xs-2 nopadding">
+            <select class="form-control input-sm" name="letter">
+              <option></option>
+              {{#letter}}
+              <option>{{.}}</option>
+              {{/letter}}
+            </select>
+          </div>
+          <div class="col-xs-2 nopadding">
+            <select class="form-control input-sm" name="index">
+              <option></option>
+              {{#index}}
+              <option>{{.}}</option>
+              {{/index}}
+            </select>
+          </div>
+          <div class="col-xs-1 nopadding">
+            <p class="text-center form-control-static">=</p>
+          </div>
+          <div class="col-xs-2 nopadding">
+            <select class="form-control input-sm" name="value">
+              <option></option>
+              {{#value}}
+              <option>{{.}}</option>
+              {{/value}}
+            </select>
+          </div>
+          <div class="col-xs-2 nopadding">
+            <select class="form-control input-sm" name="unit">
+              <option></option>
+              {{#unit}}
+              <option>{{.}}</option>
+              {{/unit}}
+            </select>
+          </div>
+          <div class="col-xs-1 nopadding">
+          </div>
+          <div class="col-xs-2 nopadding">
+            <p class="form-control-static"><span>&nbsp;</span></p>
+          </div>
+        </div>
+        {{/optionsGiven}}
+      </div>
+      <div class="col-md-1 nopadding"></div>
+      <div class="col-md-5 nopadding">
+        <p><strong>Gesuchte Größen:</strong> Trage die gesuchte Größe mit Formelzeichen, optionalem Index und Einheit unten ein!</p>
+        {{#optionsUnknown}}
+        <div class="select-row-gesucht form-horizontal">
+          <div class="col-xs-2 nopadding">
+            <select class="form-control input-sm" name="letter">
+              <option></option>
+              {{#letter}}
+              <option>{{.}}</option>
+              {{/letter}}
+            </select>
+          </div>
+          <div class="col-xs-2 nopadding">
+            <select class="form-control input-sm" name="index">
+              <option></option>
+              {{#index}}
+              <option>{{.}}</option>
+              {{/index}}
+            </select>
+          </div>
+          <div class="col-xs-1 nopadding">
+            <p class="text-center form-control-static">in</p>
+          </div>
+          <div class="col-xs-2 nopadding">
+            <select class="form-control input-sm" name="unit">
+              <option></option>
+              {{#unit}}
+              <option>{{.}}</option>
+              {{/unit}}
+            </select>
+          </div>
+          <div class="col-xs-1 nopadding">
+          </div>
+          <div class="col-xs-1 nopadding">
+            <p class="form-control-static"><span>&nbsp;</span></p>
+          </div>
+        </div>
+        {{/optionsUnknown}}
+      </div>
+      <div class="col-md-1 nopadding"></div>
+    </script>
+
+
+    <script id="tmpl-formeln" type="x-tmpl-mustache">
+      <p>Finde die richtigen <strong>Basisformeln</strong>, füge sie unten hinzu, und <strong>verbinde</strong> sie untereinander und mit den grünen <strong>gegebenen Größen</strong>, so dass die gesuchte Größe aus den gegebenen Größen errechnet werden kann! Alle Größen mit gleichen Einheiten können verbunden werden.</p>
+      <div class="btn-toolbar">
+        <div id="reset_basisformeln" class="btn-group">
+          <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-minus"></span></button>
+          <button type="button" class="btn btn-primary">Alle entfernen</button>
+        </div>
+        <div id="basisformeln" class="btn-group">
+          <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-plus"></span></button>
+          {{#optionsEquations}}
+          <button type="button" class="btn btn-primary">{{.}}</button>
+          {{/optionsEquations}}
+        </div>
+      </div>
+      <canvas id="demoCanvas" width={{width}} height={{height}}></canvas>
+      <div class="hidden">
+        <p><span class="glyphicon glyphicon-pencil"></span> Finde nun die richtige <strong>Lösungsformel</strong>. Der obenstehende Formelbaum kann dir dabei helfen, herauszufinden wo du – falls nötig – Basisformeln <strong>ineinander einsetzen</strong> musst.</p>
+        <div class="btn-group-horizontal" data-toggle="buttons">
+          {{#options}}
+          <label class="btn btn-primary">
+            <input type="radio" name="options" value="{{val}}">{{{text}}}
+          </label>
+          {{/options}}
+        </div>
+      </div>
+    </script>
+
+
+    <script id="tmpl-einheiten" type="x-tmpl-mustache">
+      <p><span class="glyphicon glyphicon-pencil"></span> Ersetze die Größen in der Lösungsformel durch ihre <strong>Einheiten</strong> und vereinfache. Lautet die Lösungsformel beispielsweise Δx = ½⋅(Δv/Δt)⋅Δt², so sind die Einheiten [Δx] = m⋅s⁻¹⋅s⁻¹⋅s² = m Welcher der untenstehenden Ausdrücke stellt einen richtigen <strong>Zwischenschritt beim Vereinfachen</strong> dar?</p>
+      <div class="btn-group" data-toggle="buttons">
+        {{#options}}
+        <label class="btn btn-primary">
+          <input type="radio" name="options" value="{{val}}">{{{text}}}
+        </label>
+        {{/options}}
+      </div>
+    </script>
+
+
+    <script id="tmpl-ergebnis" type="x-tmpl-mustache">
+      <div class="col-md-5">
+        <p><span class="glyphicon glyphicon-pencil"></span> Was ist das <strong>Endergebnis</strong>? Achte darauf, richtig zu runden und die <strong>Einheit</strong> mit anzugeben.</p>
+      </div>
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-4">
+        <div class="form-group has-feedback">
+          <label class="control-label">Zahl eingeben</label>
+          <input type="text" class="form-control">
+          <span class="form-control-feedback"></span>
+        </div>
+      </div>
+      <div class="col-md-2">
+      </div>
+    </script>
+
+
+    <script id="tmpl-antwortsatz" type="x-tmpl-mustache">
+      <p>Mit welchem der untenstehenden <strong>Antwortsätze</strong> wird die Aufgabe am genauesten beantwortet?</p>
+      <div class="btn-group-vertical" data-toggle="buttons">
+        {{#options}}
+        <label class="btn btn-primary">
+          <input type="radio" name="options" value="{{.}}">{{{.}}}
+        </label>
+        {{/options}}
+      </div>
+    </script>
+
+    <script id="tmpl-score" type="x-tmpl-mustache">
+      <div class="jumbotron">
+        <div class="pull-right"><img src="../../img/{{trophy}}.png" /></div>
+        <h1>Glückwunsch!</h1>
+        <p><span class="h2">Du hast die Aufgaben in {{time}} s gelöst.</span></p>
+        <p><a class="btn btn-primary btn-lg" href="../../index.html" role="button">Zurück zum Menü</a></p>
+      </div>
+    </script>
+
+
+    <script src="../../js/lib/bootstrap.min.js"></script>
+    <script src="../../js/lib/mustache.js"></script>
+    <script src="../../js/main.js"></script>
+    <script src="../../js/canvas.js"> </script>
+    <script src="../../js/shared.js"></script>
+    <script src="data.js"></script>
+  </body>
+</html>
