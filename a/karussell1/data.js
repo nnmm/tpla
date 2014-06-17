@@ -1,6 +1,6 @@
 var d = {
     "block": "Das Karussell I",
-    "blocktext": "4 Kinder schieben ein Karussell mit dem Radius 2m, mit jeweils 40 N und der Winkelgeschwindigkeit 0.3 Hz an. Aufgrund von Reibung und der Gewinnung von elektrischer Energie aus der Drehung wird das Karussell nicht schneller oder langsamer.",
+    "blocktext": "In Ghana testet die Organisation Empower Playgrounds Inc. nun ob ein Karussell zur Strom Erzeugung genutzt werden kann. Man geht von der folgenden Situation aus: 4 Kinder schieben ein Karussell mit dem Radius 2m, mit jeweils 40 N und der Winkelgeschwindigkeit 0.3 Hz an. Aufgrund von Reibung und der Gewinnung von elektrischer Energie aus der Drehung wird das Karussell nicht schneller oder langsamer. Um eine Entscheidung zu treffen muss zunächste die Energie berechnet werden, die die Kinder in das Karussell einspeisen.",
     "subtasks": [
         {
             "type": "tpla",
@@ -40,7 +40,7 @@ var d = {
                 "Die Zentripetalkraft beträgt {{solution.value}} {{solution.unit}}.",
                 "Die Zentrifugalkraft ist so groß, dass die Kinder aus dem Karussell fallen.",
                 "Das Karussell hat einen zu großen Radius um es anzuschieben.",
-                "Die Zentrifugalkraft beträgt {{solution.value}} {{solution.unit}}."
+                "Die Zentrifugalkraft beträgt {{solution.value}} kN."
             ]
         },
         {
@@ -64,13 +64,13 @@ var d = {
                 "value": "96",
                 "unit": "W",
                 "unit_long": "Watt",
-                "equation": "P = F*w*r",
+                "equation": "P = F*ω*r",
             },
             "alternative_solution_equations": [
-                "P = F*w*r*t",
-                "P = F*w*r*t²",
+                "P = F*ω*r*t",
+                "P = F*ω*r*t²",
                 "P = F*s*t",
-                "P = F*w*r²"
+                "P = F*ω*r²"
             ],
             "units": {
                 "correct": "N*1/s*m",

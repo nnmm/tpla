@@ -60,7 +60,7 @@
         var trophy = localStorage.getItem("score" + aufgaben[i].id);
         console.log(trophy);
         if (trophy === null) {
-          trophy = "bronze";
+          trophy = "none";
         };
         trophyCounter[trophy] += 1;
         var data = {
