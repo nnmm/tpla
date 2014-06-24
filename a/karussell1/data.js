@@ -1,6 +1,6 @@
 var d = {
     "block": "Das Karussell I",
-    "blocktext": "In Ghana testet die Organisation Empower Playgrounds Inc. nun ob ein Karussell zur Strom Erzeugung genutzt werden kann. Für die Berechnungen geht man von folgender Situation aus: 4 Kinder schieben ein Karussell mit dem Radius 2m, mit jeweils 40 N und der Winkelgeschwindigkeit 0.3 Hz an. Aufgrund von Reibung und der Gewinnung von elektrischer Energie aus der Drehung wird das Karussell nicht schneller oder langsamer. Um eine Entscheidung zu treffen muss zunächste die Energie berechnet werden, die die Kinder in das Karussell einspeisen.",
+    "blocktext": "In Ghana testet die Organisation Empower Playgrounds Inc. nun ob ein Karussell zur Strom Erzeugung genutzt werden kann. Für die Berechnungen geht man von folgender Situation aus: 4 Kinder schieben ein Karussell mit dem Radius 2,0 m, mit jeweils 40 N und der Winkelgeschwindigkeit 0.3 Hz an. Aufgrund von Reibung und der Gewinnung von elektrischer Energie aus der Drehung wird das Karussell nicht schneller oder langsamer. Um eine Entscheidung zu treffen muss zunächste die Energie berechnet werden, die die Kinder in das Karussell einspeisen.",
     "subtasks": [
         {
             "type": "tpla",
@@ -29,10 +29,10 @@ var d = {
                 "F_Z = m⋅r²"
             ],
             "units": {
-                "correct": "kg*m*1/s",
+                "correct": "kg⋅m⋅(1/s)²",
                 "wrong": [
-                    "kg*m*s",
-                    "kg*m²*1/s"
+                    "kg⋅m⋅s",
+                    "kg⋅m²⋅1/s"
                 ]
             },
             "correct_solution_phrase": "Die Zentrifugalkraft beträgt {{solution.value}} {{solution.unit}}.",
@@ -55,8 +55,8 @@ var d = {
 
             ],
             "equations": [
-                "P = F*v",
-                "v = w*r"
+                "P = F⋅v",
+                "v = ω⋅r"
             ],
             "solution": {
                 "letter": "P",
@@ -64,19 +64,19 @@ var d = {
                 "value": "96",
                 "unit": "W",
                 "unit_long": "Watt",
-                "equation": "P = F*ω*r",
+                "equation": "P = F⋅ω⋅r",
             },
             "alternative_solution_equations": [
-                "P = F*ω*r*t",
-                "P = F*ω*r*t²",
-                "P = F*s*t",
-                "P = F*ω*r²"
+                "P = F⋅ω⋅r⋅t",
+                "P = F⋅ω⋅r⋅t²",
+                "P = F⋅s⋅t",
+                "P = F⋅ω⋅r²"
             ],
             "units": {
-                "correct": "N*1/s*m",
+                "correct": "N⋅1/s⋅m",
                 "wrong": [
-                   "N*s*m",
-                   "N*1/s",
+                   "N⋅s⋅m",
+                   "N⋅1⋅s",
                 ]
             },
 
@@ -100,7 +100,7 @@ var d = {
                 { "letter": "t", "index": "", "value": "5", "unit": "min" },
             ],
             "equations": [
-                "W = F*s",
+                "W = F⋅s",
                 "ω = ∆φ/∆t",
                 "φ = s/r",
             ],
@@ -110,27 +110,27 @@ var d = {
                 "value": "29",
                 "unit": "kJ",
                 "unit_long": "Kilojoule",
-                "equation": "W = F*ω*t*r",
+                "equation": "W = F⋅ω⋅t⋅r",
             },
             "alternative_solution_equations": [
-                "W = F*ω*t*r²",
-                "W = F*ω*t/r",
-                "W = F/ω*t*r",
-                "W = F*ω*t²*r",
+                "W = F⋅ω⋅t⋅r²",
+                "W = F⋅ω⋅t/r",
+                "W = F/ω⋅t⋅r",
+                "W = F⋅ω⋅t²⋅r",
             ],
             "units": {
-                "correct": "N*1/s*s*m",
+                "correct": "N⋅1/s⋅s⋅m",
                 "wrong": [
-                    "N*s/m",
-                    "N/1/s*m"
+                    "N⋅s/m",
+                    "N/1/s⋅m"
                 ]
             },
 
-            "correct_solution_phrase": "Die Leistung die die Kinder in das Karussell stecken beträgt {{solution.value}} {{solution.unit}}.",
+            "correct_solution_phrase": "Die Leistung, die die Kinder in das Karussell stecken beträgt {{solution.value}} {{solution.unit}}.",
             "alternative_solution_phrases": [
-                "Die Leistung die ein Kind in das Karussell steckt beträgt {{solution.value}} {{solution.unit}}.",
-                "Die Leistung die die Kinder in 58 kJ an Leistung.",
-                "Die Leistung die die Kinder in das Karusell stecken beträgt 58 kJ.",
+                "Die Leistung, die ein Kind in das Karussell steckt beträgt {{solution.value}} {{solution.unit}}.",
+                "Die Leistung, die die Kinder in 58 kJ an Leistung.",
+                "Die Leistung, die die Kinder in das Karusell stecken beträgt 58 kJ.",
                 "{{solution.value}} {{solution.unit}} wird vom Karussell in 5 min erzeugt."
             ]
         }

@@ -169,7 +169,7 @@ var model = (function() {
 			"solutionEquations": sd.equations,
 			"givenVariables": sd.given,
 			"unknownVariable": { "letter": sd.solution.letter, "index": sd.solution.index, "unit": sd.solution.unit},
-			"solution": util.fractionize(sd.solution.equation),
+			"solution": sd.solution.equation,
 			"eqs": [],
 			"options": function() {
 				var opts = [];
@@ -345,7 +345,7 @@ var model = (function() {
 		var trophyOld = localStorage.getItem(identifier);
 		var trophyNew = "bronze";
 		// TODO: include time penalty from losing a heart
-		var timePerSection = my.timer/my.section.length;
+		var timePerSection = my.timer/d.subtasks.length;
 		// only save if it's better than the one before it
 		if (timePerSection < 500) {
 			trophyNew = "silver";
