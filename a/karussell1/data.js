@@ -8,7 +8,7 @@ var d = {
             "problem": " Wie groß ist die Zentrifugalkraft für ein Kind, dass das Karussell anschiebt wenn es 30 kg wiegt?",
             "image": false,
             "given": [
-                { "letter": "r", "index": "Karussell", "value": "2", "unit": "m" },
+                { "letter": "r", "index": "Karussell", "value": "2,0", "unit": "m" },
                 { "letter": "ω", "index": "Karussell", "value": "0,3", "unit": "1/s" },
                 { "letter": "m", "index": "Kind", "value": "30", "unit": "kg" }
 
@@ -37,7 +37,7 @@ var d = {
             },
             "correct_solution_phrase": "Die Zentrifugalkraft beträgt {{solution.value}} {{solution.unit}}.",
             "alternative_solution_phrases": [
-                "Die Zentripetalkraft beträgt {{solution.value}} {{solution.unit}}.",
+                "Die Zentripetalkraft beträgt {{solution.value}} kN.",
                 "Die Zentrifugalkraft ist so groß, dass die Kinder aus dem Karussell fallen.",
                 "Das Karussell hat einen zu großen Radius um es anzuschieben.",
                 "Die Zentrifugalkraft beträgt {{solution.value}} kN."
@@ -51,7 +51,7 @@ var d = {
             "given": [
                 { "letter": "F", "index": "Kind", "value": "40", "unit": "N" },
                 { "letter": "ω", "index": "Karussell", "value": "0,3", "unit": "1/s" },
-                { "letter": "r", "index": "Karussell", "value": "2", "unit": "m" }
+                { "letter": "r", "index": "Karussell", "value": "2,0", "unit": "m" }
 
             ],
             "equations": [
@@ -84,19 +84,19 @@ var d = {
             "alternative_solution_phrases": [
                 "Die Enrgie beträgt {{solution.value}} {{solution.unit}}.",
                 "Die Energie die das zurückgelegt beträgt {{solution.value}} {{solution.unit}}.",
-                "Die Leistung des Karussells beträgt {{solution.value}} {{solution.unit}}.",
+                "Die Leistung des Karussells beträgt {{solution.value}} kW.",
                 "Die gespeicherte leistung beträgt {{solution.value}} {{solution.unit}}."
             ]
         },
         {
             "type": "tpla",
             "title": "c",
-            "problem": "Welche Energie, in kJ, müssen die Kinder aufwenden, wenn sie 5 min lang das Karussell anschieben?",
+            "problem": "Welche Arbeit, in kJ, müssen die Kinder aufwenden, wenn sie 5 min lang das Karussell anschieben?",
             "image": false,
             "given": [
                 { "letter": "F", "index": "Kind", "value": "40", "unit": "N" },
                 { "letter": "ω", "index": "Karussell", "value": "0,3", "unit": "1/s" },
-                { "letter": "r", "index": "Karussell", "value": "2", "unit": "m" },
+                { "letter": "r", "index": "Karussell", "value": "2,0", "unit": "m" },
                 { "letter": "t", "index": "", "value": "5", "unit": "min" },
             ],
             "equations": [
@@ -126,12 +126,12 @@ var d = {
                 ]
             },
 
-            "correct_solution_phrase": "Die Leistung, die die Kinder in das Karussell stecken beträgt {{solution.value}} {{solution.unit}}.",
+            "correct_solution_phrase": "Die Arbeit, die die Kinder in das Karussell stecken beträgt {{solution.value}} {{solution.unit}}.",
             "alternative_solution_phrases": [
-                "Die Leistung, die ein Kind in das Karussell steckt beträgt {{solution.value}} {{solution.unit}}.",
-                "Die Leistung, die die Kinder in 58 kJ an Leistung.",
-                "Die Leistung, die die Kinder in das Karusell stecken beträgt 58 kJ.",
-                "{{solution.value}} {{solution.unit}} wird vom Karussell in 5 min erzeugt."
+                "Die Arbeit, die ein Kind in das Karussell steckt beträgt {{solution.value}} {{solution.unit}}.",
+                "Die Arbeit, die die Kinder in 58 kJ an Leistung.",
+                "Die Arbeit, die die Kinder in das Karusell stecken beträgt 58 kJ.",
+                "{{solution.value}} {{solution.unit}} wird vom Karussell in 10 min erzeugt."
             ]
         }
     ]

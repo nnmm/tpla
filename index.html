@@ -30,20 +30,26 @@
   </div>
 
   <div class="container">
-    <img src="img/logo250x93.png" class="pull-right" />
-    <div class="page-header">
-      <h1>Menu <small>Energie und Technik eLearning</small></h1>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="page-header">
+          <h1>Menu <small>Energie und Technik eLearning</small></h1>
+        </div>
+        <p>Willkommen im eTraining zu Energie und Technik. Wähle aus einem der folgenden Aufgabenblöcke:</p>
+      </div>
+      <div class="col-md-4">
+        <img id="logo" src="img/logo250x93.png" class="pull-right" />
+      </div>
     </div>
-    <p>Willkommen im eTraining zu Energie und Technik. Wähle aus einem der folgenden Aufgabenblöcke:</p>
     <div class="row">
       <div id="center-stage" class="col-md-12">
       </div>
-    </div>
+    </div>        
 
   </div><!--/container-->
 
   <script id="tmpl-aufgabe" type="x-tmpl-mustache">
-    <div class="col-md-3">
+    <div class="col-md-4">
       <a class ="thumbnail" href="a/{{id}}/main.html">
         <img src="a/{{id}}/200.png" />
       </a>
