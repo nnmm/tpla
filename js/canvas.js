@@ -47,8 +47,9 @@ var eqCanvas = (function() {
 
     var eqOffset = 150;
     stage.addChildAt(bg, 0);
-    for (var i = Math.min(textarray.length - 1, 3); i >= 0; i--) {
-      equations.push(new Equation(textarray[i], eqOffset, 150));
+    var maxLength = Math.min(textarray.length - 1, 3);
+    for (var i = 0; i <= maxLength; i++) {
+      equations.push(new Equation(textarray[i], eqOffset, 150 + (i%2)*50));
       eqOffset = (eqOffset + 250) % (WIDTH-100);
     };
     my.resetVariables();
