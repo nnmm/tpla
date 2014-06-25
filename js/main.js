@@ -32,6 +32,10 @@ var controller = (function() {
  			var correct = model.section[index - 1].verify(userInput);
  			if (!correct) {
  				controller.subtractLife();
+				if (model.getLives() === 0) {
+					controller.init();
+					return;
+				};
  				view.showLives(model.getLives());
  			};
  			view.updateTable(index);
@@ -62,10 +66,6 @@ var controller = (function() {
 
 	my.subtractLife = function() {
 		model.subtractLife();
-		console.log(model.getLives() + " lives in subtractLife");
-		if (model.getLives() === 0) {
-			controller.init()
-		};
 		view.showLives();
 	};
 
@@ -241,6 +241,10 @@ var model = (function() {
 				options.push(sd.solution.value + " " + sd.solution.unit_long);
 				options.push(valueDot + " " + sd.solution.unit);
 				options.push(valueDot + " " + sd.solution.unit_long);
+				options.push(sd.solution.value + sd.solution.unit);
+				options.push(sd.solution.value + sd.solution.unit_long);
+				options.push(valueDot + sd.solution.unit);
+				options.push(valueDot + sd.solution.unit_long);
 				return options;
 			},
 			"verify": verifyTextInput,
@@ -493,6 +497,7 @@ var view = (function() {
 	};
 
 	my.updateTable = function(index) {
+		console.log("updateTable " + index);
 		if (index > model.section.length) {
 			return;
 		};
