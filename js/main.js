@@ -3,19 +3,19 @@
 var controller = (function() {
 	'use strict';
  	var my = {},
- 		allownextSection = false;
+ 		allownextSection;
 
 
 	// is called only on pageload
  	my.init = function() {
 
+ 		allownextSection = false;
+ 		model.reset();
  		model.initSubtask();
  		
  		// persistent data
  		localStorage.setItem("lives", 3);
  		var lives = model.getLives();
- 		// TODO: initialize/load timer and subtask
-
  		view.showLives(lives);
  		view.registerListeners();
 		view.updateTable(0);
@@ -62,6 +62,10 @@ var controller = (function() {
 
 	my.subtractLife = function() {
 		model.subtractLife();
+		console.log(model.getLives() + " lives in subtractLife");
+		if (model.getLives() === 0) {
+			controller.init()
+		};
 		view.showLives();
 	};
 
@@ -75,6 +79,11 @@ var model = (function() {
 	'use strict';
 	var my = {},
 		WRONG_OPTIONS = 5;
+
+	my.reset = function() {
+		my.curSubtask = 0;
+	};
+
 	// is called at the beginning of each subtask
 	my.initSubtask  = function() {
 		// ugly?
@@ -473,9 +482,9 @@ var view = (function() {
 	};
 
 	my.registerListeners = function() {
-		$("#pruefen").click(controller.pruefenWeiter);
+		$("#pruefen").off().click(controller.pruefenWeiter);
 
-		$(document).keypress(function (e) {
+		$(document).off().keypress(function (e) {
 		  if (e.which == 13) {
 		    $('#pruefen').focus().click();
 		    return false;

@@ -1,11 +1,11 @@
 var d = {
     "block": "Das Klettergerüst",
-    "blocktext": "Ein 50 kg schwerer Junge klettert auf ein 2,0m hohes Klettergerüst. Für das Erklimmen der Spitze benötigt er 10s.",
+    "blocktext": "Ein 50 kg schwerer Junge klettert auf ein 2,0 m hohes Klettergerüst. Er lässt sich Zeit und benötigt für das Erklimmen der Spitze 10 Sekunden.",
     "subtasks": [
         {
             "type": "tpla",
             "title": "a",
-            "problem": "Welche Leistung benötigt er dafür? Geben Sie bitte auch die Erdbeschleunigung g = 9,81 m/s² als gegebene Größe an.",
+            "problem": "Welche durchschnittliche Leistung muss für das Klettern aufgewendet werden? Gib bitte auch die Erdbeschleunigung g = 9,81 m/s² als gegebene Größe an.",
             "image": false,
             "given": [
                 { "letter": "∆t", "index": "", "value": "10", "unit": "s" },
@@ -38,12 +38,12 @@ var d = {
                     "[kg⋅m²]/[s]"
                 ]
             },
-            "correct_solution_phrase": "Der Junge benötigt eine Leistung von {{solution.value}} {{solution.unit}}.",
+            "correct_solution_phrase": "Der Junge wendet eine durchschnittliche Leistung von {{solution.value}} {{solution.unit}} auf.",
             "alternative_solution_phrases": [
                 "Der Junge braucht eine Energie von {{solution.value}} {{solution.unit}}.",
-                "Der Junge schafft es nicht auf das Klettergerüst",
+                "Der Junge schafft es nicht auf das Klettergerüst.",
                 "Der Junge hat eine Leistung von {{solution.value}} {{solution.unit}}.",
-                "Der Junge generiert {{solution.value}} {{solution.unit}} an Energie"
+                "Der Junge generiert {{solution.value}} {{solution.unit}} an Energie."
             ]
         }
     ]
