@@ -497,7 +497,6 @@ var view = (function() {
 	};
 
 	my.updateTable = function(index) {
-		console.log("updateTable " + index);
 		if (index > model.section.length) {
 			return;
 		};
